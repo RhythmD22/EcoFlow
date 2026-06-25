@@ -60,7 +60,7 @@ cd EcoFlow
 python3 -m http.server 8080
 ```
 
-Open `http://localhost:8080/EcoFlow/` in your browser.
+Open `http://localhost:8080/EcoFlow/` in your browser, or scan the QR code on the desktop landing page with your phone.
 
 ---
 
@@ -94,6 +94,8 @@ EcoFlow/
 │   ├── data.js                 # localStorage CRUD, habits, streaks, challenges, date-aware toggling
 │   ├── coach.js                # Gemini API + offline simulated responses (12 patterns)
 │   └── scan.js                 # Open Food Facts API v3.6 integration, barcode lookup, recent scans cache
+├── images/
+│   └── QR.svg                  # QR code for desktop → mobile redirect
 ├── manifest.json               # PWA manifest
 ├── service-worker.js           # Offline caching and install flow
 ├── .env                        # API key template (for reference)
