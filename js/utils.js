@@ -112,6 +112,7 @@ async function showPrompt(title, message, defaultValue = '') {
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') close(input.value); });
     document.addEventListener('keydown', esc);
     input.focus();
+    if (defaultValue) input.setSelectionRange(0, defaultValue.length);
 
     function esc(e) {
       if (e.key === 'Escape') { close(null); return; }

@@ -134,7 +134,7 @@ function renderHabitList(appData, category, dateKey = null) {
     const checked = dateHabits.includes(h.id);
     const isDefault = EcoData.defaultHabits.some(dh => dh.id === h.id);
     const safeName = escapeHTML(h.name);
-    const safeCategory = escapeHTML(h.category);
+    const safeCategory = escapeHTML(h.category.charAt(0).toUpperCase() + h.category.slice(1));
     return `
       <div class="habit-item glass glass-card" data-habit-id="${h.id}">
         <button class="habit-check ${checked ? 'checked' : ''}" role="checkbox" aria-checked="${checked}" aria-label="${checked ? 'Undo' : 'Complete'}: ${safeName}">
