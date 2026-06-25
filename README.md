@@ -16,9 +16,8 @@
 - [Design System](#design-system)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [PWA Support](#progressive-web-app-pwa-support)
 - [API Integrations](#api-integrations)
-- [Contributing](#contributing)
+- [PWA Support](#progressive-web-app-pwa-support)
 - [License](#license)
 
 ---
@@ -237,18 +236,6 @@ Your key is stored in `localStorage` on your device only. It is never sent anywh
 
 ---
 
-## Progressive Web App (PWA) Support
-
-EcoFlow can be installed on mobile devices:
-
-1. Open the app in Safari (iOS) or Chrome (Android)
-2. Tap the Share button and select **Add to Home Screen** (iOS) or the install prompt (Android)
-3. The app launches in standalone full-screen mode with offline support
-
-The service worker caches all assets and CDN dependencies with a cache-first strategy. API calls to Gemini are excluded from caching.
-
----
-
 ## API Integrations
 
 ### Gemini 3.1 Flash Lite
@@ -266,6 +253,18 @@ The service worker caches all assets and CDN dependencies with a cache-first str
 - **Key required:** No — only a custom `User-Agent` header
 - **Rate limit:** 15 requests/min per IP
 - **Camera scanning:** Built on `html5-qrcode` (CDN) — supports EAN-13, UPC-A, QR, Code-128 on rear camera at 10 fps. Requires HTTPS on mobile.
+
+---
+
+## Progressive Web App (PWA) Support
+
+EcoFlow can be installed on mobile devices:
+
+1. Open the app in Safari (iOS) or Chrome (Android)
+2. Tap the Share button and select **Add to Home Screen** (iOS) or the install prompt (Android)
+3. The app launches in standalone full-screen mode with offline support
+
+The service worker caches all assets and CDN dependencies with a cache-first strategy. API calls to Gemini are excluded from caching.
 
 ---
 
