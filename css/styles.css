@@ -49,6 +49,7 @@
     --text-secondary: #9ca3a0;
     --text-tertiary: #88928c;
     --text-on-brand: #042f2e;
+    --text-input: 16px;
 
     /* Type scale */
     --text-xs: 0.6875rem;
@@ -459,6 +460,10 @@
     animation: page-enter 0.35s var(--ease-out-expo);
   }
 
+  #app-root:focus-visible {
+    outline: none;
+  }
+
   @keyframes page-enter {
     from {
       opacity: 0;
@@ -508,7 +513,7 @@
     border-radius: var(--radius-md);
     padding: var(--space-md) var(--space-lg);
     color: var(--text-primary);
-    font-size: var(--text-base);
+    font-size: var(--text-input);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
   }
@@ -649,7 +654,7 @@
     border-radius: var(--radius-md);
     padding: var(--space-md) var(--space-lg);
     color: var(--text-primary);
-    font-size: 16px;
+    font-size: var(--text-input);
     margin-bottom: var(--space-lg);
   }
 
