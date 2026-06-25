@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="EcoFlow — AI-Powered Personal Sustainability Coach">
+  <meta name="theme-color" content="#0d1510">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EcoFlow">
+
+  <title>EcoFlow — Sustainability Coach</title>
+
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234ade80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3'/><path d='M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4'/><path d='M5 21h14'/></svg>">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234ade80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3'/><path d='M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4'/><path d='M5 21h14'/></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Newsreader:opsz,wght@16..72,400..600&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script>
+    (function () {
+      let savedTheme = localStorage.getItem('ecoflow_theme');
+      if (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches) savedTheme = 'light';
+      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+    })();
+  </script>
+</head>
+
+<body>
+
+  <a href="#app-root" class="skip-link">Skip to main content</a>
+
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-orbs">
+      <div class="bg-orb orb-1"></div>
+      <div class="bg-orb orb-2"></div>
+      <div class="bg-orb orb-3"></div>
+    </div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <div class="app-shell">
+    <header class="app-header glass">
+      <h1 class="app-title" id="page-title">EcoFlow</h1>
+      <div class="header-actions">
+        <button class="icon-btn theme-btn" aria-label="Switch to light theme" id="btn-theme">
+          <svg class="icon-sun" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <svg class="icon-moon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+        <button class="icon-btn settings-btn" aria-label="Settings" id="btn-settings">
+          <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="app-root" aria-live="polite" aria-label="Main content" tabindex="-1"></main>
+
+    <nav class="bottom-nav glass" role="navigation" aria-label="Main navigation">
+      <button class="nav-item active" data-route="home" aria-label="Home" aria-current="page">
+        <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" data-route="habits" aria-label="Habits">
+        <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 11 12 14 22 4" />
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+        </svg>
+        <span class="nav-label">Habits</span>
+      </button>
+      <button class="nav-item" data-route="coach" aria-label="Coach">
+        <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        <span class="nav-label">Coach</span>
+      </button>
+      <button class="nav-item" data-route="impact" aria-label="Impact">
+        <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+        <span class="nav-label">Impact</span>
+      </button>
+      <button class="nav-item" data-route="scan" aria-label="Scan">
+        <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span class="nav-label">Scan</span>
+      </button>
+    </nav>
+  </div>
+
+  <div id="toast-container" role="status" aria-live="assertive" aria-atomic="true"></div>
+
+  <template id="template-home">
+    <div class="page page-home" data-page="home">
+      <section class="greeting-section">
+        <h2 class="greeting" id="greeting-text">Good morning</h2>
+        <p class="greeting-subtitle">Your planet thanks you</p>
+      </section>
+
+      <section class="streak-card glass glass-card">
+        <div class="streak-header">
+          <div class="streak-number" id="streak-count">0</div>
+          <div class="streak-label">
+            <span>Day Streak</span>
+            <span class="streak-fire"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4" />
+              </svg></span>
+          </div>
+        </div>
+        <div class="streak-progress">
+          <div class="streak-bar" id="streak-bar" style="width: 0%"></div>
+        </div>
+        <p class="streak-subtitle" id="streak-message">Log a habit to start your streak!</p>
+      </section>
+
+      <section class="tree-section glass glass-card" aria-label="Your Carbon Tree">
+        <div class="tree-container" id="tree-container">
+          <svg aria-hidden="true" focusable="false" class="tree-svg" viewBox="0 0 300 260" id="tree-svg">
+            <rect class="tree-ground" x="60" y="230" width="180" height="4" rx="2" fill="var(--wood-light)"
+              opacity="0.6" />
+            <g class="trunk">
+              <rect class="trunk-base" x="142" y="170" width="16" height="60" rx="4" fill="var(--wood-dark)" />
+              <rect class="trunk-mid" x="143" y="140" width="14" height="35" rx="3" fill="var(--wood)" />
+              <rect class="trunk-top" x="145" y="115" width="10" height="30" rx="2" fill="var(--wood)" />
+            </g>
+            <g class="branches" id="branches">
+              <g class="branch b-level1" id="branch-1" opacity="0">
+                <line x1="150" y1="155" x2="120" y2="130" stroke="var(--wood)" stroke-width="5"
+                  stroke-linecap="round" />
+                <line x1="120" y1="130" x2="105" y2="110" stroke="var(--wood)" stroke-width="3.5"
+                  stroke-linecap="round" />
+                <circle class="leaf" cx="105" cy="108" r="7" fill="var(--brand)" />
+                <circle class="leaf leaf-small" cx="115" cy="105" r="4.5" fill="var(--brand-soft)" opacity="0.7" />
+                <line x1="120" y1="130" x2="125" y2="108" stroke="var(--wood)" stroke-width="3"
+                  stroke-linecap="round" />
+                <circle class="leaf" cx="126" cy="106" r="6" fill="var(--success)" />
+              </g>
+              <g class="branch b-level1" id="branch-2" opacity="0">
+                <line x1="150" y1="150" x2="85" y2="118" stroke="var(--wood)" stroke-width="4.5"
+                  stroke-linecap="round" />
+                <circle class="leaf" cx="83" cy="115" r="7.5" fill="var(--brand)" />
+                <circle class="leaf leaf-small" cx="95" cy="110" r="5" fill="var(--accent-leaf)" opacity="0.6" />
+              </g>
+              <g class="branch b-level1" id="branch-3" opacity="0">
+                <line x1="150" y1="160" x2="180" y2="132" stroke="var(--wood)" stroke-width="5"
+                  stroke-linecap="round" />
+                <line x1="180" y1="132" x2="195" y2="112" stroke="var(--wood)" stroke-width="3.5"
+                  stroke-linecap="round" />
+                <circle class="leaf" cx="197" cy="109" r="7" fill="var(--brand)" />
+                <circle class="leaf leaf-small" cx="188" cy="106" r="5" fill="var(--brand-soft)" opacity="0.7" />
+              </g>
+              <g class="branch b-level1" id="branch-4" opacity="0">
+                <line x1="150" y1="148" x2="210" y2="125" stroke="var(--wood)" stroke-width="4.5"
+                  stroke-linecap="round" />
+                <line x1="210" y1="125" x2="218" y2="105" stroke="var(--wood)" stroke-width="3"
+                  stroke-linecap="round" />
+                <circle class="leaf" cx="220" cy="102" r="6" fill="var(--success)" />
+                <circle class="leaf leaf-small" cx="212" cy="108" r="4" fill="var(--accent-leaf)" opacity="0.6" />
+              </g>
+              <g class="branch b-level2" id="branch-5" opacity="0">
+                <line x1="105" y1="110" x2="90" y2="92" stroke="var(--wood)" stroke-width="3" stroke-linecap="round" />
+                <circle class="leaf" cx="88" cy="89" r="6" fill="var(--brand)" />
+              </g>
+              <g class="branch b-level2" id="branch-6" opacity="0">
+                <line x1="195" y1="112" x2="205" y2="90" stroke="var(--wood)" stroke-width="3" stroke-linecap="round" />
+                <circle class="leaf" cx="207" cy="87" r="6" fill="var(--brand-soft)" />
+              </g>
+              <g class="branch b-level3" id="branch-7" opacity="0">
+                <line x1="120" y1="130" x2="108" y2="122" stroke="var(--wood)" stroke-width="2.5"
+                  stroke-linecap="round" />
+                <circle class="leaf" cx="106" cy="120" r="4.5" fill="var(--accent-leaf)" />
+              </g>
+              <g class="branch b-level3" id="branch-8" opacity="0">
+                <line x1="180" y1="132" x2="188" y2="120" stroke="var(--wood)" stroke-width="2.5"
+                  stroke-linecap="round" />
+                <circle class="leaf" cx="190" cy="118" r="4.5" fill="var(--accent-leaf)" />
+              </g>
+              <g class="branch crown" id="crown" opacity="0">
+                <circle cx="150" cy="80" r="28" fill="url(#crown-grad)" opacity="0.15" />
+                <circle cx="140" cy="75" r="12" fill="var(--brand)" opacity="0.4" />
+                <circle cx="160" cy="78" r="10" fill="var(--brand-soft)" opacity="0.35" />
+                <circle cx="150" cy="82" r="14" fill="var(--success)" opacity="0.25" />
+              </g>
+            </g>
+            <defs>
+              <radialGradient id="crown-grad" cx="50%" cy="50%">
+                <stop offset="0%" stop-color="var(--brand)" stop-opacity="0.4" />
+                <stop offset="100%" stop-color="var(--brand)" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+          </svg>
+          <div class="tree-label" id="tree-label">Complete habits to grow your tree</div>
+        </div>
+        <div class="tree-stats">
+          <div class="tree-stat">
+            <span class="tree-stat-value" id="total-habits">0</span>
+            <span class="tree-stat-label">Actions</span>
+          </div>
+          <div class="tree-stat">
+            <span class="tree-stat-value" id="co2-saved">0</span>
+            <span class="tree-stat-label">kg CO₂ saved</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="challenge-card glass glass-card" id="daily-challenge">
+        <div class="challenge-badge">Today's Challenge</div>
+        <h3 class="challenge-title" id="challenge-title">Use a reusable water bottle</h3>
+        <p class="challenge-desc" id="challenge-desc">Skip single-use plastic today. Every refill saves ~0.02 kg of CO₂.
+        </p>
+        <button class="btn btn-primary challenge-btn" id="btn-complete-challenge">
+          <span>Mark Complete</span>
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </button>
+      </section>
+
+      <section class="quick-habits">
+        <h3 class="section-label">Quick Log</h3>
+        <div class="quick-habits-grid" id="quick-habits">
+          <button class="quick-habit glass glass-card" data-habit="public_transit">
+            <span class="quick-habit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="var(--info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 6v6" />
+                <path d="M15 6v6" />
+                <path d="M2 12h19.6" />
+                <path
+                  d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3" />
+                <circle cx="7" cy="18" r="2" />
+                <path d="M9 18h5" />
+                <circle cx="16" cy="18" r="2" />
+              </svg></span>
+            <span class="quick-habit-label">Public Transit</span>
+          </button>
+          <button class="quick-habit glass glass-card" data-habit="reusable_bag">
+            <span class="quick-habit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 10a4 4 0 0 1-8 0" />
+                <path d="M3.103 6.034h17.794" />
+                <path
+                  d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" />
+              </svg></span>
+            <span class="quick-habit-label">Reusable Bag</span>
+          </button>
+          <button class="quick-habit glass glass-card" data-habit="veg_meal">
+            <span class="quick-habit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 21h10" />
+                <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z" />
+                <path
+                  d="M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-2.77 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.51 2.51 0 0 1 .03 1.1" />
+                <path d="m13 12 4-4" />
+                <path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2" />
+              </svg></span>
+            <span class="quick-habit-label">Meat-Free Meal</span>
+          </button>
+          <button class="quick-habit glass glass-card" data-habit="lights_off">
+            <span class="quick-habit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+                <path d="M9 18h6" />
+                <path d="M10 22h4" />
+              </svg></span>
+            <span class="quick-habit-label">Saved Energy</span>
+          </button>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <template id="template-habits">
+    <div class="page page-habits" data-page="habits">
+      <h2 class="sr-only">Habits</h2>
+      <section class="habits-date-strip">
+        <button class="date-pill glass" id="today-date" aria-label="Select date"></button>
+        <div class="habits-today-count glass" id="today-count">0 / 12</div>
+      </section>
+
+      <div class="calendar-dropdown glass glass-card" id="calendar-dropdown" hidden>
+        <div class="calendar-header">
+          <button class="calendar-nav" id="cal-prev" aria-label="Previous month">
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span class="calendar-month" id="cal-month-year"></span>
+          <button class="calendar-nav" id="cal-next" aria-label="Next month">
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div class="calendar-day-labels">
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+        <button class="btn btn-secondary btn-full" id="cal-today">Today</button>
+      </div>
+
+      <div class="category-tabs" id="category-tabs">
+        <button class="cat-tab active" data-cat="all">All</button>
+        <button class="cat-tab" data-cat="transport">Transport</button>
+        <button class="cat-tab" data-cat="food">Food</button>
+        <button class="cat-tab" data-cat="energy">Energy</button>
+        <button class="cat-tab" data-cat="shopping">Shopping</button>
+        <button class="cat-tab" data-cat="waste">Waste</button>
+        <button class="cat-tab" data-cat="water">Water</button>
+      </div>
+
+      <div class="habits-list" id="habits-list"></div>
+
+      <section class="weekly-heatmap glass glass-card">
+        <h3 class="section-label">This Week</h3>
+        <div class="heatmap-grid" id="heatmap-grid"></div>
+        <div class="heatmap-legend">
+          <span>Less</span>
+          <span class="heatmap-dot d0"></span>
+          <span class="heatmap-dot d1"></span>
+          <span class="heatmap-dot d2"></span>
+          <span class="heatmap-dot d3"></span>
+          <span class="heatmap-dot d4"></span>
+          <span>More</span>
+        </div>
+      </section>
+
+      <button class="btn btn-secondary add-habit-btn glass glass-card" id="btn-add-habit">
+        <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        <span>Add Custom Habit</span>
+      </button>
+    </div>
+  </template>
+
+  <template id="template-coach">
+    <div class="page page-coach" data-page="coach">
+      <h2 class="sr-only">AI Coach</h2>
+      <div class="coach-chat" id="coach-chat" role="log" aria-label="Coach conversation" aria-live="polite">
+        <div class="coach-welcome glass glass-card">
+          <div class="coach-avatar">
+            <svg aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 24 24" fill="none"
+              stroke="var(--brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+          </div>
+          <p class="coach-welcome-text">
+            Hi! I'm your sustainability coach, powered by AI. Ask me anything about reducing your carbon footprint,
+            sustainable living tips, or how to build better eco-habits.
+          </p>
+        </div>
+        <div class="coach-suggestions" id="coach-suggestions">
+          <button class="suggestion-chip glass" data-prompt="How can I reduce food waste at home?">How can I reduce food
+            waste at home?</button>
+          <button class="suggestion-chip glass" data-prompt="What's the most impactful habit I can start today?">What's
+            the most impactful habit?</button>
+          <button class="suggestion-chip glass"
+            data-prompt="Compare the carbon footprint of driving vs. public transit">Driving vs. public
+            transit?</button>
+          <button class="suggestion-chip glass" data-prompt="Give me a 7-day sustainability challenge">7-day challenge
+            for me</button>
+        </div>
+        <div class="coach-messages" id="coach-messages"></div>
+        <div class="coach-typing" id="coach-typing" hidden>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+      <div class="coach-input-area">
+        <label for="coach-input" class="sr-only">Ask your sustainability coach a question</label>
+        <div class="coach-input-wrapper glass">
+          <input type="text" class="coach-input" id="coach-input" placeholder="Ask your sustainability coach..."
+            autocomplete="off">
+          <button class="btn-send" id="btn-send" aria-label="Send message">
+            <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </div>
+        <p class="coach-footnote" id="coach-api-status">AI responses use Google Gemini</p>
+      </div>
+      <div class="coach-settings" id="coach-settings" hidden>
+        <div class="glass glass-card coach-api-section">
+          <label class="api-label" for="gemini-api-key">Gemini API Key</label>
+          <div class="api-input-row">
+            <input type="password" class="api-input" id="gemini-api-key" placeholder="Enter your Gemini API key"
+              autocomplete="off">
+            <button class="btn btn-small btn-primary" id="btn-save-api-key">Save</button>
+          </div>
+          <p class="api-help">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank"
+              rel="noopener">Google AI Studio</a>. Stored locally, never sent anywhere else.</p>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-impact">
+    <div class="page page-impact" data-page="impact">
+      <h2 class="sr-only">Impact</h2>
+      <section class="impact-hero glass glass-card">
+        <div class="impact-big-number" id="impact-total-co2">0</div>
+        <div class="impact-big-label">kg CO₂ Saved</div>
+        <p class="impact-equivalent" id="impact-equivalent"></p>
+      </section>
+
+      <section class="impact-equivalents glass glass-card">
+        <h3 class="section-label">Your Impact Equals</h3>
+        <div class="equivalents-grid">
+          <div class="equivalent-item">
+            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand)"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z" />
+                <path d="M7 16v6" />
+                <path d="M13 19v3" />
+                <path
+                  d="M12 19h8.3a1 1 0 0 0 .7-1.7L18 14h.3a1 1 0 0 0 .7-1.7L16 9h.2a1 1 0 0 0 .8-1.7L13 3l-1.4 1.5" />
+              </svg></span>
+            <span class="eq-value" id="eq-trees">0</span>
+            <span class="eq-label">Trees planted</span>
+          </div>
+          <div class="equivalent-item">
+            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--info)"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+                <circle cx="7" cy="17" r="2" />
+                <path d="M9 17h6" />
+                <circle cx="17" cy="17" r="2" />
+              </svg></span>
+            <span class="eq-value" id="eq-car-miles">0</span>
+            <span class="eq-label">Miles not driven</span>
+          </div>
+          <div class="equivalent-item">
+            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--info)"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
+                <path
+                  d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" />
+              </svg></span>
+            <span class="eq-value" id="eq-water">0</span>
+            <span class="eq-label">Liters saved</span>
+          </div>
+          <div class="equivalent-item">
+            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--warning)"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+              </svg></span>
+            <span class="eq-value" id="eq-energy">0</span>
+            <span class="eq-label">kWh saved</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="category-breakdown glass glass-card" id="category-breakdown">
+        <h3 class="section-label">By Category</h3>
+        <div class="breakdown-list" id="breakdown-list"></div>
+      </section>
+    </div>
+  </template>
+
+  <template id="template-settings">
+    <div class="page page-settings" data-page="settings">
+      <h2 class="sr-only">Settings</h2>
+      <div class="settings-content glass glass-card">
+        <div class="setting-group">
+          <h3 class="setting-group-title">API Configuration</h3>
+          <label class="setting-label" for="settings-api-key">Gemini API Key</label>
+          <div class="setting-input-row">
+            <input type="password" class="setting-input" id="settings-api-key" placeholder="Enter your Gemini API key"
+              autocomplete="off">
+            <button class="btn btn-small btn-primary" id="btn-save-settings-key">Save</button>
+          </div>
+          <p class="setting-help">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank"
+              rel="noopener">Google AI Studio</a>. Your key is stored only on this device.</p>
+        </div>
+        <div class="setting-group">
+          <h3 class="setting-group-title">Data</h3>
+          <button class="btn btn-secondary btn-full" id="btn-reset-data">Reset All Data</button>
+          <button class="btn btn-secondary btn-full" id="btn-export-data">Export Data as JSON</button>
+        </div>
+        <div class="setting-group">
+          <h3 class="setting-group-title">About</h3>
+          <p class="setting-about">EcoFlow v1.0 — An AI-powered personal sustainability coach. Built with vanilla HTML,
+            CSS, and JavaScript. PWA-enabled for offline use.</p>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="template-scan">
+    <div class="page page-scan" data-page="scan">
+      <h2 class="sr-only">Product Scanner</h2>
+
+      <div class="scan-input-area glass glass-card">
+        <label for="scan-barcode" class="scan-label">Enter a barcode to check a product's environmental impact</label>
+        <div class="scan-input-row">
+          <input type="text" class="scan-input" id="scan-barcode" inputmode="numeric" pattern="[0-9]*" maxlength="13" placeholder="e.g. 3017620422003" autocomplete="off">
+          <button class="btn btn-primary" id="btn-scan">Look Up</button>
+        </div>
+        <button class="btn btn-secondary btn-full scan-camera-btn" id="btn-camera">
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          Scan with Camera
+        </button>
+        <div class="scan-viewfinder glass" id="scan-viewfinder" hidden></div>
+      </div>
+
+      <div class="scan-loading" id="scan-loading" hidden>
+        <div class="scan-spinner"></div>
+        <span>Looking up product...</span>
+      </div>
+
+      <div class="scan-error glass glass-card" id="scan-error" hidden></div>
+
+      <div class="scan-result glass glass-card" id="scan-result" hidden>
+        <div class="scan-product-header">
+          <img class="scan-product-img" id="scan-img" src="" alt="" onerror="this.style.display='none'">
+          <div class="scan-product-info">
+            <h3 class="scan-product-name" id="scan-name"></h3>
+            <span class="scan-product-brand" id="scan-brand"></span>
+          </div>
+        </div>
+
+        <div class="scan-scores">
+          <div class="scan-score eco-score" id="eco-score">
+            <span class="score-label">Eco-Score</span>
+            <span class="score-grade" id="eco-grade"></span>
+            <span class="score-value" id="eco-value"></span>
+          </div>
+        </div>
+
+        <div class="scan-details" id="scan-details">
+          <div class="scan-detail">
+            <span class="detail-label">Packaging</span>
+            <span class="detail-value" id="detail-packaging"></span>
+          </div>
+          <div class="scan-detail">
+            <span class="detail-label">Origins</span>
+            <span class="detail-value" id="detail-origins"></span>
+          </div>
+          <div class="scan-detail">
+            <span class="detail-label">Labels</span>
+            <span class="detail-value" id="detail-labels"></span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" id="btn-ask-coach">Ask Coach about this product</button>
+      </div>
+
+      <div class="scan-recent glass glass-card" id="scan-recent" hidden>
+        <h3 class="section-label">Recent Scans</h3>
+        <div class="scan-recent-list" id="scan-recent-list"></div>
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+
+</html>

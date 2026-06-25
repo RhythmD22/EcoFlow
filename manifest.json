@@ -1,0 +1,17 @@
+{
+  "name": "EcoFlow — Sustainability Coach",
+  "short_name": "EcoFlow",
+  "description": "AI-Powered Personal Sustainability Coach",
+  "start_url": "/EcoFlow/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1510",
+  "theme_color": "#0d1510",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
