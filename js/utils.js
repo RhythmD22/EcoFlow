@@ -111,8 +111,10 @@ async function showPrompt(title, message, defaultValue = '') {
     overlay.addEventListener('click', (e) => { if (e.target === overlay) close(null); });
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') close(input.value); });
     document.addEventListener('keydown', esc);
-    input.focus();
-    if (defaultValue) input.setSelectionRange(0, defaultValue.length);
+    requestAnimationFrame(() => {
+      input.focus();
+      if (defaultValue) input.select();
+    });
 
     function esc(e) {
       if (e.key === 'Escape') { close(null); return; }
