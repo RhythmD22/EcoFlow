@@ -11,12 +11,12 @@ import { initScan } from './scan-page.js';
   'use strict';
 
   const routeMap = {
-    home: { template: 'template-home', title: 'EcoFlow' },
-    habits: { template: 'template-habits', title: 'Habits' },
-    coach: { template: 'template-coach', title: 'Coach' },
-    impact: { template: 'template-impact', title: 'Impact' },
-    scan: { template: 'template-scan', title: 'Scan' },
-    settings: { template: 'template-settings', title: 'Settings' },
+    home: { template: 'template-home', heading: 'EcoFlow', title: 'EcoFlow — Sustainability Coach' },
+    habits: { template: 'template-habits', heading: 'Habits', title: 'Habits — EcoFlow' },
+    coach: { template: 'template-coach', heading: 'Coach', title: 'Coach — EcoFlow' },
+    impact: { template: 'template-impact', heading: 'Impact', title: 'Impact — EcoFlow' },
+    scan: { template: 'template-scan', heading: 'Scan', title: 'Scan — EcoFlow' },
+    settings: { template: 'template-settings', heading: 'Settings', title: 'Settings — EcoFlow' },
   };
 
   let currentRoute = 'home';
@@ -38,8 +38,8 @@ import { initScan } from './scan-page.js';
     root.innerHTML = '';
     root.appendChild(template.content.cloneNode(true));
 
-    document.getElementById('page-title').textContent = spec.title;
-    document.title = `${spec.title} — EcoFlow`;
+    document.getElementById('page-title').textContent = spec.heading;
+    document.title = spec.title;
 
     document.querySelectorAll('.nav-item').forEach(btn => {
       const isActive = btn.dataset.route === route;
@@ -65,8 +65,19 @@ import { initScan } from './scan-page.js';
     root.focus({ preventScroll: true });
   }
 
+  function initDesktopNotification() {
+    const closeBtn = document.getElementById('closeNotification');
+    const banner = document.getElementById('desktopNotification');
+    if (closeBtn && banner) {
+      closeBtn.addEventListener('click', () => {
+        banner.style.display = 'none';
+      });
+    }
+  }
+
   function init() {
     initTheme();
+    initDesktopNotification();
 
     document.querySelectorAll('.nav-item').forEach(btn => {
       btn.addEventListener('click', () => {

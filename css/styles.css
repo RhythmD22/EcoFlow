@@ -906,18 +906,71 @@
   }
 }
 
+/* ── DESKTOP NOTIFICATION ──────────────────────────────── */
+
+.desktop-notification {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--brand);
+  color: var(--text-on-brand);
+  text-align: center;
+  padding: var(--space-sm);
+  z-index: 9999;
+  font-size: var(--text-base);
+}
+
+.desktop-notification p {
+  margin: 0;
+  display: inline-block;
+}
+
+.desktop-notification button {
+  background: none;
+  border: none;
+  color: var(--text-on-brand);
+  font-size: var(--text-lg);
+  cursor: pointer;
+  padding: 0 var(--space-sm);
+  margin-left: var(--space-sm);
+  float: right;
+}
+
+.desktop-qr-code {
+  display: none;
+}
+
 /* ── RESPONSIVE ────────────────────────────────────────── */
 
 @media (min-width: 768px) {
-  .app-shell {
-    max-width: 480px;
+
+  .app-shell,
+  .bg-layer,
+  .nav-bar,
+  .skip-link {
+    display: none;
   }
 
-  .quick-habits-grid {
-    grid-template-columns: repeat(4, 1fr);
+  .desktop-notification {
+    display: block;
   }
 
-  .equivalents-grid {
-    grid-template-columns: repeat(4, 1fr);
+  .desktop-qr-code {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 250px;
+    z-index: 10000;
+  }
+}
+
+@media (max-width: 767px) {
+  .desktop-qr-code {
+    display: none;
   }
 }

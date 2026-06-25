@@ -8,6 +8,7 @@ const STATIC_ASSETS = [
   '/EcoFlow/js/data.js',
   '/EcoFlow/js/coach.js',
   '/EcoFlow/js/scan.js',
+  '/EcoFlow/images/QR.svg',
   '/EcoFlow/manifest.json',
 ];
 
