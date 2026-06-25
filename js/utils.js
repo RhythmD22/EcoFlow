@@ -111,7 +111,6 @@ async function showPrompt(title, message, defaultValue = '') {
     overlay.addEventListener('click', (e) => { if (e.target === overlay) close(null); });
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') close(input.value); });
     document.addEventListener('keydown', esc);
-    input.focus();
 
     function esc(e) {
       if (e.key === 'Escape') { close(null); return; }
