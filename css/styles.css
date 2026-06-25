@@ -670,11 +670,13 @@
   }
 
   .btn-cancel {
-    padding: var(--space-sm) var(--space-xl);
+    padding: var(--space-md) var(--space-xl);
     border-radius: var(--radius-full);
     font-size: var(--text-sm);
     font-weight: 600;
     color: var(--text-secondary);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     transition: all 0.2s ease;
   }
 
