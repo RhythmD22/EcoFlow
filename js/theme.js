@@ -11,7 +11,7 @@ function applyTheme(theme) {
 
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    meta.setAttribute('content', theme === 'light' ? '#f1f7f3' : '#0d1510');
+    meta.setAttribute('content', theme === 'light' ? '#15803d' : '#4ade80');
   }
 
   const btn = document.getElementById('btn-theme');
