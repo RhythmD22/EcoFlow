@@ -211,13 +211,13 @@ async function addCustomHabit(appData, activeCat) {
   if (!name || !name.trim()) return;
 
   const categories = ['transport', 'food', 'energy', 'shopping', 'waste', 'water'];
-  const cat = await showPrompt('Category', `Choose a category: ${categories.map(c => c.charAt(0).toUpperCase() + c.slice(1)).join(', ')}`);
+  const cat = await showPrompt('Category', 'Transport, Food, Energy, Shopping, Waste, or Water?');
   if (!cat || !categories.includes(cat.toLowerCase())) {
     showToast('Please choose a valid category', '');
     return;
   }
 
-  const co2Str = await showPrompt('CO₂ Impact', 'How many kg of CO₂ does this action save?', '0.5');
+  const co2Str = await showPrompt('CO₂ Impact', 'How many kg of CO₂ does this action save?');
   const co2 = parseFloat(co2Str) || 0.5;
 
   EcoData.addCustomHabit(appData, name.trim(), cat.toLowerCase(), co2);
