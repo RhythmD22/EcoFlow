@@ -26,7 +26,12 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/habits.css">
+  <link rel="stylesheet" href="css/coach.css">
+  <link rel="stylesheet" href="css/impact.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/scan.css">
   <script src="https://unpkg.com/html5-qrcode"></script>
   <script>
     (function () {
@@ -86,13 +91,12 @@
     <main id="app-root" aria-live="polite" aria-label="Main content" tabindex="-1"></main>
 
     <nav class="bottom-nav glass" role="navigation" aria-label="Main navigation">
-      <button class="nav-item active" data-route="home" aria-label="Home" aria-current="page">
+      <button class="nav-item" data-route="coach" aria-label="Coach">
         <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
-        <span class="nav-label">Home</span>
+        <span class="nav-label">Coach</span>
       </button>
       <button class="nav-item" data-route="habits" aria-label="Habits">
         <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
@@ -102,12 +106,13 @@
         </svg>
         <span class="nav-label">Habits</span>
       </button>
-      <button class="nav-item" data-route="coach" aria-label="Coach">
+      <button class="nav-item active" data-route="home" aria-label="Home" aria-current="page">
         <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
-        <span class="nav-label">Coach</span>
+        <span class="nav-label">Home</span>
       </button>
       <button class="nav-item" data-route="impact" aria-label="Impact">
         <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
@@ -119,7 +124,14 @@
         <span class="nav-label">Impact</span>
       </button>
       <button class="nav-item" data-route="scan" aria-label="Scan">
-        <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <svg aria-hidden="true" focusable="false" class="nav-icon" width="24" height="24" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+          <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+          <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+          <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+        </svg>
         <span class="nav-label">Scan</span>
       </button>
     </nav>
@@ -131,7 +143,7 @@
     <div class="page page-home" data-page="home">
       <section class="greeting-section">
         <h2 class="greeting" id="greeting-text">Good morning</h2>
-        <p class="greeting-subtitle">Your planet thanks you</p>
+        <p class="greeting-subtitle">Your planet thanks you.</p>
       </section>
 
       <section class="streak-card glass glass-card">
@@ -257,54 +269,7 @@
 
       <section class="quick-habits">
         <h3 class="section-label">Quick Log</h3>
-        <div class="quick-habits-grid" id="quick-habits">
-          <button class="quick-habit glass glass-card" data-habit="public_transit">
-            <span class="quick-habit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="var(--info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M8 6v6" />
-                <path d="M15 6v6" />
-                <path d="M2 12h19.6" />
-                <path
-                  d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3" />
-                <circle cx="7" cy="18" r="2" />
-                <path d="M9 18h5" />
-                <circle cx="16" cy="18" r="2" />
-              </svg></span>
-            <span class="quick-habit-label">Public Transit</span>
-          </button>
-          <button class="quick-habit glass glass-card" data-habit="reusable_bag">
-            <span class="quick-habit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 10a4 4 0 0 1-8 0" />
-                <path d="M3.103 6.034h17.794" />
-                <path
-                  d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" />
-              </svg></span>
-            <span class="quick-habit-label">Reusable Bag</span>
-          </button>
-          <button class="quick-habit glass glass-card" data-habit="veg_meal">
-            <span class="quick-habit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7 21h10" />
-                <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z" />
-                <path
-                  d="M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-2.77 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.51 2.51 0 0 1 .03 1.1" />
-                <path d="m13 12 4-4" />
-                <path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2" />
-              </svg></span>
-            <span class="quick-habit-label">Meat-Free Meal</span>
-          </button>
-          <button class="quick-habit glass glass-card" data-habit="lights_off">
-            <span class="quick-habit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path
-                  d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
-                <path d="M9 18h6" />
-                <path d="M10 22h4" />
-              </svg></span>
-            <span class="quick-habit-label">Saved Energy</span>
-          </button>
-        </div>
+        <div class="quick-habits-grid" id="quick-habits"></div>
       </section>
     </div>
   </template>
@@ -320,11 +285,17 @@
       <div class="calendar-dropdown glass glass-card" id="calendar-dropdown" hidden>
         <div class="calendar-header">
           <button class="calendar-nav" id="cal-prev" aria-label="Previous month">
-            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
           </button>
           <span class="calendar-month" id="cal-month-year"></span>
           <button class="calendar-nav" id="cal-next" aria-label="Next month">
-            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
           </button>
         </div>
         <div class="calendar-day-labels">
@@ -375,6 +346,9 @@
     <div class="page page-coach" data-page="coach">
       <h2 class="sr-only">AI Coach</h2>
       <div class="coach-chat" id="coach-chat" role="log" aria-label="Coach conversation" aria-live="polite">
+        <div class="coach-chat-header">
+          <button class="btn-clear-chat" id="btn-clear-chat" hidden>Clear chat</button>
+        </div>
         <div class="coach-welcome glass glass-card">
           <div class="coach-avatar">
             <svg aria-hidden="true" focusable="false" width="40" height="40" viewBox="0 0 24 24" fill="none"
@@ -401,6 +375,7 @@
             for me</button>
         </div>
         <div class="coach-messages" id="coach-messages"></div>
+        <div class="coach-error" id="coach-error" hidden></div>
         <div class="coach-typing" id="coach-typing" hidden>
           <span class="typing-dot"></span>
           <span class="typing-dot"></span>
@@ -421,18 +396,6 @@
           </button>
         </div>
         <p class="coach-footnote" id="coach-api-status">AI responses use Google Gemini</p>
-      </div>
-      <div class="coach-settings" id="coach-settings" hidden>
-        <div class="glass glass-card coach-api-section">
-          <label class="api-label" for="gemini-api-key">Gemini API Key</label>
-          <div class="api-input-row">
-            <input type="password" class="api-input" id="gemini-api-key" placeholder="Enter your Gemini API key"
-              autocomplete="off">
-            <button class="btn btn-small btn-primary" id="btn-save-api-key">Save</button>
-          </div>
-          <p class="api-help">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank"
-              rel="noopener">Google AI Studio</a>. Stored locally, never sent anywhere else.</p>
-        </div>
       </div>
     </div>
   </template>
@@ -539,11 +502,16 @@
       <div class="scan-input-area glass glass-card">
         <label for="scan-barcode" class="scan-label">Enter a barcode to check a product's environmental impact</label>
         <div class="scan-input-row">
-          <input type="text" class="scan-input" id="scan-barcode" inputmode="numeric" pattern="[0-9]*" maxlength="13" placeholder="e.g. 3017620422003" autocomplete="off">
+          <input type="text" class="scan-input" id="scan-barcode" inputmode="numeric" pattern="[0-9]*" maxlength="13"
+            placeholder="e.g. 3017620422003" autocomplete="off">
           <button class="btn btn-primary" id="btn-scan">Look Up</button>
         </div>
         <button class="btn btn-secondary btn-full scan-camera-btn" id="btn-camera">
-          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+            <circle cx="12" cy="13" r="3" />
+          </svg>
           Scan with Camera
         </button>
         <div class="scan-viewfinder glass" id="scan-viewfinder" hidden></div>

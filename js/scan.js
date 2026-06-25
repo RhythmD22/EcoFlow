@@ -1,5 +1,3 @@
-import { EcoCoach } from './coach.js';
-
 const EcoScan = (() => {
   'use strict';
 

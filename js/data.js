@@ -44,6 +44,7 @@ const EcoData = (() => {
       challengeDate: null,
       challengeCompleted: false,
       challengeId: null,
+      chatHistory: [],
       version: 1,
     };
   }
@@ -53,7 +54,7 @@ const EcoData = (() => {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return getDefaultData();
       const data = JSON.parse(raw);
-      if (data.version !== 1) return migrate(data);
+      if (!data.version || data.version < 1) return migrate(data);
       return { ...getDefaultData(), ...data };
     } catch {
       return getDefaultData();
@@ -71,7 +72,18 @@ const EcoData = (() => {
   }
 
   function migrate(data) {
-    return getDefaultData();
+    const migrated = { ...getDefaultData() };
+    if (data.habits) migrated.habits = data.habits;
+    if (data.completedDates) migrated.completedDates = data.completedDates;
+    if (data.streaks) migrated.streaks = data.streaks;
+    if (typeof data.totalCO2 === 'number') migrated.totalCO2 = data.totalCO2;
+    if (typeof data.totalActions === 'number') migrated.totalActions = data.totalActions;
+    if (data.challengeDate) migrated.challengeDate = data.challengeDate;
+    if (typeof data.challengeCompleted === 'boolean') migrated.challengeCompleted = data.challengeCompleted;
+    if (data.challengeId) migrated.challengeId = data.challengeId;
+    if (Array.isArray(data.chatHistory)) migrated.chatHistory = data.chatHistory;
+    save(migrated);
+    return migrated;
   }
 
   function todayKey() {
@@ -222,6 +234,21 @@ const EcoData = (() => {
     save(data);
   }
 
+  function addChatMessage(data, role, text, time) {
+    if (!data.chatHistory) data.chatHistory = [];
+    data.chatHistory.push({ role, text, time });
+    save(data);
+  }
+
+  function getChatHistory(data) {
+    return data.chatHistory || [];
+  }
+
+  function clearChatHistory(data) {
+    data.chatHistory = [];
+    save(data);
+  }
+
   function resetAll() {
     localStorage.removeItem(STORAGE_KEY);
   }
@@ -254,6 +281,9 @@ const EcoData = (() => {
     exportData,
     getAPIKey,
     setAPIKey,
+    addChatMessage,
+    getChatHistory,
+    clearChatHistory,
     defaultHabits,
   };
 })();

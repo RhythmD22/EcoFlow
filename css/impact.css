@@ -1,0 +1,132 @@
+/* ── IMPACT PAGE ───────────────────────────────────────── */
+
+@layer pages {
+  .impact-hero {
+    text-align: center;
+    padding: var(--space-3xl) var(--space-xl);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .impact-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, var(--brand-glow) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .impact-big-number {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 550;
+    color: var(--brand);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    position: relative;
+  }
+
+  .impact-big-label {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    margin-top: var(--space-sm);
+    position: relative;
+  }
+
+  .impact-equivalent {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-md);
+    position: relative;
+  }
+
+  .equivalents-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .equivalent-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-lg);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-md);
+  }
+
+  .eq-icon {
+    font-size: 1.5rem;
+  }
+
+  .eq-value {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 550;
+    color: var(--brand);
+  }
+
+  .eq-label {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+  }
+
+  .breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .breakdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+  }
+
+  .breakdown-icon {
+    font-size: 1.25rem;
+  }
+
+  .breakdown-info {
+    flex: 1;
+  }
+
+  .breakdown-name {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .breakdown-count {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+  }
+
+  .breakdown-bar-track {
+    width: 60px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .breakdown-bar-fill {
+    height: 100%;
+    background: var(--brand);
+    border-radius: var(--radius-full);
+    transition: width 0.6s var(--ease-out-expo);
+  }
+
+  .breakdown-co2 {
+    font-size: var(--text-xs);
+    color: var(--brand);
+    font-weight: 600;
+    min-width: 50px;
+    text-align: right;
+  }
+}

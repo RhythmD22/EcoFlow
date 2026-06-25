@@ -27,7 +27,7 @@ Format your responses in plain text. No markdown. No lists with asterisks. Use n
 
   async function sendMessage(userMessage) {
     if (!hasAPIKey()) {
-      return getSimulatedResponse(userMessage);
+      return { text: getSimulatedResponse(userMessage), fallback: true };
     }
 
     try {
@@ -49,15 +49,17 @@ Format your responses in plain text. No markdown. No lists with asterisks. Use n
       );
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        const errorBody = await response.text().catch(() => '');
+        throw new Error(`API error ${response.status}: ${errorBody.slice(0, 120)}`);
       }
 
       const data = await response.json();
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      return text || getSimulatedResponse(userMessage);
+      if (text) return { text, fallback: false };
+      throw new Error('Empty response from Gemini');
     } catch (err) {
       console.warn('EcoFlow: Gemini API error, falling back to simulated response:', err.message);
-      return getSimulatedResponse(userMessage);
+      return { text: getSimulatedResponse(userMessage), fallback: true };
     }
   }
 
@@ -109,7 +111,7 @@ Format your responses in plain text. No markdown. No lists with asterisks. Use n
     return "Great question! Every sustainable choice, no matter how small, creates a ripple effect. I'd suggest starting with one habit from your tracker — consistency matters more than intensity. Which category interests you most: food, transport, energy, shopping, or waste? I can give you specific, actionable tips for any of them.";
   }
 
-  return { sendMessage, hasAPIKey, getAPIKey };
+  return { sendMessage, hasAPIKey };
 })();
 
 export { EcoCoach };
