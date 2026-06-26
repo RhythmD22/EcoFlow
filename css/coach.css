@@ -4,7 +4,7 @@
   .page-coach {
     display: flex;
     flex-direction: column;
-    height: calc(100dvh - var(--header-height) - var(--bottom-nav-height) - var(--space-2xl) * 2);
+    height: calc(100dvh - (var(--header-height) + env(safe-area-inset-top, 0px)) - (var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px)) - var(--space-2xl) * 2);
   }
 
   .coach-chat {
