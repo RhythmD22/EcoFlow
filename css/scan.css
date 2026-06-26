@@ -46,7 +46,7 @@
     padding: var(--space-sm) var(--space-lg);
     color: var(--text-primary);
     font-size: var(--input-font-size);
-    font-family: var(--font-mono, monospace);
+    font-family: monospace;
     letter-spacing: 0.05em;
   }
 

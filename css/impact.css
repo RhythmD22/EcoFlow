@@ -6,6 +6,9 @@
     padding: var(--space-3xl) var(--space-xl);
     position: relative;
     overflow: hidden;
+    border-radius: var(--radius-xl);
+    background: var(--bg-elevated);
+    border: 1px solid var(--glass-border);
   }
 
   .impact-hero::before {
@@ -18,7 +21,7 @@
 
   .impact-big-number {
     font-family: var(--font-display);
-    font-size: 4rem;
+    font-size: 4.5rem;
     font-weight: 550;
     color: var(--brand);
     line-height: 1;
@@ -31,19 +34,21 @@
     color: var(--text-secondary);
     margin-top: var(--space-sm);
     position: relative;
+    font-weight: 500;
   }
 
   .impact-equivalent {
     font-size: var(--text-sm);
-    color: var(--text-tertiary);
+    color: var(--text-secondary);
     margin-top: var(--space-md);
     position: relative;
+    line-height: 1.5;
   }
 
   .impact-national {
     font-size: var(--text-xs);
-    color: var(--text-secondary);
-    margin-top: var(--space-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--space-xs);
     position: relative;
   }
 
@@ -62,6 +67,7 @@
     padding: var(--space-lg);
     background: rgba(255, 255, 255, 0.02);
     border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
   }
 
   .eq-icon {
@@ -74,6 +80,10 @@
     font-weight: 550;
     color: var(--brand);
   }
+
+  .equivalent-item.eq-blue .eq-value { color: var(--info); }
+  .equivalent-item.eq-cyan .eq-value { color: #22d3ee; }
+  .equivalent-item.eq-amber .eq-value { color: var(--warning); }
 
   .eq-label {
     font-size: var(--text-xs);

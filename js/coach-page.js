@@ -2,6 +2,12 @@ import { EcoData } from './data.js';
 import { EcoCoach } from './coach.js';
 import { escapeHTML } from './utils.js';
 
+let pendingPrompt = null;
+
+function setPendingPrompt(prompt) {
+  pendingPrompt = prompt;
+}
+
 function initCoach() {
   const appData = EcoData.load();
 
@@ -21,6 +27,11 @@ function initCoach() {
     } else {
       apiStatus.textContent = 'Using offline responses. Add a Gemini API key in Settings for personalized AI coaching.';
     }
+  }
+
+  if (pendingPrompt && input) {
+    input.value = pendingPrompt;
+    pendingPrompt = null;
   }
 
   const suggestionsOriginalDisplay = suggestionsContainer ? getComputedStyle(suggestionsContainer).display : 'flex';
@@ -110,11 +121,11 @@ function initCoach() {
 
     if (result.fallback && coachError) {
       const errorMessages = {
-        no_key: 'No API key set — using offline responses. Add a Gemini API key in Settings.',
-        auth: 'API key rejected — using offline responses. Check your API key in Settings.',
-        rate_limit: 'API rate limit reached — using offline responses for now.',
-        network: 'Network error — using offline responses. Check your connection.',
-        api_error: 'AI unavailable — using offline responses. Check your API key or connection.',
+        no_key: 'No API key set - using offline responses. Add a Gemini API key in Settings.',
+        auth: 'API key rejected - using offline responses. Check your API key in Settings.',
+        rate_limit: 'API rate limit reached - using offline responses for now.',
+        network: 'Network error - using offline responses. Check your connection.',
+        api_error: 'AI unavailable - using offline responses. Check your API key or connection.',
       };
       coachError.textContent = errorMessages[result.error] || errorMessages.api_error;
       coachError.hidden = false;
@@ -130,4 +141,4 @@ function initCoach() {
   }
 }
 
-export { initCoach };
+export { initCoach, setPendingPrompt };

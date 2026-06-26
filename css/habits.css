@@ -204,8 +204,8 @@
   }
 
   .habit-check {
-    width: 28px;
-    height: 28px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 2px solid var(--text-tertiary);
     display: flex;
@@ -274,15 +274,15 @@
   }
 
   .habit-delete {
-    width: 28px;
-    height: 28px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-tertiary);
     opacity: 0;
-    transition: opacity 0.2s ease, color 0.2s ease;
+    transition: color 0.2s ease;
   }
 
   .habit-item:hover .habit-delete,
@@ -355,10 +355,6 @@
     width: 10px;
     height: 10px;
     border-radius: 2px;
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .heatmap-dot.d0 {
     background: rgba(255, 255, 255, 0.04);
   }
 

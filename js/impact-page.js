@@ -26,7 +26,7 @@ async function initImpact() {
     if (appData.totalCO2 < 1) {
       equivalent.textContent = 'Every action counts. Keep going to see your impact grow.';
     } else if (appData.totalCO2 < 10) {
-      equivalent.textContent = `That's like planting ${Math.ceil(treesVal)} tree seedling${Math.ceil(treesVal) > 1 ? 's' : ''} — keep it up!`;
+      equivalent.textContent = `That's like planting ${Math.ceil(treesVal)} tree seedling${Math.ceil(treesVal) > 1 ? 's' : ''} - keep it up!`;
     } else if (appData.totalCO2 < 50) {
       equivalent.textContent = `Impressive! Equivalent to taking a car off the road for ${Math.round(carMiles / 40)} days.`;
     } else {
@@ -39,7 +39,7 @@ async function initImpact() {
       const comparison = await EcoClimate.fetchCountryEmissions();
       if (comparison && comparison.countryCode && appData.totalCO2 > 0) {
         const pct = ((appData.totalCO2 / comparison.kgPerYear) * 100).toFixed(2);
-        national.textContent = `The average person in ${comparison.country} emits ${comparison.kgPerYear.toLocaleString()} kg CO₂ per year — you've offset ${pct}% of that.`;
+        national.textContent = `The average person in ${comparison.country} emits ${comparison.kgPerYear.toLocaleString()} kg CO₂ per year - you've offset ${pct}% of that.`;
       } else {
         national.textContent = '';
       }

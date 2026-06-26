@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="EcoFlow — AI-Powered Personal Sustainability Coach">
+  <meta name="description" content="EcoFlow - AI-Powered Personal Sustainability Coach">
   <meta name="theme-color" content="#0d1510">
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="EcoFlow">
 
-  <title>EcoFlow — Sustainability Coach</title>
+  <title>EcoFlow - Sustainability Coach</title>
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="manifest" href="manifest.json">
@@ -87,11 +87,10 @@
           </svg>
         </button>
         <button class="icon-btn settings-btn" aria-label="Settings" id="btn-settings">
-          <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3" />
-            <path
-              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
           </svg>
         </button>
       </div>
@@ -152,27 +151,10 @@
     <div class="page page-home" data-page="home">
       <section class="greeting-section">
         <h2 class="greeting" id="greeting-text">Good morning</h2>
-        <p class="greeting-subtitle">Your planet thanks you.</p>
+        <p class="greeting-subtitle">Track small actions that add up.</p>
       </section>
 
-      <section class="streak-card glass glass-card">
-        <div class="streak-header">
-          <div class="streak-number" id="streak-count">0</div>
-          <div class="streak-label">
-            <span>Day Streak</span>
-            <span class="streak-fire"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4" />
-              </svg></span>
-          </div>
-        </div>
-        <div class="streak-progress">
-          <div class="streak-bar" id="streak-bar" style="width: 0%"></div>
-        </div>
-        <p class="streak-subtitle" id="streak-message">Log a habit to start your streak!</p>
-      </section>
-
-      <section class="tree-section glass glass-card" aria-label="Your Carbon Tree">
+      <section class="tree-section" aria-label="Your Carbon Tree">
         <div class="tree-container" id="tree-container">
           <svg aria-hidden="true" focusable="false" class="tree-svg" viewBox="0 0 300 260" id="tree-svg">
             <rect class="tree-ground" x="60" y="230" width="180" height="4" rx="2" fill="var(--wood-light)"
@@ -248,25 +230,35 @@
               </radialGradient>
             </defs>
           </svg>
-          <div class="tree-label" id="tree-label">Complete habits to grow your tree</div>
+          <div class="tree-label" id="tree-label">Log a habit to start growing</div>
         </div>
-        <div class="tree-stats">
-          <div class="tree-stat">
+        <div class="tree-stats-row">
+          <div class="tree-stat-card">
             <span class="tree-stat-value" id="total-habits">0</span>
             <span class="tree-stat-label">Actions</span>
           </div>
-          <div class="tree-stat">
+          <div class="tree-stat-card">
             <span class="tree-stat-value" id="co2-saved">0</span>
-            <span class="tree-stat-label">kg CO₂ saved</span>
+            <span class="tree-stat-label">kg CO₂</span>
+          </div>
+          <div class="tree-stat-card">
+            <span class="tree-stat-value" id="streak-count">0</span>
+            <span class="tree-stat-label">Day streak</span>
           </div>
         </div>
+      </section>
+
+      <section class="streak-compact" id="streak-compact">
+        <div class="streak-progress">
+          <div class="streak-bar" id="streak-bar" style="width: 0%"></div>
+        </div>
+        <p class="streak-subtitle" id="streak-message">Log a habit to start your streak!</p>
       </section>
 
       <section class="challenge-card glass glass-card" id="daily-challenge">
         <div class="challenge-badge">Today's Challenge</div>
         <h3 class="challenge-title" id="challenge-title">Use a reusable water bottle</h3>
-        <p class="challenge-desc" id="challenge-desc">Skip single-use plastic today. Every refill saves ~0.02 kg of CO₂.
-        </p>
+        <p class="challenge-desc" id="challenge-desc">Skip single-use plastic today.</p>
         <button class="btn btn-primary challenge-btn" id="btn-complete-challenge">
           <span>Mark Complete</span>
           <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -368,18 +360,17 @@
             </svg>
           </div>
           <p class="coach-welcome-text">
-            Hi! I'm your sustainability coach, powered by AI. Ask me anything about reducing your carbon footprint,
-            sustainable living tips, or how to build better eco-habits.
+            I can help with practical tips on food, transport, energy, and waste. Just ask.
           </p>
         </div>
         <div class="coach-suggestions" id="coach-suggestions">
-          <button class="suggestion-chip glass" data-prompt="How can I reduce food waste at home?">Reduce food waste</button>
-          <button class="suggestion-chip glass" data-prompt="Give me a 7-day sustainability challenge">7-day challenge</button>
-          <button class="suggestion-chip glass" data-prompt="Compare the carbon footprint of driving vs. public transit">Driving vs. transit</button>
-          <button class="suggestion-chip glass" data-prompt="What's the most impactful habit I can start today?">Most impactful habit</button>
+          <button class="suggestion-chip glass" data-prompt="What should I cook with the ingredients I have?">What can I cook?</button>
+          <button class="suggestion-chip glass" data-prompt="How do I start composting at home?">Start composting</button>
+          <button class="suggestion-chip glass" data-prompt="What are the best energy-saving habits?">Energy tips</button>
+          <button class="suggestion-chip glass" data-prompt="How can I reduce plastic use?">Cut plastic use</button>
         </div>
         <div class="coach-messages" id="coach-messages"></div>
-        <div class="coach-error" id="coach-error" hidden></div>
+        <div class="coach-error" id="coach-error" role="alert" hidden></div>
         <div class="coach-typing" id="coach-typing" hidden>
           <span class="typing-dot"></span>
           <span class="typing-dot"></span>
@@ -407,7 +398,7 @@
   <template id="template-impact">
     <div class="page page-impact" data-page="impact">
       <h2 class="sr-only">Impact</h2>
-      <section class="impact-hero glass glass-card">
+      <section class="impact-hero">
         <div class="impact-big-number" id="impact-total-co2">0</div>
         <div class="impact-big-label">kg CO₂ Saved</div>
         <p class="impact-equivalent" id="impact-equivalent"></p>
@@ -429,7 +420,7 @@
             <span class="eq-value" id="eq-trees">0</span>
             <span class="eq-label">Trees planted</span>
           </div>
-          <div class="equivalent-item">
+          <div class="equivalent-item eq-blue">
             <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--info)"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
@@ -441,8 +432,8 @@
             <span class="eq-value" id="eq-car-miles">0</span>
             <span class="eq-label">Miles not driven</span>
           </div>
-          <div class="equivalent-item">
-            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--info)"
+          <div class="equivalent-item eq-cyan">
+            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22d3ee"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
                   d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
@@ -452,7 +443,7 @@
             <span class="eq-value" id="eq-water">0</span>
             <span class="eq-label">Liters saved</span>
           </div>
-          <div class="equivalent-item">
+          <div class="equivalent-item eq-amber">
             <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--warning)"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
@@ -474,6 +465,12 @@
   <template id="template-settings">
     <div class="page page-settings" data-page="settings">
       <h2 class="sr-only">Settings</h2>
+      <button class="settings-back" data-route="home" aria-label="Back to home">
+        <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Back
+      </button>
       <div class="settings-content glass glass-card">
         <div class="setting-group">
           <h3 class="setting-group-title">API Configuration</h3>
@@ -501,7 +498,7 @@
         </div>
         <div class="setting-group">
           <h3 class="setting-group-title">About</h3>
-          <p class="setting-about">EcoFlow v1.0 — An AI-powered personal sustainability coach. Built with vanilla HTML,
+          <p class="setting-about">EcoFlow v1.0 - An AI-powered personal sustainability coach. Built with vanilla HTML,
             CSS, and JavaScript. PWA-enabled for offline use.</p>
         </div>
       </div>
@@ -535,7 +532,7 @@
         <span>Looking up product...</span>
       </div>
 
-      <div class="scan-error glass glass-card" id="scan-error" hidden></div>
+      <div class="scan-error glass glass-card" id="scan-error" role="alert" hidden></div>
 
       <div class="scan-result glass glass-card" id="scan-result" hidden>
         <div class="scan-product-header">

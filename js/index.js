@@ -1,7 +1,7 @@
 import { EcoData } from './data.js';
 import { escapeHTML, showToast, toggleHabitAndRefresh, spawnConfetti } from './utils.js';
 import { Icons } from './icons.js';
-import { TREE_THRESHOLDS, TREE_CROWN_THRESHOLD, TREE_LABEL_STEP, STREAK_WEEK_DAYS } from './constants.js';
+import { TREE_THRESHOLDS, TREE_CROWN_THRESHOLD, STREAK_WEEK_DAYS } from './constants.js';
 
 function initHome() {
   const appData = EcoData.load();
@@ -22,6 +22,8 @@ function updateTree(appData) {
   const total = appData.totalActions;
   const branchIds = ['branch-1', 'branch-2', 'branch-3', 'branch-4', 'branch-5', 'branch-6', 'branch-7', 'branch-8'];
 
+  const visibleCount = TREE_THRESHOLDS.filter(t => total >= t).length;
+
   branchIds.forEach((id, i) => {
     const branch = document.getElementById(id);
     if (!branch) return;
@@ -29,8 +31,9 @@ function updateTree(appData) {
   });
 
   const crown = document.getElementById('crown');
+  const crownVisible = total >= TREE_CROWN_THRESHOLD;
   if (crown) {
-    crown.classList.toggle('show', total >= TREE_CROWN_THRESHOLD);
+    crown.classList.toggle('show', crownVisible);
   }
 
   const totalActions = document.getElementById('total-habits');
@@ -40,20 +43,27 @@ function updateTree(appData) {
   if (totalActions) totalActions.textContent = total;
   if (co2Saved) co2Saved.textContent = appData.totalCO2.toFixed(1);
 
-  const labels = [
-    'Complete habits to grow your tree',
-    'A tiny sprout appears',
-    'Your tree is taking root',
-    'Branches are spreading',
-    'Leaves are flourishing',
-    'Your tree is thriving!',
-    'A forest begins with one tree',
-    'You\'re building a canopy!',
-    'Full bloom — incredible work!',
-    'Your tree is a beacon of change',
-  ];
-  const idx = Math.min(Math.floor(total / TREE_LABEL_STEP), labels.length - 1);
-  if (treeLabel) treeLabel.textContent = labels[idx];
+  let label;
+  if (crownVisible) {
+    label = 'In full bloom';
+  } else if (visibleCount >= 8) {
+    label = 'Full canopy';
+  } else if (visibleCount >= 7) {
+    label = 'Seven branches strong';
+  } else if (visibleCount >= 6) {
+    label = 'Getting dense';
+  } else if (visibleCount >= 5) {
+    label = 'Branching further out';
+  } else if (visibleCount >= 4) {
+    label = 'Halfway there';
+  } else if (visibleCount >= 2) {
+    label = 'Branches are sprouting';
+  } else if (visibleCount >= 1) {
+    label = 'Your first branch';
+  } else {
+    label = 'Log a habit to start growing';
+  }
+  if (treeLabel) treeLabel.textContent = label;
 }
 
 function initChallenge(appData) {
@@ -97,17 +107,17 @@ function updateStreakDisplay(appData) {
   const streakMsg = document.getElementById('streak-message');
   if (streakCount) {
     streakCount.textContent = appData.streaks.current;
-    streakCount.classList.add('pulse');
-    setTimeout(() => streakCount.classList.remove('pulse'), 600);
   }
   if (streakBar) {
     streakBar.style.width = `${Math.min(100, (appData.streaks.current / STREAK_WEEK_DAYS) * 100)}%`;
   }
   if (streakMsg) {
     if (appData.streaks.current >= STREAK_WEEK_DAYS) {
-      streakMsg.innerHTML = `A full week! Longest streak: ${appData.streaks.longest} days <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle">${Icons.fire}</svg>`;
+      streakMsg.innerHTML = `A full week. Longest streak: ${appData.streaks.longest} days`;
     } else if (appData.streaks.current > 0) {
-      streakMsg.textContent = `${STREAK_WEEK_DAYS - appData.streaks.current} days to a perfect week`;
+      streakMsg.textContent = `${STREAK_WEEK_DAYS - appData.streaks.current} more days for a perfect week`;
+    } else {
+      streakMsg.textContent = 'Log a habit to start your streak!';
     }
   }
 }

@@ -13,13 +13,6 @@ const EcoWeather = (() => {
     return EcoData.getWeatherKey().length > 0;
   }
 
-  function getCached() {
-    if (cachedWeather && (Date.now() - cacheTime) < WEATHER_CACHE_MS) {
-      return cachedWeather;
-    }
-    return null;
-  }
-
   async function fetchWeather() {
     if (!hasKey()) return null;
 

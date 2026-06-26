@@ -48,7 +48,7 @@
     --text-primary: #f0fdf4;
     --text-secondary: #9ca3a0;
     --text-tertiary: #88928c;
-    --text-on-brand: #042f2e;
+    --text-on-brand: #052e16;
     --input-font-size: 16px;
 
     /* Type scale */
@@ -374,12 +374,12 @@
 
   .header-actions {
     display: flex;
-    gap: var(--space-sm);
+    gap: var(--space-md);
   }
 
   .icon-btn {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: var(--radius-full);
     display: flex;
     align-items: center;
@@ -894,26 +894,6 @@
 
   [data-theme="light"] .toast.success {
     background: rgba(238, 255, 242, 0.94);
-  }
-
-  [data-theme="light"] .message.user .message-bubble {
-    color: var(--text-on-brand);
-  }
-
-  [data-theme="light"] .btn-secondary {
-    color: var(--text-secondary);
-  }
-
-  [data-theme="light"] .btn-secondary:active {
-    color: var(--text-primary);
-  }
-
-  [data-theme="light"] .coach-footnote {
-    color: var(--text-tertiary);
-  }
-
-  [data-theme="light"] .skip-link:focus {
-    outline-color: var(--text-primary);
   }
 
   .icon-moon {

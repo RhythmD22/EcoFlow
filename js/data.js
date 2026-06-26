@@ -28,14 +28,14 @@ const EcoData = (() => {
   ];
 
   const challenges = [
-    { id: 'ch1', title: 'Use a reusable water bottle', desc: 'Skip single-use plastic today. Every refill saves ~0.02 kg of CO₂.', co2Bonus: 0.15 },
-    { id: 'ch2', title: 'Take public transit or walk', desc: 'Leave the car at home. A 5-mile bus trip saves ~1 kg of CO₂ vs. driving alone.', co2Bonus: 1.5 },
-    { id: 'ch3', title: 'Eat a fully plant-based day', desc: 'Three meat-free meals. Going plant-based for one day saves ~4 kg of CO₂.', co2Bonus: 2.0 },
-    { id: 'ch4', title: 'Unplug electronics before bed', desc: 'Standby power accounts for 5-10% of home energy. Unplug and save.', co2Bonus: 0.3 },
-    { id: 'ch5', title: 'Shop at a farmers market', desc: 'Locally grown food travels fewer miles. Find a market near you today.', co2Bonus: 1.0 },
-    { id: 'ch6', title: 'No food waste challenge', desc: 'Use every leftover. The average person wastes 74 kg of food per year.', co2Bonus: 1.2 },
-    { id: 'ch7', title: 'Line-dry your laundry', desc: 'Skip the dryer today. Line drying saves ~2 kg of CO₂ per load.', co2Bonus: 2.0 },
-    { id: 'ch8', title: 'Bring your own cup', desc: 'Disposable coffee cups create 3 billion pounds of waste annually. Bring yours.', co2Bonus: 0.1 },
+    { id: 'ch1', title: 'Use a reusable water bottle', desc: 'Skip single-use plastic for all your drinks today.', co2Bonus: 0.15 },
+    { id: 'ch2', title: 'Take public transit or walk', desc: 'Leave the car behind for one trip you\'d normally drive.', co2Bonus: 1.5 },
+    { id: 'ch3', title: 'Eat a fully plant-based day', desc: 'Three meals, zero animal products. See how it feels.', co2Bonus: 2.0 },
+    { id: 'ch4', title: 'Unplug electronics before bed', desc: 'Pull the plug on anything not in use overnight.', co2Bonus: 0.3 },
+    { id: 'ch5', title: 'Shop at a farmers market', desc: 'Find a local market and buy directly from growers.', co2Bonus: 1.0 },
+    { id: 'ch6', title: 'No food waste challenge', desc: 'Use every scrap. Plan portions, save leftovers, get creative.', co2Bonus: 1.2 },
+    { id: 'ch7', title: 'Line-dry your laundry', desc: 'Skip the dryer and hang your clothes to dry.', co2Bonus: 2.0 },
+    { id: 'ch8', title: 'Bring your own cup', desc: 'No disposable cups today. Bring a reusable one.', co2Bonus: 0.1 },
   ];
 
   function getDefaultData() {
@@ -179,12 +179,21 @@ const EcoData = (() => {
     }
   }
 
+  function buildHabitMap(habits) {
+    const map = new Map();
+    for (const h of habits) {
+      map.set(h.id, h);
+    }
+    return map;
+  }
+
   function recalculate(data) {
+    const habitMap = buildHabitMap(data.habits);
     data.totalCO2 = 0;
     data.totalActions = 0;
-    for (const [dateKey, habitIds] of Object.entries(data.completedDates)) {
+    for (const habitIds of Object.values(data.completedDates)) {
       for (const hId of habitIds) {
-        const habit = data.habits.find(h => h.id === hId);
+        const habit = habitMap.get(hId);
         if (habit) {
           data.totalCO2 += habit.co2PerAction;
           data.totalActions += 1;
@@ -211,10 +220,11 @@ const EcoData = (() => {
   }
 
   function getCategoryBreakdown(data) {
+    const habitMap = buildHabitMap(data.habits);
     const breakdown = {};
     for (const habitIds of Object.values(data.completedDates)) {
       for (const hId of habitIds) {
-        const habit = data.habits.find(h => h.id === hId);
+        const habit = habitMap.get(hId);
         if (!habit) continue;
         if (!breakdown[habit.category]) {
           breakdown[habit.category] = { count: 0, co2: 0 };

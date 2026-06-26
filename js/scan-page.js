@@ -2,8 +2,15 @@ import { EcoScan } from './scan.js';
 import { navigateTo } from './nav.js';
 import { escapeHTML, showToast } from './utils.js';
 import { Icons } from './icons.js';
+import { setPendingPrompt } from './coach-page.js';
 
 const CAMERA_BUTTON_HTML = `${Icons.cameraBtn} Scan with Camera`;
+
+let scanCleanup = null;
+
+export function getScanCleanup() {
+  return scanCleanup;
+}
 
 function initScan() {
   const input = document.getElementById('scan-barcode');
@@ -39,15 +46,12 @@ function initScan() {
     askCoachBtn.addEventListener('click', () => {
       if (!lastProductInfo) return;
       const prompt = EcoScan.coachPrompt(lastProductInfo);
+      setPendingPrompt(prompt);
       navigateTo('coach');
-      setTimeout(() => {
-        const ci = document.getElementById('coach-input');
-        if (ci) ci.value = prompt;
-      }, 100);
     });
   }
 
-  window._ecoScanCleanup = () => {
+  scanCleanup = () => {
     if (html5QrCode && html5QrCode.isScanning) {
       html5QrCode.stop().catch(() => { });
       html5QrCode = null;

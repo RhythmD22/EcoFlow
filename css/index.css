@@ -2,7 +2,7 @@
 
 @layer pages {
   .greeting-section {
-    padding: var(--space-sm) 0 var(--space-md);
+    padding: 0 0 var(--space-sm);
   }
 
   .greeting {
@@ -30,87 +30,19 @@
   }
 }
 
-/* Streak card */
-@layer pages {
-  .streak-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-  }
-
-  .streak-header {
-    display: flex;
-    align-items: center;
-    gap: var(--space-lg);
-  }
-
-  .streak-number {
-    font-family: var(--font-display);
-    font-size: 3.5rem;
-    font-weight: 550;
-    color: var(--brand);
-    line-height: 1;
-    letter-spacing: -0.03em;
-    transition: transform 0.3s var(--ease-spring);
-  }
-
-  .streak-number.pulse {
-    animation: streak-pulse 0.6s var(--ease-spring);
-  }
-
-  @keyframes streak-pulse {
-    0% {
-      transform: scale(1);
-    }
-
-    30% {
-      transform: scale(1.25);
-    }
-
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  .streak-label {
-    display: flex;
-    flex-direction: column;
-    font-size: var(--text-base);
-    font-weight: 500;
-    color: var(--text-secondary);
-  }
-
-  .streak-fire {
-    font-size: var(--text-lg);
-  }
-
-  .streak-progress {
-    height: 4px;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: var(--radius-full);
-    overflow: hidden;
-  }
-
-  .streak-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--brand), var(--brand-soft));
-    border-radius: var(--radius-full);
-    transition: width 0.6s var(--ease-out-expo);
-  }
-
-  .streak-subtitle {
-    font-size: var(--text-sm);
-    color: var(--text-tertiary);
-    text-align: center;
-  }
-}
-
-/* Tree section */
+/* Tree hero */
 @layer pages {
   .tree-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--space-lg);
+    padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+    position: relative;
+    border-radius: var(--radius-xl);
+    background: var(--bg-elevated);
+    border: 1px solid var(--glass-border);
+    margin-bottom: var(--space-md);
   }
 
   .tree-container {
@@ -122,7 +54,7 @@
 
   .tree-svg {
     width: 100%;
-    max-width: 280px;
+    max-width: 300px;
     height: auto;
   }
 
@@ -148,31 +80,30 @@
   }
 
   @keyframes crown-breathe {
-
     0%,
     100% {
       transform: scale(1);
     }
-
     50% {
       transform: scale(1.06);
     }
   }
 
   .tree-label {
-    font-size: var(--text-xs);
-    color: var(--text-tertiary);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
     text-align: center;
+    font-weight: 500;
   }
 
-  .tree-stats {
+  .tree-stats-row {
     display: flex;
-    justify-content: space-around;
-    border-top: 1px solid var(--glass-border);
-    padding-top: var(--space-md);
+    justify-content: center;
+    gap: var(--space-2xl);
+    width: 100%;
   }
 
-  .tree-stat {
+  .tree-stat-card {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -184,11 +115,47 @@
     font-size: var(--text-xl);
     font-weight: 550;
     color: var(--brand);
+    line-height: 1;
   }
 
   .tree-stat-label {
     font-size: var(--text-xs);
     color: var(--text-tertiary);
+  }
+}
+
+/* Compact streak */
+@layer pages {
+  .streak-compact {
+    margin-bottom: var(--space-lg);
+    text-align: center;
+  }
+
+  .streak-progress {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto var(--space-sm);
+  }
+
+  [data-theme="light"] .streak-progress {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .streak-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand), var(--brand-soft));
+    border-radius: var(--radius-full);
+    transition: width 0.6s var(--ease-out-expo);
+  }
+
+  .streak-subtitle {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    text-align: center;
   }
 }
 

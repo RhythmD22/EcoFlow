@@ -8,13 +8,6 @@ const EcoAQI = (() => {
   let cachedAQI = null;
   let cacheTime = 0;
 
-  function getCached() {
-    if (cachedAQI && (Date.now() - cacheTime) < AQI_CACHE_MS) {
-      return cachedAQI;
-    }
-    return null;
-  }
-
   async function fetchAQI() {
     if (cachedAQI && (Date.now() - cacheTime) < AQI_CACHE_MS) {
       return cachedAQI;
@@ -60,7 +53,7 @@ const EcoAQI = (() => {
         if (pm25Value <= 12) {
           level = 'good';
           summary = `Air quality is excellent (PM2.5: ${pm25Value.toFixed(0)} µg/m³)`;
-          recommendation = 'Great day for outdoor activities — walk, bike, or exercise outside.';
+          recommendation = 'Great day for outdoor activities - walk, bike, or exercise outside.';
         } else if (pm25Value <= 35.4) {
           level = 'moderate';
           summary = `Air quality is moderate (PM2.5: ${pm25Value.toFixed(0)} µg/m³)`;
@@ -68,7 +61,7 @@ const EcoAQI = (() => {
         } else if (pm25Value <= 55.4) {
           level = 'unhealthy-sensitive';
           summary = `Air quality is unhealthy for sensitive groups (PM2.5: ${pm25Value.toFixed(0)} µg/m³)`;
-          recommendation = 'Consider indoor activities today — reduce outdoor exercise and keep windows closed.';
+          recommendation = 'Consider indoor activities today - reduce outdoor exercise and keep windows closed.';
         } else {
           level = 'unhealthy';
           summary = `Air quality is poor (PM2.5: ${pm25Value.toFixed(0)} µg/m³)`;

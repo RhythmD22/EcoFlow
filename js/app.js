@@ -7,25 +7,26 @@ import { initHabits } from './habits-page.js';
 import { initCoach } from './coach-page.js';
 import { initImpact } from './impact-page.js';
 import { initSettings } from './settings-page.js';
-import { initScan } from './scan-page.js';
+import { initScan, getScanCleanup } from './scan-page.js';
 
 (() => {
   'use strict';
 
   const routeMap = {
-    home: { template: 'template-home', heading: 'EcoFlow', title: 'EcoFlow — Sustainability Coach' },
-    habits: { template: 'template-habits', heading: 'Habits', title: 'Habits — EcoFlow' },
-    coach: { template: 'template-coach', heading: 'Coach', title: 'Coach — EcoFlow' },
-    impact: { template: 'template-impact', heading: 'Impact', title: 'Impact — EcoFlow' },
-    scan: { template: 'template-scan', heading: 'Scan', title: 'Scan — EcoFlow' },
-    settings: { template: 'template-settings', heading: 'Settings', title: 'Settings — EcoFlow' },
+    home: { template: 'template-home', heading: 'EcoFlow', title: 'EcoFlow - Sustainability Coach' },
+    habits: { template: 'template-habits', heading: 'Habits', title: 'Habits - EcoFlow' },
+    coach: { template: 'template-coach', heading: 'Coach', title: 'Coach - EcoFlow' },
+    impact: { template: 'template-impact', heading: 'Impact', title: 'Impact - EcoFlow' },
+    scan: { template: 'template-scan', heading: 'Scan', title: 'Scan - EcoFlow' },
+    settings: { template: 'template-settings', heading: 'Settings', title: 'Settings - EcoFlow' },
   };
 
   let currentRoute = 'home';
 
   function navigateTo(route) {
-    if (currentRoute === 'scan' && route !== 'scan' && window._ecoScanCleanup) {
-      window._ecoScanCleanup();
+    if (currentRoute === 'scan' && route !== 'scan') {
+      const cleanup = getScanCleanup();
+      if (cleanup) cleanup();
     }
 
     if (route === currentRoute && document.querySelector(`[data-page="${route}"]`)) return;
@@ -95,7 +96,21 @@ import { initScan } from './scan-page.js';
       });
     }
 
+    document.body.addEventListener('click', (e) => {
+      const link = e.target.closest('[data-route]');
+      if (link && !link.closest('.nav-item')) {
+        const route = link.dataset.route;
+        if (route) navigateTo(route);
+      }
+    });
+
     navigateTo('home');
+
+    if (!localStorage.getItem('ecoflow_data')) {
+      import('./utils.js').then(({ showToast }) => {
+        showToast('Welcome to EcoFlow ✦ Log a habit to begin', 'success');
+      });
+    }
 
     EcoWeather.fetchWeather().catch(() => {});
     EcoAQI.fetchAQI().catch(() => {});

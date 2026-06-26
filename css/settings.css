@@ -1,6 +1,23 @@
 /* ── SETTINGS PAGE ─────────────────────────────────────── */
 
 @layer pages {
+  .settings-back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+    padding: var(--space-sm) 0;
+    margin-bottom: var(--space-md);
+    border-radius: var(--radius-sm);
+    transition: color 0.2s ease;
+  }
+
+  .settings-back:active {
+    color: var(--text-primary);
+  }
+
   .settings-content {
     display: flex;
     flex-direction: column;
