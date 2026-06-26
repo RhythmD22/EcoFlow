@@ -32,7 +32,7 @@
 | Carbon Tree | Animated SVG tree with woody brown trunk that grows branches and leaves as you log actions — crown appears at 60+ actions |
 | Daily Streaks | Visual streak counter with progress bar and flaming celebrations at 7-day milestones |
 | Daily Challenge | Randomized sustainability challenge each day with CO₂ bonus rewards |
-| AI Coach | Gemini 3.1 Flash Lite-powered chat with sustainability advice, weather, air quality, and national emissions-aware suggestions, and a full offline fallback with 12+ response patterns |
+| AI Coach | Gemini 3.1 Flash Lite-powered chat with sustainability advice, weather, air quality, and national emissions-aware suggestions, and a full offline fallback with 13 response patterns |
 | Barcode Scanner | Enter a barcode or scan with your camera to look up any food product's Eco-Score, packaging, origins, and eco-labels via Open Food Facts |
 | Impact Dashboard | Total CO₂ saved, carbon equivalents (trees planted, car miles avoided, water/energy saved), and category breakdown with per-category bars |
 | Weekly Heatmap | 7-day grid with 5-level intensity showing habit completion density |
@@ -60,7 +60,7 @@ cd EcoFlow
 python3 -m http.server 8080
 ```
 
-Open `http://localhost:8080/EcoFlow/` in your browser, or scan the QR code on the desktop landing page with your phone.
+Open `http://localhost:8080/` in your browser, or scan the QR code on the desktop landing page with your phone.
 
 ---
 
@@ -77,7 +77,7 @@ Then serve the directory with any static web server:
 python3 -m http.server
 ```
 
-Open `http://localhost:8000/EcoFlow/` in your browser.
+Open `http://localhost:8000/` in your browser.
 
 ---
 
@@ -272,7 +272,7 @@ Your key is stored in `localStorage` on your device only. It is never sent anywh
 - **Purpose:** AI-powered sustainability coaching chat
 - **Endpoint:** `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent`
 - **Key required:** Yes (free tier available at [Google AI Studio](https://aistudio.google.com/apikey))
-- **Fallback:** 14+ pre-written response patterns covering food waste, transportation, energy, fashion, water, diet, recycling, air quality, emissions comparisons, weather-aware tips, and general sustainability advice
+- **Fallback:** 13 pre-written response patterns covering food waste, transportation, energy, fashion, water, diet, recycling, air quality, emissions comparisons, weather-aware tips, and general sustainability advice
 - **Limits:** 1,500 requests/day on free tier
 
 ### Open Food Facts v3.6
