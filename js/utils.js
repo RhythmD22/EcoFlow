@@ -1,11 +1,27 @@
+import { EcoData } from './data.js';
+import { Icons } from './icons.js';
+
 const TOAST_DURATION = 2200;
 const CONFETTI_COUNT = 40;
 const CONFETTI_DURATION = 2500;
 
 function escapeHTML(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML.replace(/\n/g, '<br>');
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\n/g, '<br>');
+}
+
+function toggleHabitAndRefresh(appData, habitId, dateKey = null) {
+  const added = EcoData.toggleHabit(appData, habitId, dateKey);
+  EcoData.refreshData(appData);
+  if (added) {
+    showToast(`${Icons.tree} Habit logged!`, 'success');
+  }
+  return added;
 }
 
 function showToast(message, type = '') {
@@ -15,9 +31,13 @@ function showToast(message, type = '') {
   toast.innerHTML = message;
   container.appendChild(toast);
 
+  let removed = false;
+  const remove = () => { if (!removed) { removed = true; toast.remove(); } };
+
   setTimeout(() => {
     toast.classList.add('out');
-    toast.addEventListener('animationend', () => toast.remove());
+    toast.addEventListener('animationend', remove);
+    setTimeout(remove, 600);
   }, TOAST_DURATION);
 }
 
@@ -42,20 +62,50 @@ function spawnConfetti() {
   setTimeout(() => container.remove(), CONFETTI_DURATION);
 }
 
-async function showConfirm(title, message) {
+function _createDialog({ title, message, extraContent = null, resolveValue }) {
   return new Promise(resolve => {
     const overlay = document.createElement('div');
     overlay.className = 'dialog-overlay';
-    overlay.innerHTML = `
-      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
-        <h2 class="dialog-title" id="dlg-title">${title}</h2>
-        <p class="dialog-message">${message}</p>
-        <div class="dialog-actions">
-          <button class="btn-cancel" id="dlg-cancel">Cancel</button>
-          <button class="btn btn-primary" id="dlg-ok">OK</button>
-        </div>
-      </div>
-    `;
+
+    const dialog = document.createElement('div');
+    dialog.className = 'dialog';
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('aria-labelledby', 'dlg-title');
+
+    const h2 = document.createElement('h2');
+    h2.className = 'dialog-title';
+    h2.id = 'dlg-title';
+    h2.textContent = title;
+
+    const p = document.createElement('p');
+    p.className = 'dialog-message';
+    p.textContent = message;
+
+    const actions = document.createElement('div');
+    actions.className = 'dialog-actions';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'btn-cancel';
+    cancelBtn.id = 'dlg-cancel';
+    cancelBtn.textContent = 'Cancel';
+
+    const okBtn = document.createElement('button');
+    okBtn.className = 'btn btn-primary';
+    okBtn.id = 'dlg-ok';
+    okBtn.textContent = 'OK';
+
+    actions.appendChild(cancelBtn);
+    actions.appendChild(okBtn);
+    dialog.appendChild(h2);
+    dialog.appendChild(p);
+
+    if (extraContent) {
+      dialog.appendChild(extraContent);
+    }
+
+    dialog.appendChild(actions);
+    overlay.appendChild(dialog);
     document.body.appendChild(overlay);
 
     const close = (result) => {
@@ -64,73 +114,72 @@ async function showConfirm(title, message) {
       resolve(result);
     };
 
-    overlay.querySelector('#dlg-cancel').addEventListener('click', () => close(false));
-    overlay.querySelector('#dlg-ok').addEventListener('click', () => close(true));
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(false); });
+    cancelBtn.addEventListener('click', () => close(null));
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(null); });
     document.addEventListener('keydown', esc);
-    overlay.querySelector('#dlg-ok').focus();
 
-    function esc(e) {
-      if (e.key === 'Escape') { close(false); return; }
-      if (e.key === 'Tab') {
-        const cancel = overlay.querySelector('#dlg-cancel');
-        const ok = overlay.querySelector('#dlg-ok');
-        if (e.shiftKey && document.activeElement === ok) { e.preventDefault(); cancel.focus(); }
-        else if (!e.shiftKey && document.activeElement === cancel) { e.preventDefault(); ok.focus(); }
+    okBtn.addEventListener('click', () => {
+      if (resolveValue) {
+        close(resolveValue());
+      } else {
+        close(true);
+      }
+    });
+
+    function trapTab(e) {
+      if (e.key === 'Escape') { close(null); return; }
+      if (e.key !== 'Tab') return;
+
+      const focusable = dialog.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     }
-  });
-}
-
-async function showPrompt(title, message, defaultValue = '') {
-  return new Promise(resolve => {
-    const overlay = document.createElement('div');
-    overlay.className = 'dialog-overlay';
-    overlay.innerHTML = `
-      <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
-        <h2 class="dialog-title" id="dlg-title">${title}</h2>
-        <p class="dialog-message">${message}</p>
-        <input type="text" class="dialog-input" id="dlg-input" value="${escapeHTML(defaultValue)}" aria-label="${title}" autocomplete="off">
-        <div class="dialog-actions">
-          <button class="btn-cancel" id="dlg-cancel">Cancel</button>
-          <button class="btn btn-primary" id="dlg-ok">OK</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-
-    const close = (result) => {
-      document.removeEventListener('keydown', esc);
-      overlay.remove();
-      resolve(result);
-    };
-
-    const input = overlay.querySelector('#dlg-input');
-    overlay.querySelector('#dlg-cancel').addEventListener('click', () => close(null));
-    overlay.querySelector('#dlg-ok').addEventListener('click', () => close(input.value));
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(null); });
-    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') close(input.value); });
-    document.addEventListener('keydown', esc);
 
     function esc(e) {
       if (e.key === 'Escape') { close(null); return; }
-      if (e.key === 'Tab') {
-        const cancel = overlay.querySelector('#dlg-cancel');
-        const ok = overlay.querySelector('#dlg-ok');
-        const inp = overlay.querySelector('#dlg-input');
-        const elements = [inp, cancel, ok].filter(Boolean);
-        const cur = document.activeElement;
-        const idx = elements.indexOf(cur);
-        if (e.shiftKey) {
-          const prev = idx <= 0 ? elements[elements.length - 1] : elements[idx - 1];
-          e.preventDefault(); prev.focus();
-        } else {
-          const next = idx >= elements.length - 1 ? elements[0] : elements[idx + 1];
-          e.preventDefault(); next.focus();
-        }
-      }
+      trapTab(e);
     }
   });
 }
 
-export { escapeHTML, showToast, spawnConfetti, showConfirm, showPrompt };
+function showConfirm(title, message) {
+  return _createDialog({ title, message });
+}
+
+function showPrompt(title, message, defaultValue = '') {
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'dialog-input';
+  input.id = 'dlg-input';
+  input.value = defaultValue;
+  input.setAttribute('aria-label', title);
+  input.setAttribute('autocomplete', 'off');
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const okBtn = document.getElementById('dlg-ok');
+      if (okBtn) okBtn.click();
+    }
+  });
+
+  return _createDialog({
+    title,
+    message,
+    extraContent: input,
+    resolveValue: () => input.value,
+  });
+}
+
+function debugWarn(...args) {
+  if (localStorage.getItem('ecoflow_debug') === '1') console.warn(...args);
+}
+
+export { escapeHTML, toggleHabitAndRefresh, showToast, spawnConfetti, showConfirm, showPrompt, debugWarn };

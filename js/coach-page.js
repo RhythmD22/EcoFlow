@@ -2,7 +2,9 @@ import { EcoData } from './data.js';
 import { EcoCoach } from './coach.js';
 import { escapeHTML } from './utils.js';
 
-function initCoach(appData) {
+function initCoach() {
+  const appData = EcoData.load();
+
   const input = document.getElementById('coach-input');
   const sendBtn = document.getElementById('btn-send');
   const chat = document.getElementById('coach-chat');
@@ -13,11 +15,17 @@ function initCoach(appData) {
   const clearBtn = document.getElementById('btn-clear-chat');
   const coachError = document.getElementById('coach-error');
 
-  if (EcoCoach.hasAPIKey()) {
-    apiStatus.textContent = 'AI powered by Google Gemini';
-  } else {
-    apiStatus.textContent = 'Using offline responses. Add a Gemini API key in Settings for personalized AI coaching.';
+  if (apiStatus) {
+    if (EcoCoach.hasAPIKey()) {
+      apiStatus.textContent = 'AI powered by Google Gemini';
+    } else {
+      apiStatus.textContent = 'Using offline responses. Add a Gemini API key in Settings for personalized AI coaching.';
+    }
   }
+
+  const suggestionsOriginalDisplay = suggestionsContainer ? getComputedStyle(suggestionsContainer).display : 'flex';
+
+  suggestionChips(suggestionsContainer);
 
   const history = EcoData.getChatHistory(appData);
   if (history.length > 0) {
@@ -34,8 +42,6 @@ function initCoach(appData) {
   } else {
     clearBtn.hidden = true;
   }
-
-  suggestionChips(suggestionsContainer);
 
   if (sendBtn) {
     sendBtn.addEventListener('click', () => sendCoachMessage());
@@ -55,6 +61,8 @@ function initCoach(appData) {
       EcoData.clearChatHistory(appData);
       messagesContainer.innerHTML = '';
       clearBtn.hidden = true;
+      if (suggestionsContainer) suggestionsContainer.style.display = suggestionsOriginalDisplay;
+      if (coachError) coachError.hidden = true;
     });
   }
 
@@ -101,7 +109,14 @@ function initCoach(appData) {
     EcoData.addChatMessage(appData, 'coach', result.text, respTime);
 
     if (result.fallback && coachError) {
-      coachError.textContent = 'AI unavailable — using offline responses. Check your API key or connection.';
+      const errorMessages = {
+        no_key: 'No API key set — using offline responses. Add a Gemini API key in Settings.',
+        auth: 'API key rejected — using offline responses. Check your API key in Settings.',
+        rate_limit: 'API rate limit reached — using offline responses for now.',
+        network: 'Network error — using offline responses. Check your connection.',
+        api_error: 'AI unavailable — using offline responses. Check your API key or connection.',
+      };
+      coachError.textContent = errorMessages[result.error] || errorMessages.api_error;
       coachError.hidden = false;
     }
 

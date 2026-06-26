@@ -32,7 +32,7 @@
 | Carbon Tree | Animated SVG tree with woody brown trunk that grows branches and leaves as you log actions — crown appears at 60+ actions |
 | Daily Streaks | Visual streak counter with progress bar and flaming celebrations at 7-day milestones |
 | Daily Challenge | Randomized sustainability challenge each day with CO₂ bonus rewards |
-| AI Coach | Gemini 3.1 Flash Lite-powered chat with sustainability advice and a full offline fallback with 12 response patterns |
+| AI Coach | Gemini 3.1 Flash Lite-powered chat with sustainability advice, weather, air quality, and national emissions-aware suggestions, and a full offline fallback with 12+ response patterns |
 | Barcode Scanner | Enter a barcode or scan with your camera to look up any food product's Eco-Score, packaging, origins, and eco-labels via Open Food Facts |
 | Impact Dashboard | Total CO₂ saved, carbon equivalents (trees planted, car miles avoided, water/energy saved), and category breakdown with per-category bars |
 | Weekly Heatmap | 7-day grid showing habit completion density like a contribution graph |
@@ -92,7 +92,11 @@ EcoFlow/
 ├── js/
 │   ├── app.js                  # SPA router, all page init, theme, dialogs, toasts, confetti
 │   ├── data.js                 # localStorage CRUD, habits, streaks, challenges, date-aware toggling
-│   ├── coach.js                # Gemini API + offline simulated responses (12 patterns)
+│   ├── coach.js                # Gemini API + offline simulated responses, weather/AQI/climate integration
+│   ├── weather.js              # OpenWeatherMap API, geolocation, weather-based suggestions
+│   ├── aqi.js                  # OpenAQ API, real-time air quality for activity recommendations
+│   ├── climate.js              # World Bank API, national CO2 per capita for impact comparisons
+│   └── geo.js                  # Shared geolocation + Nominatim reverse geocoding
 │   └── scan.js                 # Open Food Facts API v3.6 integration, barcode lookup, recent scans cache
 ├── images/
 │   └── QR.svg                  # QR code for desktop → mobile redirect
@@ -203,6 +207,9 @@ The animated background layer (floating gradient orbs + noise texture) creates t
 | Iconography | [Lucide](https://lucide.dev) — inline SVG icons (MIT licensed) |
 | Fonts | [Inter](https://fonts.google.com/specimen/Inter), [Newsreader](https://fonts.google.com/specimen/Newsreader) (Google Fonts) |
 | Hosting | GitHub Pages (or any static host) |
+| Weather | [OpenWeatherMap](https://openweathermap.org/api) — current weather for habit suggestions |
+| Air Quality | [OpenAQ](https://openaq.org) — real-time AQI for outdoor activity recommendations |
+| Climate Data | [World Bank](https://data.worldbank.org) — national CO2 per capita for impact comparisons |
 | PWA | Service Worker API, Web App Manifest |
 
 No npm packages, no build steps, no framework. All visual effects (glassmorphism, orb animations, confetti, chart-like bars) are pure CSS.
@@ -245,7 +252,7 @@ Your key is stored in `localStorage` on your device only. It is never sent anywh
 - **Purpose:** AI-powered sustainability coaching chat
 - **Endpoint:** `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent`
 - **Key required:** Yes (free tier available at [Google AI Studio](https://aistudio.google.com/apikey))
-- **Fallback:** 12 pre-written response patterns covering food waste, transportation, energy, fashion, water, diet, recycling, and general sustainability advice
+- **Fallback:** 14+ pre-written response patterns covering food waste, transportation, energy, fashion, water, diet, recycling, air quality, emissions comparisons, weather-aware tips, and general sustainability advice
 - **Limits:** 1,500 requests/day on free tier
 
 ### Open Food Facts v3.6
@@ -255,6 +262,37 @@ Your key is stored in `localStorage` on your device only. It is never sent anywh
 - **Key required:** No — only a custom `User-Agent` header
 - **Rate limit:** 15 requests/min per IP
 - **Camera scanning:** Built on `html5-qrcode` (CDN) — supports EAN-13, UPC-A, QR, Code-128 on rear camera at 10 fps. Requires HTTPS on mobile.
+
+### OpenWeatherMap
+
+- **Purpose:** Context-aware habit suggestions based on local weather — biking on sunny days, energy-saving tips during cold snaps
+- **Endpoint:** `https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={key}&units=metric`
+- **Key required:** Yes (free account at [OpenWeatherMap](https://openweathermap.org/api))
+- **Permissions:** Browser geolocation required (shared across Weather, AQI, and Climate modules)
+- **Caching:** 15-minute in-memory cache to minimize API calls
+- **Fallback:** If no key, location denied, or API fails — the coach defaults to general sustainability advice
+- **Limits:** 1,000 calls/day on free tier
+
+### OpenAQ
+
+- **Purpose:** Real-time air quality data to recommend outdoor vs. indoor activities
+- **Endpoint:** `https://api.openaq.org/v3/locations?coordinates={lat},{lon}&radius=10000` (locations) + `/v3/locations/{id}/latest` (measurements)
+- **Key required:** No — optional API key available for higher rate limits
+- **Permissions:** Browser geolocation required (shared via Geo module)
+- **Parameters tracked:** PM2.5, PM10, NO₂, O₃
+- **Caching:** 30-minute in-memory cache
+- **Fallback:** If no data available, defaults to general sustainability advice
+- **Use cases:** "AQI: 32 — great day to bike" / "High pollution — stay indoors, reduce energy demand"
+
+### World Bank Climate Data
+
+- **Purpose:** Show how the user's personal CO₂ savings compare to national per-capita averages
+- **Endpoint:** `https://api.worldbank.org/v2/country/{code}/indicator/EN.GHG.CO2.PC.CE.AR5?format=json`
+- **Key required:** No
+- **Permissions:** Country detected via Nominatim reverse geocoding (free, no key) or OpenWeatherMap
+- **Caching:** 24-hour in-memory cache
+- **Fallback:** Global average (4,700 kg/person/year) if country data unavailable
+- **Use cases:** "You've saved 14.3 kg this week. The average person in the US emits 13,600 kg/year — you've offset 0.1% of that."
 
 ---
 

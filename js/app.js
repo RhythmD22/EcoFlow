@@ -1,5 +1,7 @@
-import { EcoData } from './data.js';
 import { initTheme } from './theme.js';
+import { setNavigator } from './nav.js';
+import { EcoWeather } from './weather.js';
+import { EcoAQI } from './aqi.js';
 import { initHome } from './index.js';
 import { initHabits } from './habits-page.js';
 import { initCoach } from './coach-page.js';
@@ -48,15 +50,13 @@ import { initScan } from './scan-page.js';
       else btn.removeAttribute('aria-current');
     });
 
-    const appData = EcoData.load();
-
     switch (route) {
-      case 'home': initHome(appData); break;
-      case 'habits': initHabits(appData); break;
-      case 'coach': initCoach(appData); break;
-      case 'impact': initImpact(appData); break;
-      case 'scan': initScan(navigateTo); break;
-      case 'settings': initSettings(appData); break;
+      case 'home': initHome(); break;
+      case 'habits': initHabits(); break;
+      case 'coach': initCoach(); break;
+      case 'impact': initImpact(); break;
+      case 'scan': initScan(); break;
+      case 'settings': initSettings(); break;
     }
 
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -78,6 +78,7 @@ import { initScan } from './scan-page.js';
   function init() {
     initTheme();
     initDesktopNotification();
+    setNavigator(navigateTo);
 
     document.querySelectorAll('.nav-item').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -95,6 +96,9 @@ import { initScan } from './scan-page.js';
     }
 
     navigateTo('home');
+
+    EcoWeather.fetchWeather().catch(() => {});
+    EcoAQI.fetchAQI().catch(() => {});
 
     if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
       navigator.serviceWorker.register('/EcoFlow/service-worker.js').catch(() => { });

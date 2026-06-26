@@ -32,12 +32,16 @@
   <link rel="stylesheet" href="css/impact.css">
   <link rel="stylesheet" href="css/settings.css">
   <link rel="stylesheet" href="css/scan.css">
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://unpkg.com/html5-qrcode" defer></script>
   <script>
     (function () {
       let savedTheme = localStorage.getItem('ecoflow_theme');
       if (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches) savedTheme = 'light';
-      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+      if (savedTheme) {
+        document.documentElement.dataset.theme = savedTheme;
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', savedTheme === 'light' ? '#15803d' : '#0d1510');
+      }
     })();
   </script>
 </head>
@@ -95,7 +99,7 @@
       </div>
     </header>
 
-    <main id="app-root" aria-live="polite" aria-label="Main content" tabindex="-1"></main>
+    <main id="app-root" aria-label="Main content" tabindex="-1"></main>
 
     <nav class="bottom-nav glass" role="navigation" aria-label="Main navigation">
       <button class="nav-item" data-route="coach" aria-label="Coach">
@@ -144,7 +148,7 @@
     </nav>
   </div>
 
-  <div id="toast-container" role="status" aria-live="assertive" aria-atomic="true"></div>
+  <div id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <template id="template-home">
     <div class="page page-home" data-page="home">
@@ -371,15 +375,10 @@
           </p>
         </div>
         <div class="coach-suggestions" id="coach-suggestions">
-          <button class="suggestion-chip glass" data-prompt="How can I reduce food waste at home?">How can I reduce food
-            waste at home?</button>
-          <button class="suggestion-chip glass" data-prompt="What's the most impactful habit I can start today?">What's
-            the most impactful habit?</button>
-          <button class="suggestion-chip glass"
-            data-prompt="Compare the carbon footprint of driving vs. public transit">Driving vs. public
-            transit?</button>
-          <button class="suggestion-chip glass" data-prompt="Give me a 7-day sustainability challenge">7-day challenge
-            for me</button>
+          <button class="suggestion-chip glass" data-prompt="How can I reduce food waste at home?">Reduce food waste</button>
+          <button class="suggestion-chip glass" data-prompt="Give me a 7-day sustainability challenge">7-day challenge</button>
+          <button class="suggestion-chip glass" data-prompt="Compare the carbon footprint of driving vs. public transit">Driving vs. transit</button>
+          <button class="suggestion-chip glass" data-prompt="What's the most impactful habit I can start today?">Most impactful habit</button>
         </div>
         <div class="coach-messages" id="coach-messages"></div>
         <div class="coach-error" id="coach-error" hidden></div>
@@ -414,6 +413,7 @@
         <div class="impact-big-number" id="impact-total-co2">0</div>
         <div class="impact-big-label">kg CO₂ Saved</div>
         <p class="impact-equivalent" id="impact-equivalent"></p>
+        <p class="impact-national" id="impact-national"></p>
       </section>
 
       <section class="impact-equivalents glass glass-card">
@@ -487,6 +487,14 @@
           </div>
           <p class="setting-help">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank"
               rel="noopener">Google AI Studio</a>. Your key is stored only on this device.</p>
+          <label class="setting-label" for="settings-weather-key">OpenWeatherMap API Key</label>
+          <div class="setting-input-row">
+            <input type="password" class="setting-input" id="settings-weather-key"
+              placeholder="Enter your OpenWeatherMap API key" autocomplete="off">
+            <button class="btn btn-small btn-primary" id="btn-save-weather-key">Save</button>
+          </div>
+          <p class="setting-help">Get a free key at <a href="https://openweathermap.org/api" target="_blank"
+              rel="noopener">OpenWeatherMap</a>. Used for weather-based habit suggestions.</p>
         </div>
         <div class="setting-group">
           <h3 class="setting-group-title">Data</h3>

@@ -321,7 +321,21 @@
     color: var(--text-tertiary);
   }
 
-  .heatmap-cell.filled {
+  .heatmap-cell.d1 {
+    background: rgba(74, 222, 128, 0.15);
+  }
+
+  .heatmap-cell.d2 {
+    background: rgba(74, 222, 128, 0.35);
+  }
+
+  .heatmap-cell.d3 {
+    background: rgba(74, 222, 128, 0.6);
+    color: var(--text-on-brand);
+    font-weight: 600;
+  }
+
+  .heatmap-cell.d4 {
     background: var(--brand);
     color: var(--text-on-brand);
     font-weight: 600;

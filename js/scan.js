@@ -1,8 +1,10 @@
+import { MAX_RECENT_SCANS } from './constants.js';
+
 const EcoScan = (() => {
   'use strict';
 
   const API_BASE = 'https://world.openfoodfacts.org/api/v3.6/product';
-  const USER_AGENT = 'EcoFlow/1.0 (ecoflow-app@example.com)';
+  const USER_AGENT = 'EcoFlow/1.0';
   const RECENT_KEY = 'ecoflow_recent_scans';
 
   async function lookupBarcode(barcode) {
@@ -98,7 +100,7 @@ const EcoScan = (() => {
     recent = recent.filter(r => r.barcode !== barcode);
     recent.unshift({ barcode, name: info.name, grade: info.ecoscoreGrade, image: info.image, ts: Date.now() });
 
-    if (recent.length > 10) recent = recent.slice(0, 10);
+    if (recent.length > MAX_RECENT_SCANS) recent = recent.slice(0, MAX_RECENT_SCANS);
     localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
   }
 

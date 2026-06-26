@@ -1,7 +1,11 @@
 import { EcoScan } from './scan.js';
-import { showToast } from './utils.js';
+import { navigateTo } from './nav.js';
+import { escapeHTML, showToast } from './utils.js';
+import { Icons } from './icons.js';
 
-function initScan(navigateTo) {
+const CAMERA_BUTTON_HTML = `${Icons.cameraBtn} Scan with Camera`;
+
+function initScan() {
   const input = document.getElementById('scan-barcode');
   const btn = document.getElementById('btn-scan');
   const loadingEl = document.getElementById('scan-loading');
@@ -30,15 +34,18 @@ function initScan(navigateTo) {
     }
   });
 
-  document.getElementById('btn-ask-coach').addEventListener('click', () => {
-    if (!lastProductInfo) return;
-    const prompt = EcoScan.coachPrompt(lastProductInfo);
-    navigateTo('coach');
-    setTimeout(() => {
-      const ci = document.getElementById('coach-input');
-      if (ci) ci.value = prompt;
-    }, 100);
-  });
+  const askCoachBtn = document.getElementById('btn-ask-coach');
+  if (askCoachBtn) {
+    askCoachBtn.addEventListener('click', () => {
+      if (!lastProductInfo) return;
+      const prompt = EcoScan.coachPrompt(lastProductInfo);
+      navigateTo('coach');
+      setTimeout(() => {
+        const ci = document.getElementById('coach-input');
+        if (ci) ci.value = prompt;
+      }, 100);
+    });
+  }
 
   window._ecoScanCleanup = () => {
     if (html5QrCode && html5QrCode.isScanning) {
@@ -46,7 +53,7 @@ function initScan(navigateTo) {
       html5QrCode = null;
     }
     viewfinder.hidden = true;
-    cameraBtn.innerHTML = '<svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Scan with Camera';
+    cameraBtn.innerHTML = CAMERA_BUTTON_HTML;
   };
 
   function startCamera() {
@@ -69,7 +76,7 @@ function initScan(navigateTo) {
       () => { }
     ).catch((err) => {
       viewfinder.hidden = true;
-      cameraBtn.innerHTML = '<svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Scan with Camera';
+      cameraBtn.innerHTML = CAMERA_BUTTON_HTML;
       if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
         showToast('Camera requires HTTPS on mobile. Use a local HTTPS server or deploy.', '');
       } else {
@@ -84,7 +91,7 @@ function initScan(navigateTo) {
       html5QrCode = null;
     }
     viewfinder.hidden = true;
-    cameraBtn.innerHTML = '<svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Scan with Camera';
+    cameraBtn.innerHTML = CAMERA_BUTTON_HTML;
   }
 
   async function performScan() {
@@ -158,7 +165,7 @@ function initScan(navigateTo) {
     list.innerHTML = recent.map(r => `
       <button class="scan-recent-item" data-barcode="${r.barcode}">
         ${r.image ? `<img class="scan-recent-img" src="${r.image}" alt="" onerror="this.style.display='none'">` : ''}
-        <span class="scan-recent-name">${r.name}</span>
+        <span class="scan-recent-name">${escapeHTML(r.name)}</span>
         ${r.grade ? `<span class="scan-recent-grade" style="background:${EcoScan.getEcoScoreColor(r.grade)}22;color:${EcoScan.getEcoScoreColor(r.grade)}">${r.grade}</span>` : ''}
       </button>
     `).join('');

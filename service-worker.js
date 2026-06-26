@@ -1,22 +1,43 @@
 const CACHE_NAME = 'ecoflow-v1';
-const STATIC_ASSETS = [
+
+const urlsToCache = [
   '/EcoFlow/',
   '/EcoFlow/index.html',
   '/EcoFlow/css/styles.css',
-  '/EcoFlow/css/pages.css',
+  '/EcoFlow/css/index.css',
+  '/EcoFlow/css/habits.css',
+  '/EcoFlow/css/coach.css',
+  '/EcoFlow/css/impact.css',
+  '/EcoFlow/css/settings.css',
+  '/EcoFlow/css/scan.css',
   '/EcoFlow/js/app.js',
+  '/EcoFlow/js/icons.js',
+  '/EcoFlow/js/constants.js',
   '/EcoFlow/js/data.js',
   '/EcoFlow/js/coach.js',
+  '/EcoFlow/js/coach-page.js',
   '/EcoFlow/js/scan.js',
-  '/EcoFlow/images/QR.svg',
+  '/EcoFlow/js/scan-page.js',
+  '/EcoFlow/js/index.js',
+  '/EcoFlow/js/habits-page.js',
+  '/EcoFlow/js/impact-page.js',
+  '/EcoFlow/js/settings-page.js',
+  '/EcoFlow/js/weather.js',
+  '/EcoFlow/js/aqi.js',
+  '/EcoFlow/js/climate.js',
+  '/EcoFlow/js/geo.js',
+  '/EcoFlow/js/theme.js',
+  '/EcoFlow/js/nav.js',
+  '/EcoFlow/js/utils.js',
   '/EcoFlow/manifest.json',
+  '/EcoFlow/images/QR.svg',
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return Promise.allSettled(
-        STATIC_ASSETS.map(url => cache.add(url).catch(() => { }))
+        urlsToCache.map(url => cache.add(url).catch(() => { }))
       );
     }).then(() => self.skipWaiting())
   );
@@ -34,10 +55,6 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
-
-  if (event.request.url.includes('generativelanguage.googleapis.com')) {
-    return;
-  }
 
   if (event.request.url.includes('fonts.googleapis.com') || event.request.url.includes('fonts.gstatic.com')) {
     event.respondWith(

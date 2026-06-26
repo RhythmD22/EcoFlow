@@ -1,7 +1,11 @@
 import { EcoData } from './data.js';
-import { escapeHTML, showToast, spawnConfetti } from './utils.js';
+import { escapeHTML, showToast, toggleHabitAndRefresh, spawnConfetti } from './utils.js';
+import { Icons } from './icons.js';
+import { TREE_THRESHOLDS, TREE_CROWN_THRESHOLD, TREE_LABEL_STEP, STREAK_WEEK_DAYS } from './constants.js';
 
-function initHome(appData) {
+function initHome() {
+  const appData = EcoData.load();
+
   const greeting = document.getElementById('greeting-text');
   const hour = new Date().getHours();
   if (hour < 12) greeting.textContent = 'Good morning';
@@ -17,21 +21,16 @@ function initHome(appData) {
 function updateTree(appData) {
   const total = appData.totalActions;
   const branchIds = ['branch-1', 'branch-2', 'branch-3', 'branch-4', 'branch-5', 'branch-6', 'branch-7', 'branch-8'];
-  const thresholds = [1, 2, 4, 7, 11, 18, 30, 50];
 
   branchIds.forEach((id, i) => {
     const branch = document.getElementById(id);
     if (!branch) return;
-    if (total >= thresholds[i]) {
-      branch.classList.add('show');
-    } else {
-      branch.classList.remove('show');
-    }
+    branch.classList.toggle('show', total >= TREE_THRESHOLDS[i]);
   });
 
   const crown = document.getElementById('crown');
   if (crown) {
-    crown.classList.toggle('show', total >= 60);
+    crown.classList.toggle('show', total >= TREE_CROWN_THRESHOLD);
   }
 
   const totalActions = document.getElementById('total-habits');
@@ -53,7 +52,7 @@ function updateTree(appData) {
     'Full bloom — incredible work!',
     'Your tree is a beacon of change',
   ];
-  const idx = Math.min(Math.floor(total / 7), labels.length - 1);
+  const idx = Math.min(Math.floor(total / TREE_LABEL_STEP), labels.length - 1);
   if (treeLabel) treeLabel.textContent = labels[idx];
 }
 
@@ -73,16 +72,15 @@ function initChallenge(appData) {
     if (appData.challengeCompleted) {
       newBtn.classList.add('done');
       newBtn.setAttribute('aria-disabled', 'true');
-      newBtn.innerHTML = '<span>Completed!</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      newBtn.innerHTML = `<span>Completed!</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${Icons.checkmark}</svg>`;
     } else {
       newBtn.addEventListener('click', () => {
         const success = EcoData.completeChallenge(appData);
         if (success) {
-          const fresh = EcoData.load();
-          Object.assign(appData, fresh);
+          EcoData.refreshData(appData);
           newBtn.classList.add('done');
           newBtn.setAttribute('aria-disabled', 'true');
-          newBtn.innerHTML = '<span>Completed!</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+          newBtn.innerHTML = `<span>Completed!</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${Icons.checkmark}</svg>`;
           showToast(`+${challenge.co2Bonus.toFixed(2)} kg CO₂ saved!`, 'success');
           spawnConfetti();
           updateTree(appData);
@@ -103,13 +101,13 @@ function updateStreakDisplay(appData) {
     setTimeout(() => streakCount.classList.remove('pulse'), 600);
   }
   if (streakBar) {
-    streakBar.style.width = `${Math.min(100, (appData.streaks.current / 7) * 100)}%`;
+    streakBar.style.width = `${Math.min(100, (appData.streaks.current / STREAK_WEEK_DAYS) * 100)}%`;
   }
   if (streakMsg) {
-    if (appData.streaks.current >= 7) {
-      streakMsg.innerHTML = `A full week! Longest streak: ${appData.streaks.longest} days <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg>`;
+    if (appData.streaks.current >= STREAK_WEEK_DAYS) {
+      streakMsg.innerHTML = `A full week! Longest streak: ${appData.streaks.longest} days <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle">${Icons.fire}</svg>`;
     } else if (appData.streaks.current > 0) {
-      streakMsg.textContent = `${7 - appData.streaks.current} days to a perfect week`;
+      streakMsg.textContent = `${STREAK_WEEK_DAYS - appData.streaks.current} days to a perfect week`;
     }
   }
 }
@@ -125,7 +123,7 @@ function initQuickHabits(appData) {
     }
   }
 
-  const allHabits = appData.habits.filter(h => !counts[h.id] || counts[h.id] === 0);
+  const allHabits = appData.habits.filter(h => !counts[h.id]);
   const usedHabits = appData.habits.filter(h => counts[h.id]);
 
   usedHabits.sort((a, b) => counts[b.id] - counts[a.id]);
@@ -149,15 +147,12 @@ function initQuickHabits(appData) {
     btn.setAttribute('aria-pressed', String(isDone));
 
     btn.addEventListener('click', () => {
-      const added = EcoData.toggleHabit(appData, habitId);
-      const fresh = EcoData.load();
-      Object.assign(appData, fresh);
+      const added = toggleHabitAndRefresh(appData, habitId);
 
       if (added) {
         btn.classList.add('logged');
         btn.setAttribute('aria-pressed', 'true');
-        showToast('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"/><path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"/><path d="M5 21h14"/></svg> Habit logged!', 'success');
-        if (appData.streaks.current >= 7 && appData.streaks.current % 7 === 0) {
+        if (appData.streaks.current >= STREAK_WEEK_DAYS && appData.streaks.current % STREAK_WEEK_DAYS === 0) {
           spawnConfetti();
         }
         updateTree(appData);
