@@ -882,6 +882,12 @@
     background: rgba(0, 0, 0, 0.02);
   }
 
+  [data-theme="light"] .coach-error {
+    color: #92400e;
+    background: rgba(146, 64, 14, 0.06);
+    border-color: rgba(146, 64, 14, 0.18);
+  }
+
   [data-theme="light"] .toast {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   }
@@ -891,7 +897,7 @@
   }
 
   [data-theme="light"] .message.user .message-bubble {
-    color: #042f2e;
+    color: var(--text-on-brand);
   }
 
   [data-theme="light"] .btn-secondary {
