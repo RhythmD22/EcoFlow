@@ -35,7 +35,7 @@
 | AI Coach | Gemini 3.1 Flash Lite-powered chat with sustainability advice, weather, air quality, and national emissions-aware suggestions, and a full offline fallback with 12+ response patterns |
 | Barcode Scanner | Enter a barcode or scan with your camera to look up any food product's Eco-Score, packaging, origins, and eco-labels via Open Food Facts |
 | Impact Dashboard | Total CO₂ saved, carbon equivalents (trees planted, car miles avoided, water/energy saved), and category breakdown with per-category bars |
-| Weekly Heatmap | 7-day grid showing habit completion density like a contribution graph |
+| Weekly Heatmap | 7-day grid with 5-level intensity showing habit completion density |
 | Light / Dark Theme | System-aware `prefers-color-scheme` with manual toggle (sun/moon), persisted to `localStorage` |
 | Custom Dialogs | Frosted-glass confirm and prompt dialogs with green accent buttons, keyboard support, and backdrop dismiss |
 | Confetti Celebrations | Spark animations on challenge completions and streak milestones |
@@ -87,22 +87,42 @@ Open `http://localhost:8000/EcoFlow/` in your browser.
 EcoFlow/
 ├── index.html                  # SPA shell with 6 <template> elements
 ├── css/
-│   ├── styles.css              # Design tokens, reset, layout, components, theme overrides (801 lines)
-│   └── pages.css               # Page-specific styles: Home, Habits, Coach, Impact, Settings, Scan (1,236 lines)
+│   ├── styles.css              # Design tokens, reset, layout, components, theme overrides (994 lines)
+│   ├── index.css               # Home page styles
+│   ├── habits.css              # Habits page styles (366 lines)
+│   ├── coach.css               # AI Coach chat styles
+│   ├── impact.css              # Impact dashboard styles
+│   ├── settings.css            # Settings page styles
+│   └── scan.css                # Barcode scanner page styles
 ├── js/
-│   ├── app.js                  # SPA router, all page init, theme, dialogs, toasts, confetti
-│   ├── data.js                 # localStorage CRUD, habits, streaks, challenges, date-aware toggling
-│   ├── coach.js                # Gemini API + offline simulated responses, weather/AQI/climate integration
+│   ├── app.js                  # SPA router, navigation, page initialization
+│   ├── theme.js                # Light/dark theme persistence and toggle
+│   ├── nav.js                  # Navigation state shared across modules
+│   ├── constants.js            # App constants and pre-built habit definitions
+│   ├── data.js                 # localStorage CRUD, habit tracking, streaks, challenges
+│   ├── icons.js                # Lucide SVG icon definitions (inline, 16 icons)
+│   ├── utils.js                # Shared utilities: toasts, dialogs, confetti, escapeHTML
+│   ├── index.js                # Home page: tree animation, streaks, challenges, quick-log
+│   ├── habits-page.js          # Habits page: calendar, category filters, heatmap, custom habits
+│   ├── coach.js                # Gemini API integration + 12 offline fallback response patterns
+│   ├── coach-page.js           # AI Coach chat UI initialization
+│   ├── impact-page.js          # Impact dashboard: CO₂ equivalents, category breakdown
+│   ├── settings-page.js        # Settings page: API keys, data export/reset
+│   ├── scan.js                 # Open Food Facts API v3.6, barcode lookup, recent scans
+│   ├── scan-page.js            # Scanner page: camera scanning (html5-qrcode), product display
 │   ├── weather.js              # OpenWeatherMap API, geolocation, weather-based suggestions
-│   ├── aqi.js                  # OpenAQ API, real-time air quality for activity recommendations
-│   ├── climate.js              # World Bank API, national CO2 per capita for impact comparisons
+│   ├── aqi.js                  # OpenAQ API, real-time air quality data
+│   ├── climate.js              # World Bank API, national CO₂ per capita comparisons
 │   └── geo.js                  # Shared geolocation + Nominatim reverse geocoding
-│   └── scan.js                 # Open Food Facts API v3.6 integration, barcode lookup, recent scans cache
 ├── images/
 │   └── QR.svg                  # QR code for desktop → mobile redirect
-├── manifest.json               # PWA manifest
+├── android-chrome-192x192.png  # PWA icon 192x192
+├── android-chrome-512x512.png  # PWA icon 512x512
+├── apple-touch-icon.png        # iOS home screen icon 180x180
+├── favicon.ico                 # Browser favicon
+├── manifest.json               # PWA Web App Manifest
 ├── service-worker.js           # Offline caching and install flow
-├── .env                        # API key template (for reference)
+├── LICENSE
 └── .gitignore
 ```
 
