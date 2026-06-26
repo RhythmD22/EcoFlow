@@ -30,10 +30,16 @@ const urlsToCache = [
   '/EcoFlow/js/nav.js',
   '/EcoFlow/js/utils.js',
   '/EcoFlow/manifest.json',
+  '/EcoFlow/icon.svg',
   '/EcoFlow/favicon.ico',
   '/EcoFlow/apple-touch-icon.png',
+  '/EcoFlow/apple-touch-icon-120x120.png',
+  '/EcoFlow/apple-touch-icon-152x152.png',
+  '/EcoFlow/apple-touch-icon-167x167.png',
   '/EcoFlow/android-chrome-192x192.png',
   '/EcoFlow/android-chrome-512x512.png',
+  '/EcoFlow/android-chrome-maskable-192x192.png',
+  '/EcoFlow/android-chrome-maskable-512x512.png',
   '/EcoFlow/images/QR.svg',
 ];
 
