@@ -273,7 +273,7 @@ Your key is stored in `localStorage` on your device only. It is never sent anywh
 - **Endpoint:** `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent`
 - **Key required:** Yes (free tier available at [Google AI Studio](https://aistudio.google.com/apikey))
 - **Fallback:** 13 pre-written response patterns covering food waste, transportation, energy, fashion, water, diet, recycling, air quality, emissions comparisons, weather-aware tips, and general sustainability advice
-- **Limits:** 1,500 requests/day on free tier
+- **Limits:** 500 requests/day on free tier
 
 ### Open Food Facts v3.6
 
