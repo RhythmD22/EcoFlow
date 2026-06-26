@@ -30,6 +30,10 @@ const urlsToCache = [
   '/EcoFlow/js/nav.js',
   '/EcoFlow/js/utils.js',
   '/EcoFlow/manifest.json',
+  '/EcoFlow/favicon.ico',
+  '/EcoFlow/apple-touch-icon.png',
+  '/EcoFlow/android-chrome-192x192.png',
+  '/EcoFlow/android-chrome-512x512.png',
   '/EcoFlow/images/QR.svg',
 ];
 
