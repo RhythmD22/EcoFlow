@@ -1,7 +1,7 @@
 import { EcoData } from './data.js';
 import { escapeHTML, showToast, toggleHabitAndRefresh, spawnConfetti } from './utils.js';
 import { Icons } from './icons.js';
-import { TREE_THRESHOLDS, TREE_CROWN_THRESHOLD, STREAK_WEEK_DAYS } from './constants.js';
+import { TREE_THRESHOLDS, TREE_CROWN_PARTIAL, TREE_CROWN_FULL, TREE_CROWN_ANIMATE, LEAF_THRESHOLDS, STREAK_WEEK_DAYS } from './constants.js';
 
 function initHome() {
   const appData = EcoData.load();
@@ -22,18 +22,36 @@ function updateTree(appData) {
   const total = appData.totalActions;
   const branchIds = ['branch-1', 'branch-2', 'branch-3', 'branch-4', 'branch-5', 'branch-6', 'branch-7', 'branch-8'];
 
-  const visibleCount = TREE_THRESHOLDS.filter(t => total >= t).length;
-
+  let visibleBranches = 0;
   branchIds.forEach((id, i) => {
     const branch = document.getElementById(id);
     if (!branch) return;
-    branch.classList.toggle('show', total >= TREE_THRESHOLDS[i]);
+    const show = total >= TREE_THRESHOLDS[i];
+    branch.classList.toggle('show', show);
+    if (show) visibleBranches++;
   });
 
+  for (const [leafId, threshold] of Object.entries(LEAF_THRESHOLDS)) {
+    const leaf = document.getElementById(leafId);
+    if (!leaf) continue;
+    leaf.classList.toggle('show', total >= threshold);
+  }
+
   const crown = document.getElementById('crown');
-  const crownVisible = total >= TREE_CROWN_THRESHOLD;
   if (crown) {
-    crown.classList.toggle('show', crownVisible);
+    if (total < TREE_CROWN_PARTIAL) {
+      crown.style.opacity = '0';
+      crown.classList.remove('show');
+    } else if (total < TREE_CROWN_FULL) {
+      crown.style.opacity = '0.35';
+      crown.classList.remove('show');
+    } else if (total < TREE_CROWN_ANIMATE) {
+      crown.style.opacity = '1';
+      crown.classList.remove('show');
+    } else {
+      crown.style.opacity = '';
+      crown.classList.add('show');
+    }
   }
 
   const totalActions = document.getElementById('total-habits');
@@ -44,21 +62,27 @@ function updateTree(appData) {
   if (co2Saved) co2Saved.textContent = appData.totalCO2.toFixed(1);
 
   let label;
-  if (crownVisible) {
+  if (total >= TREE_CROWN_ANIMATE) {
     label = 'In full bloom';
-  } else if (visibleCount >= 8) {
-    label = 'Full canopy';
-  } else if (visibleCount >= 7) {
-    label = 'Seven branches strong';
-  } else if (visibleCount >= 6) {
-    label = 'Getting dense';
-  } else if (visibleCount >= 5) {
-    label = 'Branching further out';
-  } else if (visibleCount >= 4) {
-    label = 'Halfway there';
-  } else if (visibleCount >= 2) {
-    label = 'Branches are sprouting';
-  } else if (visibleCount >= 1) {
+  } else if (total >= TREE_CROWN_FULL) {
+    label = 'Crown is forming';
+  } else if (total >= TREE_CROWN_PARTIAL) {
+    label = 'A glow appears';
+  } else if (visibleBranches >= 8) {
+    label = 'Eighth branch';
+  } else if (visibleBranches >= 7) {
+    label = 'Seventh branch';
+  } else if (visibleBranches >= 6) {
+    label = 'Six branches';
+  } else if (visibleBranches >= 5) {
+    label = 'Five branches';
+  } else if (visibleBranches >= 4) {
+    label = 'Four branches strong';
+  } else if (visibleBranches >= 3) {
+    label = 'Three branches';
+  } else if (visibleBranches >= 2) {
+    label = 'Two branches';
+  } else if (visibleBranches >= 1) {
     label = 'Your first branch';
   } else {
     label = 'Log a habit to start growing';

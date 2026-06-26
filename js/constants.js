@@ -1,6 +1,19 @@
-const TREE_THRESHOLDS = [1, 2, 4, 7, 11, 18, 30, 50];
-const TREE_CROWN_THRESHOLD = 60;
+const TREE_THRESHOLDS = [1, 3, 5, 7, 11, 18, 25, 34];
+const TREE_CROWN_PARTIAL = 44;
+const TREE_CROWN_FULL = 52;
+const TREE_CROWN_ANIMATE = 60;
 const STREAK_WEEK_DAYS = 7;
+
+const LEAF_THRESHOLDS = {
+  'leaf-1a': 2, 'leaf-1b': 4, 'leaf-1c': 6,
+  'leaf-2a': 4, 'leaf-2b': 6,
+  'leaf-3a': 8, 'leaf-3b': 10,
+  'leaf-4a': 12, 'leaf-4b': 15,
+  'leaf-5a': 11,
+  'leaf-6a': 21,
+  'leaf-7a': 29,
+  'leaf-8a': 39,
+};
 
 const CO2_PER_TREE_KG = 21;
 const CO2_PER_CAR_MILE_KG = 0.404;
@@ -19,7 +32,10 @@ const CO2_VALIDATION_MAX = 100;
 
 export {
   TREE_THRESHOLDS,
-  TREE_CROWN_THRESHOLD,
+  TREE_CROWN_PARTIAL,
+  TREE_CROWN_FULL,
+  TREE_CROWN_ANIMATE,
+  LEAF_THRESHOLDS,
   STREAK_WEEK_DAYS,
   CO2_PER_TREE_KG,
   CO2_PER_CAR_MILE_KG,

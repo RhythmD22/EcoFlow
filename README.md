@@ -29,8 +29,8 @@
 | Habit Tracking | 16 pre-built sustainability habits across 6 categories (Transport, Food, Energy, Shopping, Waste, Water) |
 | Custom Habits | Create your own habits with category, icon, and CO₂ impact |
 | Calendar History | Tap the date pill to open a month-view calendar — log habits for any past date with green dots showing which days have activity |
-| Carbon Tree | Animated SVG tree with woody brown trunk that grows branches and leaves as you log actions — crown appears at 60+ actions |
-| Daily Streaks | Visual streak counter with progress bar and flaming celebrations at 7-day milestones |
+| Carbon Tree | Animated SVG tree that grows branch by branch — 13 individual leaves appear incrementally across 21 thresholds, with a 3-stage crown reveal (glow → full → animation) |
+| Daily Streaks | Compact streak bar with day counter integrated into the tree stats — confetti at 7-day milestones |
 | Daily Challenge | Randomized sustainability challenge each day with CO₂ bonus rewards |
 | AI Coach | Gemini 3.1 Flash Lite-powered chat with sustainability advice, weather, air quality, and national emissions-aware suggestions, and a full offline fallback with 13 response patterns |
 | Barcode Scanner | Enter a barcode or scan with your camera to look up any food product's Eco-Score, packaging, origins, and eco-labels via Open Food Facts |
@@ -104,7 +104,7 @@ EcoFlow/
 │   ├── utils.js                # Shared utilities: toasts, dialogs, confetti, escapeHTML
 │   ├── index.js                # Home page: tree animation, streaks, challenges, quick-log
 │   ├── habits-page.js          # Habits page: calendar, category filters, heatmap, custom habits
-│   ├── coach.js                # Gemini API integration + 12 offline fallback response patterns
+│   ├── coach.js                # Gemini API integration + 13 offline fallback response patterns
 │   ├── coach-page.js           # AI Coach chat UI initialization
 │   ├── impact-page.js          # Impact dashboard: CO₂ equivalents, category breakdown
 │   ├── settings-page.js        # Settings page: API keys, data export/reset

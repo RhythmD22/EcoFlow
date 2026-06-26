@@ -67,7 +67,12 @@
   }
 
   .leaf {
-    transition: r 0.4s var(--ease-spring), fill 0.4s ease;
+    transform: scale(0);
+    transition: transform 0.35s var(--ease-spring), r 0.4s var(--ease-spring), fill 0.4s ease;
+  }
+
+  .leaf.show {
+    transform: scale(1);
   }
 
   .crown {
@@ -80,10 +85,12 @@
   }
 
   @keyframes crown-breathe {
+
     0%,
     100% {
       transform: scale(1);
     }
+
     50% {
       transform: scale(1.06);
     }
@@ -238,13 +245,24 @@
   }
 
   .quick-habit.logged {
-    border-color: var(--glass-border-hover);
-    box-shadow: 0 0 0 1px var(--brand-glow);
+    background: rgba(74, 222, 128, 0.10);
+    border-color: rgba(74, 222, 128, 0.35);
+    box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.25), 0 0 12px var(--brand-glow);
+  }
+
+  [data-theme="light"] .quick-habit.logged {
+    background: rgba(21, 128, 61, 0.08);
+    border-color: rgba(21, 128, 61, 0.3);
+    box-shadow: 0 0 0 1px rgba(21, 128, 61, 0.2), 0 0 12px rgba(21, 128, 61, 0.15);
   }
 
   .quick-habit-icon {
     font-size: 1.75rem;
-    transition: transform 0.3s var(--ease-spring);
+    transition: transform 0.3s var(--ease-spring), color 0.2s ease;
+  }
+
+  .quick-habit.logged .quick-habit-icon {
+    color: var(--brand);
   }
 
   .quick-habit:active .quick-habit-icon {
