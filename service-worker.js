@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ecoflow-v1.1';
+const CACHE_NAME = 'ecoflow-v1.0';
 
 const urlsToCache = [
   '/EcoFlow/',
