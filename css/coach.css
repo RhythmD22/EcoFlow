@@ -40,6 +40,7 @@
     cursor: pointer;
     border-radius: var(--radius-full);
     transition: all 0.2s ease;
+    min-height: 44px;
   }
 
   .btn-clear-chat:hover,
@@ -79,6 +80,9 @@
     border-radius: var(--radius-full);
     cursor: pointer;
     transition: all 0.2s ease;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .suggestion-chip:active {
