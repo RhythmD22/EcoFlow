@@ -5,8 +5,8 @@
   "start_url": "/EcoFlow/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#1A4030",
-  "theme_color": "#1A4030",
+  "background_color": "#0d1117",
+  "theme_color": "#0d1117",
   "icons": [
     {
       "src": "/EcoFlow/icon.svg",
