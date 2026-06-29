@@ -32,6 +32,7 @@ const urlsToCache = [
   '/EcoFlow/manifest-light.json',
   '/EcoFlow/manifest-dark.json',
   '/EcoFlow/icon.svg',
+  '/EcoFlow/icon-maskable.svg',
   '/EcoFlow/favicon.ico',
   '/EcoFlow/apple-touch-icon.png',
   '/EcoFlow/apple-touch-icon-dark.png',
