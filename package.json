@@ -1,0 +1,15 @@
+{
+  "name": "ecoflow",
+  "version": "1.0.0",
+  "description": "EcoFlow — AI-powered personal sustainability coach",
+  "type": "module",
+  "scripts": {
+    "lint": "npx eslint js/ service-worker.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^17.7.0"
+  },
+  "license": "MIT"
+}

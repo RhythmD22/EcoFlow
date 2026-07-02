@@ -46,7 +46,7 @@
 | Export/Reset | Export full data as JSON or reset everything with one click |
 | Responsive PWA | Install on mobile for a native app-like experience with offline support, full-screen standalone mode, and `safe-area-inset` handling |
 | Accessibility | `role="dialog"`, `role="checkbox"`, `aria-checked`, `aria-pressed`, skip-to-main-content link, `:focus-visible` glow rings, `prefers-reduced-motion`, heading hierarchy, WCAG 2.1 AA color contrast |
-| No Build Step | Vanilla HTML, CSS, and JavaScript — no npm, no bundler, no framework |
+| No Build Step | Vanilla HTML, CSS, and JavaScript — no bundler, no framework. Dev tooling via npm (ESLint) |
 
 ---
 
@@ -130,7 +130,9 @@ EcoFlow/
 ├── manifest.json                           # PWA Web App Manifest
 ├── service-worker.js                       # Offline caching and install flow
 ├── .gitignore
-├── .eslintrc.json                          # ESLint config
+├── package.json                            # npm scripts (lint)
+├── eslint.config.js                        # ESLint flat config
+├── package-lock.json                       # Dependency lock file
 ├── LICENSE
 ```
 
@@ -239,9 +241,9 @@ The animated background layer (floating gradient orbs + noise texture) creates t
 | Air Quality | [OpenAQ](https://openaq.org) — real-time AQI for outdoor activity recommendations |
 | Climate Data | [World Bank](https://data.worldbank.org) — national CO2 per capita for impact comparisons |
 | PWA | Service Worker API, Web App Manifest |
-| Linting | ESLint (`.eslintrc.json`) |
+| Linting | ESLint (`eslint.config.js`) |
 
-No npm packages, no build steps, no framework. All visual effects (glassmorphism, orb animations, confetti, chart-like bars) are pure CSS.
+No build steps, no framework. Dev dependencies via npm for linting. All visual effects (glassmorphism, orb animations, confetti, chart-like bars) are pure CSS.
 
 ---
 
@@ -260,7 +262,10 @@ No npm packages, no build steps, no framework. All visual effects (glassmorphism
    ```
 3. Open `http://localhost:8000/EcoFlow/` in your browser
 
-No dependencies to install, no environment variables to configure.
+No environment variables to configure. For dev tooling (linting), install npm dependencies:
+   ```bash
+   npm install
+   ```
 
 ### Adding a Gemini API Key (Optional)
 
@@ -271,6 +276,12 @@ The AI Coach works offline with simulated responses out of the box. To enable re
 3. Paste your key and tap Save
 
 Your key is stored in `localStorage` on your device only. It is never sent anywhere except directly to Google's Gemini API.
+
+### npm Scripts
+
+```bash
+npm run lint        # ESLint check on js/ and service-worker.js
+```
 
 ---
 
