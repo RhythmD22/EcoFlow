@@ -130,6 +130,7 @@ EcoFlow/
 ├── manifest.json                           # PWA Web App Manifest
 ├── service-worker.js                       # Offline caching and install flow
 ├── .gitignore
+├── .eslintrc.json                          # ESLint config
 ├── LICENSE
 ```
 
@@ -238,6 +239,7 @@ The animated background layer (floating gradient orbs + noise texture) creates t
 | Air Quality | [OpenAQ](https://openaq.org) — real-time AQI for outdoor activity recommendations |
 | Climate Data | [World Bank](https://data.worldbank.org) — national CO2 per capita for impact comparisons |
 | PWA | Service Worker API, Web App Manifest |
+| Linting | ESLint (`.eslintrc.json`) |
 
 No npm packages, no build steps, no framework. All visual effects (glassmorphism, orb animations, confetti, chart-like bars) are pure CSS.
 
