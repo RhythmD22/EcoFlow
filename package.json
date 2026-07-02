@@ -4,7 +4,9 @@
   "description": "EcoFlow — AI-powered personal sustainability coach",
   "type": "module",
   "scripts": {
-    "lint": "npx eslint js/ service-worker.js"
+    "build": "bash build-bundle.sh",
+    "lint": "npx eslint js/ service-worker.js",
+    "start": "vercel dev"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

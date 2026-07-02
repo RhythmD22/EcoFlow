@@ -1,5 +1,6 @@
 import { initTheme } from './theme.js';
 import { setNavigator } from './nav.js';
+import { showToast } from './utils.js';
 import { EcoWeather } from './weather.js';
 import { EcoAQI } from './aqi.js';
 import { initHome } from './index.js';
@@ -107,16 +108,14 @@ import { initScan, getScanCleanup } from './scan-page.js';
     navigateTo('home');
 
     if (!localStorage.getItem('ecoflow_data')) {
-      import('./utils.js').then(({ showToast }) => {
-        showToast('Welcome to EcoFlow ✦ Log a habit to begin', 'success');
-      });
+      showToast('Welcome to EcoFlow ✦ Log a habit to begin', 'success');
     }
 
-    EcoWeather.fetchWeather().catch(() => {});
-    EcoAQI.fetchAQI().catch(() => {});
+    EcoWeather.fetchWeather().catch(() => { });
+    EcoAQI.fetchAQI().catch(() => { });
 
     if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
-      navigator.serviceWorker.register('/EcoFlow/service-worker.js').catch(() => { });
+      navigator.serviceWorker.register('/service-worker.js').catch(() => { });
     }
   }
 
