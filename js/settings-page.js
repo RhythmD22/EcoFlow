@@ -1,7 +1,33 @@
 import { EcoData } from './data.js';
 import { showToast, showConfirm } from './utils.js';
 
+async function refreshApiStatus() {
+  try {
+    const response = await fetch('/api/api-status');
+    if (!response.ok) return;
+    const status = await response.json();
+    updateBadge('status-gemini', status.gemini);
+    updateBadge('status-openweathermap', status.openweathermap);
+  } catch (err) {
+    console.warn('API status check failed:', err);
+  }
+}
+
+function updateBadge(id, isConfigured) {
+  const badge = document.getElementById(id);
+  if (!badge) return;
+  if (isConfigured) {
+    badge.textContent = 'Active';
+    badge.classList.add('setting-status-badge--active');
+  } else {
+    badge.textContent = 'Not configured';
+    badge.classList.remove('setting-status-badge--active');
+  }
+}
+
 function initSettings() {
+  refreshApiStatus();
+
   const appData = EcoData.load();
 
   const apiInput = document.getElementById('settings-api-key');

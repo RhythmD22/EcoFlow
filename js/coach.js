@@ -28,10 +28,6 @@ Guidelines:
   }
 
   async function sendMessage(userMessage) {
-    if (!hasAPIKey()) {
-      return { text: getSimulatedResponse(userMessage), fallback: true, error: 'no_key' };
-    }
-
     const [weatherResult, aqiResult, climateResult] = await Promise.allSettled([
       EcoWeather.fetchWeather(),
       EcoAQI.fetchAQI(),
@@ -59,6 +55,39 @@ Guidelines:
 
     const fullMessage = userMessage + weatherCtx + aqiCtx + climateCtx;
 
+    const serverResponse = await tryServerAPI(fullMessage);
+    if (serverResponse) return serverResponse;
+
+    return await tryLocalAPI(fullMessage);
+  }
+
+  async function tryServerAPI(message) {
+    try {
+      const response = await fetch('/api/coach', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, systemPrompt: SYSTEM_PROMPT }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 400) return null;
+        throw new Error(`Server API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.text) return { text: data.text, fallback: false };
+      return null;
+    } catch (err) {
+      debugWarn('EcoFlow: Server coach API failed:', err.message);
+      return null;
+    }
+  }
+
+  async function tryLocalAPI(message) {
+    if (!hasAPIKey()) {
+      return { text: getSimulatedResponse(message), fallback: true, error: 'no_key' };
+    }
+
     try {
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
@@ -70,7 +99,7 @@ Guidelines:
           },
           body: JSON.stringify({
             system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-            contents: [{ role: 'user', parts: [{ text: fullMessage }] }],
+            contents: [{ role: 'user', parts: [{ text: message }] }],
             generationConfig: {
               temperature: 0.7,
               maxOutputTokens: 500,
@@ -94,7 +123,7 @@ Guidelines:
     } catch (err) {
       debugWarn('EcoFlow: Gemini API error, falling back to simulated response:', err.message);
       const errorCode = err.code || (err.name === 'TypeError' && err.message.includes('fetch') ? 'network' : 'api_error');
-      return { text: getSimulatedResponse(fullMessage), fallback: true, error: errorCode };
+      return { text: getSimulatedResponse(message), fallback: true, error: errorCode };
     }
   }
 

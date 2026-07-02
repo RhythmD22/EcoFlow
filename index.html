@@ -487,7 +487,10 @@
       <div class="settings-content glass glass-card">
         <div class="setting-group">
           <h3 class="setting-group-title">API Configuration</h3>
-          <label class="setting-label" for="settings-api-key">Gemini API Key</label>
+          <div class="setting-status-row">
+            <span class="setting-status-badge" id="status-gemini">Not configured</span>
+            <label class="setting-label" for="settings-api-key">Gemini API Key</label>
+          </div>
           <div class="setting-input-row">
             <input type="password" class="setting-input" id="settings-api-key" placeholder="Enter your Gemini API key"
               autocomplete="off">
@@ -495,7 +498,10 @@
           </div>
           <p class="setting-help">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank"
               rel="noopener">Google AI Studio</a>. Your key is stored only on this device.</p>
-          <label class="setting-label" for="settings-weather-key">OpenWeatherMap API Key</label>
+          <div class="setting-status-row">
+            <span class="setting-status-badge" id="status-openweathermap">Not configured</span>
+            <label class="setting-label" for="settings-weather-key">OpenWeatherMap API Key</label>
+          </div>
           <div class="setting-input-row">
             <input type="password" class="setting-input" id="settings-weather-key"
               placeholder="Enter your OpenWeatherMap API key" autocomplete="off">

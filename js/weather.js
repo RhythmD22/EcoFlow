@@ -14,14 +14,66 @@ const EcoWeather = (() => {
   }
 
   async function fetchWeather() {
-    if (!hasKey()) return null;
-
     if (cachedWeather && (Date.now() - cacheTime) < WEATHER_CACHE_MS) {
       return cachedWeather;
     }
 
     try {
       const pos = await EcoGeo.getPosition();
+
+      const serverWeather = await tryServerWeather(pos);
+      if (serverWeather) {
+        cachedWeather = serverWeather;
+        cacheTime = Date.now();
+        return serverWeather;
+      }
+
+      return await tryLocalWeather(pos);
+    } catch (err) {
+      debugWarn('EcoFlow: Weather fetch failed:', err.message);
+      return null;
+    }
+  }
+
+  async function tryServerWeather(pos) {
+    try {
+      const response = await fetch('/api/weather', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat: pos.lat, lon: pos.lon }),
+      });
+
+      if (!response.ok) return null;
+
+      const data = await response.json();
+      const weather = {
+        temp: data.temp,
+        feelsLike: data.feelsLike,
+        condition: data.condition,
+        description: data.description,
+        icon: data.icon,
+        humidity: data.humidity,
+        windSpeed: data.windSpeed,
+        clouds: data.clouds,
+        rain: data.rain,
+        city: data.city,
+        country: data.country,
+      };
+
+      if (weather.country) {
+        EcoGeo.setCountry({ code: weather.country, name: '' });
+      }
+
+      return weather;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  async function tryLocalWeather(pos) {
+    if (!hasKey()) return null;
+
+    try {
       const key = EcoData.getWeatherKey();
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${pos.lat}&lon=${pos.lon}&appid=${key}&units=metric`;
 
