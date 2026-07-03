@@ -588,6 +588,12 @@
     justify-content: center;
     margin-top: var(--space-sm);
   }
+
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
 }
 
 /* ── DIALOG ────────────────────────────────────────────── */

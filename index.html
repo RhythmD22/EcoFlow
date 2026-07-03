@@ -491,29 +491,57 @@
             <span class="setting-status-badge" id="status-gemini">Not configured</span>
             <label class="setting-label" for="settings-api-key">Gemini API Key</label>
           </div>
-          <div class="setting-input-row">
-            <input type="password" class="setting-input" id="settings-api-key" placeholder="Enter your Gemini API key"
-              autocomplete="off">
-            <button class="btn btn-small btn-primary" id="btn-save-settings-key">Save</button>
+          <div id="settings-gemini-local">
+            <div class="setting-input-row">
+              <input type="password" class="setting-input" id="settings-api-key" placeholder="Enter your Gemini API key"
+                autocomplete="off">
+              <button class="btn btn-small btn-primary" id="btn-save-settings-key">Save</button>
+            </div>
+            <p class="setting-help">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank"
+                rel="noopener">Google AI Studio</a>. Your key is stored only on this device.</p>
           </div>
-          <p class="setting-help">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank"
-              rel="noopener">Google AI Studio</a>. Your key is stored only on this device.</p>
           <div class="setting-status-row">
             <span class="setting-status-badge" id="status-openweathermap">Not configured</span>
             <label class="setting-label" for="settings-weather-key">OpenWeatherMap API Key</label>
           </div>
-          <div class="setting-input-row">
-            <input type="password" class="setting-input" id="settings-weather-key"
-              placeholder="Enter your OpenWeatherMap API key" autocomplete="off">
-            <button class="btn btn-small btn-primary" id="btn-save-weather-key">Save</button>
+          <div id="settings-weather-local">
+            <div class="setting-input-row">
+              <input type="password" class="setting-input" id="settings-weather-key"
+                placeholder="Enter your OpenWeatherMap API key" autocomplete="off">
+              <button class="btn btn-small btn-primary" id="btn-save-weather-key">Save</button>
+            </div>
+            <p class="setting-help">Get a free key at <a href="https://openweathermap.org/api" target="_blank"
+                rel="noopener">OpenWeatherMap</a>. Used for weather-based habit suggestions.</p>
           </div>
-          <p class="setting-help">Get a free key at <a href="https://openweathermap.org/api" target="_blank"
-              rel="noopener">OpenWeatherMap</a>. Used for weather-based habit suggestions.</p>
         </div>
         <div class="setting-group">
           <h3 class="setting-group-title">Data</h3>
-          <button class="btn btn-secondary btn-full" id="btn-reset-data">Reset All Data</button>
-          <button class="btn btn-secondary btn-full" id="btn-export-data">Export Data as JSON</button>
+          <button class="btn btn-secondary btn-full btn-icon" id="btn-export-data">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export Data as JSON
+          </button>
+          <button class="btn btn-secondary btn-full btn-icon" id="btn-import-data">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            Import Data from JSON
+          </button>
+          <button class="btn btn-secondary btn-full btn-icon" id="btn-reset-data">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg>
+            Reset All Data
+          </button>
         </div>
         <div class="setting-group">
           <h3 class="setting-group-title">About</h3>

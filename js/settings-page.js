@@ -8,6 +8,8 @@ async function refreshApiStatus() {
     const status = await response.json();
     updateBadge('status-gemini', status.gemini);
     updateBadge('status-openweathermap', status.openweathermap);
+    toggleLocalInput('settings-gemini-local', status.gemini);
+    toggleLocalInput('settings-weather-local', status.openweathermap);
   } catch (err) {
     console.warn('API status check failed:', err);
   }
@@ -25,6 +27,12 @@ function updateBadge(id, isConfigured) {
   }
 }
 
+function toggleLocalInput(id, serverActive) {
+  const container = document.getElementById(id);
+  if (!container) return;
+  container.hidden = serverActive;
+}
+
 function initSettings() {
   refreshApiStatus();
 
@@ -36,9 +44,39 @@ function initSettings() {
   const saveWeatherBtn = document.getElementById('btn-save-weather-key');
   const resetBtn = document.getElementById('btn-reset-data');
   const exportBtn = document.getElementById('btn-export-data');
+  const importBtn = document.getElementById('btn-import-data');
 
   if (apiInput) apiInput.value = EcoData.getAPIKey();
   if (weatherInput) weatherInput.value = EcoData.getWeatherKey();
+
+  if (importBtn) {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json';
+    fileInput.hidden = true;
+    document.body.appendChild(fileInput);
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const confirmed = await showConfirm('Import Data', 'Import data from this file? Your current data will be replaced.');
+        if (!confirmed) return;
+        try {
+          EcoData.importData(reader.result);
+          EcoData.refreshData(appData);
+          showToast('Data imported successfully', 'success');
+        } catch (err) {
+          showToast(err.message || 'Failed to import data', 'error');
+        }
+        fileInput.value = '';
+      };
+      reader.readAsText(file);
+    });
+
+    importBtn.addEventListener('click', () => fileInput.click());
+  }
 
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {

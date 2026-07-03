@@ -302,6 +302,23 @@ const EcoData = (() => {
     return JSON.stringify(load(), null, 2);
   }
 
+  function importData(jsonString) {
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonString);
+    } catch {
+      throw new Error('Invalid JSON file');
+    }
+    if (!parsed || typeof parsed !== 'object') {
+      throw new Error('Invalid data format');
+    }
+    if (!parsed.version) {
+      throw new Error('Missing data version');
+    }
+    const merged = { ...getDefaultData(), ...parsed };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+  }
+
   function getAPIKey() {
     return localStorage.getItem(API_KEY_STORAGE) || '';
   }
@@ -344,6 +361,7 @@ const EcoData = (() => {
     removeHabit,
     resetAll,
     exportData,
+    importData,
     getAPIKey,
     setAPIKey,
     getWeatherKey,

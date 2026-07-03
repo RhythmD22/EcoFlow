@@ -46,7 +46,7 @@
 | Frosted Glass UI | `backdrop-filter: blur()` glassmorphism on every card, header, and navigation with green-tinted surfaces |
 | Animated Background | Floating gradient orbs behind the entire app with a noise texture overlay |
 | Local Storage | All data persisted in `localStorage` — no account, no server, no sign-up |
-| Export/Reset | Export full data as JSON or reset everything with one click |
+| Export/Import/Reset | Export full data as JSON, import from a backup file, or reset everything with one click |
 | Responsive PWA | Install on mobile for a native app-like experience with offline support, full-screen standalone mode, and `safe-area-inset` handling |
 | Accessibility | `role="dialog"`, `role="checkbox"`, `aria-checked`, `aria-pressed`, skip-to-main-content link, `:focus-visible` glow rings, `prefers-reduced-motion`, heading hierarchy, WCAG 2.1 AA color contrast |
 
@@ -108,18 +108,18 @@ EcoFlow/
 │   ├── theme.js                # Light/dark theme persistence and toggle
 │   ├── nav.js                  # Navigation state shared across modules
 │   ├── constants.js            # App constants and pre-built habit definitions
-│   ├── data.js                 # localStorage CRUD, habit tracking, streaks, challenges
+│   ├── data.js                 # localStorage CRUD, habit tracking, streaks, challenges, export/import
 │   ├── icons.js                # Lucide SVG icon definitions (inline, 16 icons)
 │   ├── utils.js                # Shared utilities: toasts, dialogs, confetti, escapeHTML
 │   ├── index.js                # Home page: tree animation, streaks, challenges, quick-log
 │   ├── habits-page.js          # Habits page: calendar, category filters, heatmap, custom habits
-│   ├── coach.js                # Gemini API integration + 13 offline fallback response patterns
+│   ├── coach.js                # Gemini API integration (proxied via /api/coach) + offline fallback
 │   ├── coach-page.js           # AI Coach chat UI initialization
 │   ├── impact-page.js          # Impact dashboard: CO₂ equivalents, category breakdown
-│   ├── settings-page.js        # Settings page: API keys, data export/reset
+│   ├── settings-page.js        # Settings page: API keys, status indicators, data export/import/reset
 │   ├── scan.js                 # Open Food Facts API v3.6, barcode lookup, recent scans
 │   ├── scan-page.js            # Scanner page: camera scanning (html5-qrcode), product display
-│   ├── weather.js              # OpenWeatherMap API, geolocation, weather-based suggestions
+│   ├── weather.js              # OpenWeatherMap API (proxied via /api/weather), geolocation
 │   ├── aqi.js                  # OpenAQ API, real-time air quality data
 │   ├── climate.js              # World Bank API, national CO₂ per capita comparisons
 │   └── geo.js                  # Shared geolocation + Nominatim reverse geocoding

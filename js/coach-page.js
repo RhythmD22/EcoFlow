@@ -3,6 +3,18 @@ import { EcoCoach } from './coach.js';
 import { escapeHTML } from './utils.js';
 
 let pendingPrompt = null;
+let serverApiStatus = { gemini: false, openweathermap: false };
+
+async function checkServerApiStatus() {
+  try {
+    const response = await fetch('/api/api-status');
+    if (response.ok) {
+      serverApiStatus = await response.json();
+      return serverApiStatus;
+    }
+  } catch (err) { /* ignore */ }
+  return serverApiStatus;
+}
 
 function setPendingPrompt(prompt) {
   pendingPrompt = prompt;
@@ -21,8 +33,12 @@ function initCoach() {
   const clearBtn = document.getElementById('btn-clear-chat');
   const coachError = document.getElementById('coach-error');
 
+  checkServerApiStatus().then(() => {
+    updateApiStatusText(apiStatus);
+  });
+
   if (apiStatus) {
-    if (EcoCoach.hasAPIKey()) {
+    if (EcoCoach.hasAPIKey() || serverApiStatus.gemini) {
       apiStatus.textContent = 'AI powered by Google Gemini';
     } else {
       apiStatus.textContent = 'Using offline responses. Add a Gemini API key in Settings for personalized AI coaching.';
@@ -120,12 +136,13 @@ function initCoach() {
     EcoData.addChatMessage(appData, 'coach', result.text, respTime);
 
     if (result.fallback && coachError) {
+      const hasKey = EcoCoach.hasAPIKey() || serverApiStatus.gemini;
       const errorMessages = {
-        no_key: 'No API key set - using offline responses. Add a Gemini API key in Settings.',
+        no_key: hasKey ? 'AI response unavailable - using offline responses.' : 'No API key set - using offline responses. Add a Gemini API key in Settings.',
         auth: 'API key rejected - using offline responses. Check your API key in Settings.',
         rate_limit: 'API rate limit reached - using offline responses for now.',
         network: 'Network error - using offline responses. Check your connection.',
-        api_error: 'AI unavailable - using offline responses. Check your API key or connection.',
+        api_error: 'AI unavailable - using offline responses. Try again.',
       };
       coachError.textContent = errorMessages[result.error] || errorMessages.api_error;
       coachError.hidden = false;
@@ -138,6 +155,13 @@ function initCoach() {
     }
 
     clearBtn.hidden = false;
+  }
+}
+
+function updateApiStatusText(apiStatus) {
+  if (!apiStatus) return;
+  if (EcoCoach.hasAPIKey() || serverApiStatus.gemini) {
+    apiStatus.textContent = 'AI powered by Google Gemini';
   }
 }
 
