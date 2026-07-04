@@ -81,9 +81,17 @@
     color: var(--brand);
   }
 
-  .equivalent-item.eq-blue .eq-value { color: var(--info); }
-  .equivalent-item.eq-cyan .eq-value { color: #22d3ee; }
-  .equivalent-item.eq-amber .eq-value { color: var(--warning); }
+  .equivalent-item.eq-blue .eq-value {
+    color: var(--info);
+  }
+
+  .equivalent-item.eq-cyan .eq-value {
+    color: #22d3ee;
+  }
+
+  .equivalent-item.eq-amber .eq-value {
+    color: var(--warning);
+  }
 
   .eq-label {
     font-size: var(--text-xs);
@@ -145,5 +153,32 @@
     font-weight: 600;
     min-width: 50px;
     text-align: right;
+  }
+}
+
+@media (min-width: 768px) {
+  .page-impact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "hero hero"
+      "equivalents categories";
+    gap: 24px;
+  }
+
+  .impact-hero {
+    grid-area: hero;
+  }
+
+  .impact-equivalents {
+    grid-area: equivalents;
+  }
+
+  .category-breakdown {
+    grid-area: categories;
+  }
+
+  .chart-doughnut {
+    max-width: 320px;
   }
 }

@@ -32,17 +32,21 @@
 | Habit Tracking | 16 pre-built sustainability habits across 6 categories (Transport, Food, Energy, Shopping, Waste, Water) |
 | Custom Habits | Create your own habits with category, icon, and CO₂ impact |
 | Calendar History | Tap the date pill to open a month-view calendar — log habits for any past date with green dots showing which days have activity |
-| Carbon Tree | Animated SVG tree that grows branch by branch — 13 individual leaves appear incrementally across 21 thresholds, with a 3-stage crown reveal (glow → full → animation) |
+| Quick Log | 2×2 grid of top habits on the home screen for one-tap logging — tap again to undo |
+| Carbon Tree | Animated SVG tree that grows branch by branch — 13 individual leaves appear incrementally across 21 thresholds, with a 3-stage crown reveal (glow → full → animation). Unlogging habits triggers shedding animations (branches swing and fall, leaves drift and spin off) |
 | Daily Streaks | Compact streak bar with day counter integrated into the tree stats — confetti at 7-day milestones |
 | Daily Challenge | Randomized sustainability challenge each day with CO₂ bonus rewards |
 | AI Coach | Gemini 3.1 Flash Lite-powered chat with sustainability advice, weather, air quality, and national emissions-aware suggestions, and a full offline fallback with 13 response patterns |
 | Barcode Scanner | Enter a barcode or scan with your camera to look up any food product's Eco-Score, packaging, origins, and eco-labels via Open Food Facts |
-| Impact Dashboard | Total CO₂ saved, carbon equivalents (trees planted, car miles avoided, water/energy saved), and category breakdown with per-category bars |
+| Impact Dashboard | Total CO₂ saved with Chart.js doughnut chart for category breakdown and bar chart for carbon equivalents (trees planted, car miles avoided, water/energy saved) |
+| 30-Day Trend Chart | Chart.js line chart on the Habits page showing daily habit completions over the last month |
 | Weekly Heatmap | 7-day grid with 5-level intensity showing habit completion density |
+| Chart.js Visualizations | Interactive charts on the Impact page (doughnut + bar) and Habits page (line trend) for richer data exploration |
+| Desktop Layout | Responsive design — mobile-first single column on small screens, sidebar navigation + multi-column content at 768px+ |
 | Light / Dark Theme | System-aware `prefers-color-scheme` with manual toggle (sun/moon), persisted to `localStorage` |
 | Custom Dialogs | Frosted-glass confirm and prompt dialogs with green accent buttons, keyboard support, and backdrop dismiss |
 | Confetti Celebrations | Spark animations on challenge completions and streak milestones |
-| Toast Notifications | Non-intrusive confirmations with Lucide SVG icons for every action |
+| Toast Notifications | Non-intrusive confirmations with Lucide SVG icons for every action — centered within the main content area on desktop |
 | Frosted Glass UI | `backdrop-filter: blur()` glassmorphism on every card, header, and navigation with green-tinted surfaces |
 | Animated Background | Floating gradient orbs behind the entire app with a noise texture overlay |
 | Local Storage | All data persisted in `localStorage` — no account, no server, no sign-up |
@@ -60,7 +64,7 @@ To run locally with all features:
 git clone https://github.com/rhythmd22/EcoFlow.git
 cd EcoFlow
 cp .env.example .env    # add API keys (optional)
-npm run build && npm start
+npm run build && npx vercel dev
 ```
 
 For a quick preview without API features, serve statically:
@@ -96,11 +100,11 @@ Open `http://localhost:8000/` in your browser.
 EcoFlow/
 ├── index.html                  # SPA shell with 6 <template> elements
 ├── css/
-│   ├── styles.css              # Design tokens, reset, layout, components, theme overrides
-│   ├── index.css               # Home page styles
-│   ├── habits.css              # Habits page styles
+│   ├── styles.css              # Design tokens, reset, layout, components, theme overrides, desktop layout
+│   ├── index.css               # Home page styles (tree, challenge, quick-log, shedding animations)
+│   ├── habits.css              # Habits page styles (calendar, heatmap, trend chart)
 │   ├── coach.css               # AI Coach chat styles
-│   ├── impact.css              # Impact dashboard styles
+│   ├── impact.css              # Impact dashboard styles (charts, equivalents grid)
 │   ├── settings.css            # Settings page styles
 │   └── scan.css                # Barcode scanner page styles
 ├── js/
@@ -108,14 +112,14 @@ EcoFlow/
 │   ├── theme.js                # Light/dark theme persistence and toggle
 │   ├── nav.js                  # Navigation state shared across modules
 │   ├── constants.js            # App constants and pre-built habit definitions
-│   ├── data.js                 # localStorage CRUD, habit tracking, streaks, challenges, export/import
+│   ├── data.js                 # localStorage CRUD, habit tracking, streaks, challenges, trend data, export/import
 │   ├── icons.js                # Lucide SVG icon definitions (inline, 16 icons)
 │   ├── utils.js                # Shared utilities: toasts, dialogs, confetti, escapeHTML
-│   ├── index.js                # Home page: tree animation, streaks, challenges, quick-log
-│   ├── habits-page.js          # Habits page: calendar, category filters, heatmap, custom habits
+│   ├── index.js                # Home page: tree animation with shedding, streaks, challenges, quick-log
+│   ├── habits-page.js          # Habits page: calendar, category filters, heatmap, trend chart, custom habits
 │   ├── coach.js                # Gemini API integration (proxied via /api/coach) + offline fallback
 │   ├── coach-page.js           # AI Coach chat UI initialization
-│   ├── impact-page.js          # Impact dashboard: CO₂ equivalents, category breakdown
+│   ├── impact-page.js          # Impact dashboard: Chart.js doughnut + bar charts, CO₂ equivalents, category breakdown
 │   ├── settings-page.js        # Settings page: API keys, status indicators, data export/import/reset
 │   ├── scan.js                 # Open Food Facts API v3.6, barcode lookup, recent scans
 │   ├── scan-page.js            # Scanner page: camera scanning (html5-qrcode), product display
@@ -124,11 +128,9 @@ EcoFlow/
 │   ├── climate.js              # World Bank API, national CO₂ per capita comparisons
 │   └── geo.js                  # Shared geolocation + Nominatim reverse geocoding
 ├── api/
-│   ├── coach.js                 # Vercel serverless — proxies Gemini API calls
-│   ├── weather.js               # Vercel serverless — proxies OpenWeatherMap API calls
-│   └── api-status.js            # Vercel serverless — reports which API keys are configured
-├── images/
-│   └── QR.svg                  # QR code for desktop → mobile redirect
+│   ├── coach.js                # Vercel serverless — proxies Gemini API calls
+│   ├── weather.js              # Vercel serverless — proxies OpenWeatherMap API calls
+│   └── api-status.js           # Vercel serverless — reports which API keys are configured
 ├── icon.svg                                # Vector PWA icon (source)
 ├── icon-maskable.svg                       # Maskable icon variant (source)
 ├── android-chrome-192x192.png              # PWA icon 192x192
@@ -163,6 +165,10 @@ The app is a single-page application. All views live as `<template>` elements in
 - `bundle.js` is a simple concatenation of all ES modules — generated by `npm run build` via `build-bundle.sh`
 - `.glass` and `.glass-card` reusable CSS classes (consistent frosted effect everywhere)
 - Floating gradient orbs + noise texture background — distinct from Savor's notebook paper aesthetic
+- Chart.js 4.5.1 (CDN) for interactive charts on Impact and Habits pages — doughnut, bar, and line charts with green-themed color palettes
+- Desktop layout at 768px+ via CSS Grid: sidebar nav replaces bottom nav, multi-column page layouts, full-width buttons where appropriate
+- Carbon tree shedding animations: branches swing/fall and leaves drift/spin off when total actions drop below thresholds, using CSS `@keyframes` triggered by JavaScript state tracking on habit removal
+- Responsive toast positioning — centered over the viewport on mobile, centered over the content area on desktop (offset for sidebar)
 
 ---
 
@@ -215,7 +221,8 @@ A sun/moon button in the header switches between themes. Persists to `localStora
 |-------|-------|-------|
 | `--success` | `#34d399` | Completions, success states |
 | `--warning` | `#fbbf24` | Amber accents |
-| `--danger` | `#f87171` | Delete actions |
+| `--danger` | `#f87171` | Delete actions, reset button |
+| `--danger-bg` | `rgba(248, 113, 113, 0.10)` | Danger button background |
 | `--info` | `#38bdf8` | Water/ocean category accents |
 
 ### Typography
@@ -240,6 +247,13 @@ All cards, headers, and navigation share a consistent frosted glass pattern:
 
 The animated background layer (floating gradient orbs + noise texture) creates the visual interest behind the glass surfaces. All SVG icons use Lucide (MIT-licensed inline SVGs, no icon font dependency).
 
+### Responsive Breakpoints
+
+| Breakpoint | Layout |
+|------------|--------|
+| < 768px | Mobile-first single column, bottom nav, max-width 480px centered |
+| ≥ 768px | Desktop: 220px sidebar nav on left, multi-column content grid on right |
+
 ---
 
 ## Tech Stack
@@ -248,6 +262,7 @@ The animated background layer (floating gradient orbs + noise texture) creates t
 |-------|-----------|
 | Core | HTML5, CSS3, JavaScript (ES6+ modules) |
 | Storage | `localStorage` |
+| Charts | [Chart.js 4.5.1](https://www.chartjs.org/) (CDN) — doughnut, bar, and line charts for impact and trend visualization |
 | AI | Google Gemini 3.1 Flash Lite (`gemini-3.1-flash-lite`) — optional, auto-falls back to offline responses |
 | Barcode Scanning | [html5-qrcode](https://github.com/mebjas/html5-qrcode) (CDN) — camera-based barcode detection |
 | Product Data | [Open Food Facts API v3.6](https://world.openfoodfacts.org/) — no key required |
@@ -256,11 +271,11 @@ The animated background layer (floating gradient orbs + noise texture) creates t
 | Hosting | Vercel (or any static host) |
 | Weather | [OpenWeatherMap](https://openweathermap.org/api) — current weather for habit suggestions |
 | Air Quality | [OpenAQ](https://openaq.org) — real-time AQI for outdoor activity recommendations |
-| Climate Data | [World Bank](https://data.worldbank.org) — national CO2 per capita for impact comparisons |
+| Climate Data | [World Bank](https://data.worldbank.org) — national CO₂ per capita for impact comparisons |
 | PWA | Service Worker API, Web App Manifest |
 | Linting | ESLint (`eslint.config.js`) |
 
-No framework. All visual effects (glassmorphism, orb animations, confetti, chart-like bars) are pure CSS. `bundle.js` is a simple concatenation of all JS modules for the production build.
+No framework. All visual effects (glassmorphism, orb animations, confetti, tree shedding animations) are pure CSS. Chart.js provides interactive charts on the Impact and Habits pages. `bundle.js` is a simple concatenation of all JS modules for the production build.
 
 ---
 

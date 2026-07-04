@@ -144,6 +144,68 @@ function renderHeatmap(appData) {
     }
     return `<div class="heatmap-cell ${level}">${d.count || ''}</div>`;
   }).join('');
+
+  renderTrendChart(appData);
+}
+
+function renderTrendChart(appData) {
+  const canvas = document.getElementById('chart-habit-trend');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const existing = Chart.getChart(canvas);
+  if (existing) existing.destroy();
+
+  const trend = EcoData.getTrendData(appData, 30);
+
+  new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: trend.map(d => d.date),
+      datasets: [{
+        label: 'Habits completed',
+        data: trend.map(d => d.count),
+        borderColor: '#4ade80',
+        backgroundColor: 'rgba(74, 222, 128, 0.08)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointRadius: 2,
+        pointHoverRadius: 5,
+        pointBackgroundColor: '#4ade80',
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#9ca3a0',
+            font: { size: 10 },
+            maxTicksLimit: 6,
+            maxRotation: 0,
+          },
+          grid: { display: false },
+        },
+        y: {
+          ticks: {
+            color: '#9ca3a0',
+            font: { size: 11 },
+            stepSize: 1,
+          },
+          grid: { color: 'rgba(255,255,255,0.06)' },
+          beginAtZero: true,
+        },
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index',
+      },
+    },
+  });
 }
 
 async function addCustomHabit(appData, activeCategory) {

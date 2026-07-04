@@ -59,20 +59,72 @@
   }
 
   .branch {
+    opacity: 0;
     transition: opacity 0.5s var(--ease-out-expo);
+    transform-origin: center bottom;
   }
 
   .branch.show {
     opacity: 1;
   }
 
+  .branch.shed {
+    animation: branch-shed 0.7s ease-in forwards;
+    pointer-events: none;
+  }
+
+  @keyframes branch-shed {
+    0% {
+      opacity: 1;
+      transform: rotate(0deg) translateY(0);
+    }
+
+    20% {
+      opacity: 0.9;
+      transform: rotate(6deg) translateY(2px);
+    }
+
+    100% {
+      opacity: 0;
+      transform: rotate(22deg) translateY(24px);
+    }
+  }
+
   .leaf {
     transform: scale(0);
     transition: transform 0.35s var(--ease-spring), r 0.4s var(--ease-spring), fill 0.4s ease;
+    transform-origin: center center;
   }
 
   .leaf.show {
     transform: scale(1);
+  }
+
+  .leaf.shed {
+    animation: leaf-shed 0.8s ease-in forwards;
+    pointer-events: none;
+  }
+
+  @keyframes leaf-shed {
+    0% {
+      opacity: 1;
+      transform: scale(1) translateY(0) rotate(0deg);
+    }
+
+    30% {
+      opacity: 0.8;
+      transform: scale(0.9) translateX(4px) translateY(6px) rotate(10deg);
+    }
+
+    60% {
+      opacity: 0.4;
+      transform: scale(0.5) translateX(-3px) translateY(18px) rotate(-25deg);
+    }
+
+    100% {
+      opacity: 0;
+      transform: scale(0.1) translateX(8px) translateY(36px) rotate(50deg);
+    }
   }
 
   .crown {
@@ -82,6 +134,23 @@
   .crown.show {
     opacity: 1;
     animation: crown-breathe 3s ease-in-out infinite;
+  }
+
+  .crown.shed {
+    animation: crown-fade 0.6s ease-in forwards;
+    pointer-events: none;
+  }
+
+  @keyframes crown-fade {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    100% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
   }
 
   @keyframes crown-breathe {
@@ -274,5 +343,16 @@
     font-weight: 500;
     color: var(--text-secondary);
     text-align: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .page-home {
+    max-width: 100%;
+  }
+
+  .challenge-btn {
+    width: 100%;
+    max-width: none;
   }
 }

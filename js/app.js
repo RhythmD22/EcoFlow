@@ -67,19 +67,8 @@ import { initScan, getScanCleanup } from './scan-page.js';
     root.focus({ preventScroll: true });
   }
 
-  function initDesktopNotification() {
-    const closeBtn = document.getElementById('closeNotification');
-    const banner = document.getElementById('desktopNotification');
-    if (closeBtn && banner) {
-      closeBtn.addEventListener('click', () => {
-        banner.style.display = 'none';
-      });
-    }
-  }
-
   function init() {
     initTheme();
-    initDesktopNotification();
     setNavigator(navigateTo);
 
     document.querySelectorAll('.nav-item').forEach(btn => {

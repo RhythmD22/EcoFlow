@@ -209,6 +209,10 @@
     padding: var(--space-lg);
   }
 
+  .habit-item:active {
+    transform: none;
+  }
+
   .habit-check {
     width: 44px;
     height: 44px;
@@ -220,6 +224,10 @@
     flex-shrink: 0;
     transition: all 0.25s var(--ease-out-expo);
     cursor: pointer;
+  }
+
+  .habit-check:active {
+    transform: none;
   }
 
   .habit-check.checked {
@@ -378,5 +386,55 @@
 
   .heatmap-dot.d4 {
     background: var(--brand);
+  }
+}
+
+@media (min-width: 768px) {
+  .page-habits {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    grid-template-areas:
+      "trend trend"
+      "datestrip datestrip"
+      "tabs tabs"
+      "list list"
+      "addbtn addbtn"
+      "heatmap heatmap";
+    gap: 24px;
+    align-items: start;
+  }
+
+  .habit-trend {
+    grid-area: trend;
+    margin-top: 0;
+  }
+
+  .habits-date-strip {
+    grid-area: datestrip;
+  }
+
+  .calendar-dropdown {
+    grid-area: datestrip;
+  }
+
+  .category-tabs {
+    grid-area: tabs;
+  }
+
+  .habits-list {
+    grid-area: list;
+  }
+
+  .weekly-heatmap {
+    grid-area: heatmap;
+    margin-top: 0;
+  }
+
+  .add-habit-btn {
+    grid-area: addbtn;
+  }
+
+  .chart-line {
+    height: 240px;
   }
 }

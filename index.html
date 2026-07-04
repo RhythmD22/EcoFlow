@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="css/settings.css">
   <link rel="stylesheet" href="css/scan.css">
   <script src="https://unpkg.com/html5-qrcode" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
   <script>
     (function () {
       let savedTheme = localStorage.getItem('ecoflow_theme');
@@ -51,13 +52,6 @@
 <body>
 
   <a href="#app-root" class="skip-link">Skip to main content</a>
-
-  <div class="desktop-notification" id="desktopNotification">
-    <p>For the best experience, please use your mobile device</p>
-    <button id="closeNotification" aria-label="Close notification">&times;</button>
-  </div>
-
-  <img src="images/QR.svg" alt="Scan to open on mobile" class="desktop-qr-code">
 
   <div class="bg-layer" aria-hidden="true">
     <div class="bg-orbs">
@@ -264,6 +258,11 @@
         <p class="streak-subtitle" id="streak-message">Log a habit to start your streak!</p>
       </section>
 
+      <section class="quick-habits">
+        <h3 class="section-label">Quick Log</h3>
+        <div class="quick-habits-grid" id="quick-habits"></div>
+      </section>
+
       <section class="challenge-card glass glass-card" id="daily-challenge">
         <div class="challenge-badge">Today's Challenge</div>
         <h3 class="challenge-title" id="challenge-title">Use a reusable water bottle</h3>
@@ -276,17 +275,20 @@
           </svg>
         </button>
       </section>
-
-      <section class="quick-habits">
-        <h3 class="section-label">Quick Log</h3>
-        <div class="quick-habits-grid" id="quick-habits"></div>
-      </section>
     </div>
   </template>
 
   <template id="template-habits">
     <div class="page page-habits" data-page="habits">
       <h2 class="sr-only">Habits</h2>
+
+      <section class="habit-trend glass glass-card">
+        <h3 class="section-label">30-Day Trend</h3>
+        <div class="chart-container chart-line">
+          <canvas id="chart-habit-trend"></canvas>
+        </div>
+      </section>
+
       <section class="habits-date-strip">
         <button class="date-pill glass" id="today-date" aria-label="Select date"></button>
         <div class="habits-today-count glass" id="today-count">0 / 12</div>
@@ -327,6 +329,15 @@
 
       <div class="habits-list" id="habits-list"></div>
 
+      <button class="btn btn-secondary add-habit-btn glass glass-card" id="btn-add-habit">
+        <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        <span>Add Custom Habit</span>
+      </button>
+
       <section class="weekly-heatmap glass glass-card">
         <h3 class="section-label">This Week</h3>
         <div class="heatmap-grid" id="heatmap-grid"></div>
@@ -340,15 +351,6 @@
           <span>More</span>
         </div>
       </section>
-
-      <button class="btn btn-secondary add-habit-btn glass glass-card" id="btn-add-habit">
-        <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="12" y1="5" x2="12" y2="19" />
-          <line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
-        <span>Add Custom Habit</span>
-      </button>
     </div>
   </template>
 
@@ -419,6 +421,9 @@
 
       <section class="impact-equivalents glass glass-card">
         <h3 class="section-label">Your Impact Equals</h3>
+        <div class="chart-container chart-bar">
+          <canvas id="chart-equivalents"></canvas>
+        </div>
         <div class="equivalents-grid">
           <div class="equivalent-item">
             <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand)"
@@ -469,6 +474,9 @@
 
       <section class="category-breakdown glass glass-card" id="category-breakdown">
         <h3 class="section-label">By Category</h3>
+        <div class="chart-container chart-doughnut">
+          <canvas id="chart-category-doughnut"></canvas>
+        </div>
         <div class="breakdown-list" id="breakdown-list"></div>
       </section>
     </div>
@@ -534,7 +542,7 @@
             </svg>
             Import Data from JSON
           </button>
-          <button class="btn btn-secondary btn-full btn-icon" id="btn-reset-data">
+          <button class="btn btn-danger btn-full btn-icon" id="btn-reset-data">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="1 4 1 10 7 10" />

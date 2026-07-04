@@ -1,47 +1,30 @@
-const CACHE_NAME = 'ecoflow-v1.0';
+const CACHE_NAME = 'ecoflow-v1.1';
 
 const urlsToCache = [
-  '/EcoFlow/',
-  '/EcoFlow/index.html',
-  '/EcoFlow/css/styles.css',
-  '/EcoFlow/css/index.css',
-  '/EcoFlow/css/habits.css',
-  '/EcoFlow/css/coach.css',
-  '/EcoFlow/css/impact.css',
-  '/EcoFlow/css/settings.css',
-  '/EcoFlow/css/scan.css',
-  '/EcoFlow/js/app.js',
-  '/EcoFlow/js/icons.js',
-  '/EcoFlow/js/constants.js',
-  '/EcoFlow/js/data.js',
-  '/EcoFlow/js/coach.js',
-  '/EcoFlow/js/coach-page.js',
-  '/EcoFlow/js/scan.js',
-  '/EcoFlow/js/scan-page.js',
-  '/EcoFlow/js/index.js',
-  '/EcoFlow/js/habits-page.js',
-  '/EcoFlow/js/impact-page.js',
-  '/EcoFlow/js/settings-page.js',
-  '/EcoFlow/js/weather.js',
-  '/EcoFlow/js/aqi.js',
-  '/EcoFlow/js/climate.js',
-  '/EcoFlow/js/geo.js',
-  '/EcoFlow/js/theme.js',
-  '/EcoFlow/js/nav.js',
-  '/EcoFlow/js/utils.js',
-  '/EcoFlow/manifest.json',
-  '/EcoFlow/icon.svg',
-  '/EcoFlow/icon-maskable.svg',
-  '/EcoFlow/favicon.ico',
-  '/EcoFlow/apple-touch-icon.png',
-  '/EcoFlow/apple-touch-icon-120x120.png',
-  '/EcoFlow/apple-touch-icon-152x152.png',
-  '/EcoFlow/apple-touch-icon-167x167.png',
-  '/EcoFlow/android-chrome-192x192.png',
-  '/EcoFlow/android-chrome-512x512.png',
-  '/EcoFlow/android-chrome-maskable-192x192.png',
-  '/EcoFlow/android-chrome-maskable-512x512.png',
-  '/EcoFlow/images/QR.svg',
+  '/',
+  '/index.html',
+  '/css/styles.css',
+  '/css/index.css',
+  '/css/habits.css',
+  '/css/coach.css',
+  '/css/impact.css',
+  '/css/settings.css',
+  '/css/scan.css',
+  '/js/bundle.js',
+  '/manifest.json',
+  '/icon.svg',
+  '/icon-maskable.svg',
+  '/favicon.ico',
+  '/apple-touch-icon.png',
+  '/apple-touch-icon-120x120.png',
+  '/apple-touch-icon-152x152.png',
+  '/apple-touch-icon-167x167.png',
+  '/android-chrome-192x192.png',
+  '/android-chrome-512x512.png',
+  '/android-chrome-maskable-192x192.png',
+  '/android-chrome-maskable-512x512.png',
+  'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js',
+  'https://unpkg.com/html5-qrcode',
 ];
 
 self.addEventListener('install', event => {
@@ -64,35 +47,29 @@ self.addEventListener('activate', event => {
   );
 });
 
+function staleWhileRevalidate(request) {
+  return caches.match(request).then(cached => {
+    const fetchPromise = fetch(request).then(response => {
+      if (response && response.ok) {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
+      }
+      return response;
+    }).catch(() => cached);
+    return cached || fetchPromise;
+  });
+}
+
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
-  if (event.request.url.includes('fonts.googleapis.com') || event.request.url.includes('fonts.gstatic.com')) {
-    event.respondWith(
-      caches.match(event.request).then(cached => {
-        const fetchPromise = fetch(event.request).then(response => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-          }
-          return response;
-        });
-        return cached || fetchPromise;
-      })
-    );
+  const url = event.request.url;
+  if (url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com') || url.includes('cdn.jsdelivr.net') || url.includes('unpkg.com')) {
+    event.respondWith(staleWhileRevalidate(event.request));
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      const fetchPromise = fetch(event.request).then(response => {
-        if (response && response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      });
-      return cached || fetchPromise;
-    })
-  );
+  if (url.includes('/api/')) return;
+
+  event.respondWith(staleWhileRevalidate(event.request));
 });

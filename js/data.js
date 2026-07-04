@@ -219,6 +219,22 @@ const EcoData = (() => {
     return days;
   }
 
+  function getTrendData(data, numDays = 30) {
+    const today = new Date();
+    const trend = [];
+    for (let i = numDays - 1; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const key = formatDateKey(d);
+      const count = (data.completedDates[key] || []).length;
+      trend.push({
+        date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        count,
+      });
+    }
+    return trend;
+  }
+
   function getCategoryBreakdown(data) {
     const habitMap = buildHabitMap(data.habits);
     const breakdown = {};
@@ -354,6 +370,7 @@ const EcoData = (() => {
     getTodayKey: todayKey,
     getHabitsForDate,
     getWeeklyHeatmap,
+    getTrendData,
     getCategoryBreakdown,
     getDailyChallenge,
     completeChallenge,

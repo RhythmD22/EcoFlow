@@ -11,6 +11,7 @@ export default [
         ...globals.browser,
         ...globals.serviceworker,
         Html5Qrcode: 'readonly',
+        Chart: 'readonly',
         structuredClone: 'readonly',
       },
     },

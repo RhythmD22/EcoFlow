@@ -33,6 +33,7 @@
     --success: #34d399;
     --warning: #fbbf24;
     --danger: #f87171;
+    --danger-bg: rgba(248, 113, 113, 0.10);
     --info: #38bdf8;
 
     /* Woody brown */
@@ -315,7 +316,6 @@
   .app-shell {
     position: relative;
     z-index: 1;
-    max-width: 480px;
     margin: 0 auto;
     min-height: 100dvh;
     display: flex;
@@ -577,6 +577,16 @@
     color: var(--text-primary);
   }
 
+  .btn-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+  }
+
+  .btn-danger:active {
+    opacity: 0.8;
+  }
+
   .btn-small {
     padding: var(--space-sm) var(--space-lg);
     font-size: var(--text-xs);
@@ -593,6 +603,24 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
+  }
+
+  .chart-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .chart-doughnut {
+    max-width: 260px;
+    margin: 0 auto var(--space-lg);
+  }
+
+  .chart-bar {
+    margin-bottom: var(--space-lg);
+  }
+
+  .chart-line {
+    margin-bottom: var(--space-sm);
   }
 }
 
@@ -923,71 +951,92 @@
   }
 }
 
-/* ── DESKTOP NOTIFICATION ──────────────────────────────── */
-
-.desktop-notification {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: var(--brand);
-  color: var(--text-on-brand);
-  text-align: center;
-  padding: var(--space-sm);
-  z-index: 9999;
-  font-size: var(--text-base);
-}
-
-.desktop-notification p {
-  margin: 0;
-  display: inline-block;
-}
-
-.desktop-notification button {
-  background: none;
-  border: none;
-  color: var(--text-on-brand);
-  font-size: var(--text-lg);
-  cursor: pointer;
-  padding: 0 var(--space-sm);
-  margin-left: var(--space-sm);
-  float: right;
-}
-
-.desktop-qr-code {
-  display: none;
-}
-
-/* ── RESPONSIVE ────────────────────────────────────────── */
+/* ── RESPONSIVE — DESKTOP ──────────────────────────────── */
 
 @media (min-width: 768px) {
-
-  .app-shell,
-  .bg-layer,
-  .bottom-nav,
-  .skip-link {
-    display: none;
+  .app-shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 56px 1fr;
+    grid-template-areas:
+      "header header"
+      "nav    main";
+    max-width: none;
+    min-height: 100dvh;
   }
 
-  .desktop-notification {
-    display: block;
+  .app-header {
+    grid-area: header;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
-  .desktop-qr-code {
-    display: block;
-    position: fixed;
+  .bottom-nav {
+    grid-area: nav;
+    position: static;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 2px;
+    padding: var(--space-lg) 0;
+    height: auto;
+    border-top: none;
+    border-right: 1px solid var(--glass-border);
+  }
+
+  .nav-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 12px 20px;
+    border-radius: 0;
+    font-size: var(--text-sm);
+    min-height: auto;
+    position: relative;
+    width: 100%;
+  }
+
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 250px;
-    height: 250px;
-    z-index: 10000;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 24px;
+    background: var(--brand);
+    border-radius: 0 3px 3px 0;
   }
-}
 
-@media (max-width: 767px) {
-  .desktop-qr-code {
+  .nav-item.active::before {
     display: none;
+  }
+
+  .nav-item .nav-label {
+    font-size: var(--text-sm);
+  }
+
+  #app-root {
+    grid-area: main;
+    padding: 24px 32px;
+    overflow-y: auto;
+    max-height: calc(100dvh - 56px);
+  }
+
+  .page {
+    max-width: 1200px;
+  }
+
+  .btn-full {
+    max-width: 360px;
+  }
+
+  .dialog-overlay .dialog {
+    max-width: 440px;
+  }
+
+  #toast-container {
+    bottom: var(--space-lg);
+    left: calc(220px + ((100vw - 220px) / 2));
   }
 }

@@ -3,6 +3,24 @@ import { EcoClimate } from './climate.js';
 import { Icons } from './icons.js';
 import { CO2_PER_TREE_KG, CO2_PER_CAR_MILE_KG, CO2_PER_LITER_WATER_KG, CO2_PER_KWH_KG } from './constants.js';
 
+const CATEGORY_COLORS = {
+  transport: '#4ade80',
+  food: '#22d3ee',
+  energy: '#fbbf24',
+  shopping: '#a78bfa',
+  waste: '#f87171',
+  water: '#38bdf8',
+};
+
+const CATEGORY_COLORS_ALPHA = {
+  transport: 'rgba(74,222,128,0.7)',
+  food: 'rgba(34,211,238,0.7)',
+  energy: 'rgba(251,191,36,0.7)',
+  shopping: 'rgba(167,139,250,0.7)',
+  waste: 'rgba(248,113,113,0.7)',
+  water: 'rgba(56,189,248,0.7)',
+};
+
 async function initImpact() {
   const appData = EcoData.load();
 
@@ -49,6 +67,47 @@ async function initImpact() {
   }
 
   renderBreakdown(appData);
+  renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh);
+}
+
+function renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh) {
+  const canvas = document.getElementById('chart-equivalents');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const existing = Chart.getChart(canvas);
+  if (existing) existing.destroy();
+
+  new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: ['Trees Planted', 'Miles Not Driven', 'Liters Saved', 'kWh Saved'],
+      datasets: [{
+        data: [treesVal, Math.round(carMiles), Math.round(waterLiters), energyKWh],
+        backgroundColor: ['#4ade80', '#22d3ee', '#38bdf8', '#fbbf24'],
+        borderRadius: 6,
+        borderSkipped: false,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      aspectRatio: 2,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        x: {
+          ticks: { color: '#9ca3a0', font: { size: 12 } },
+          grid: { display: false },
+        },
+        y: {
+          ticks: { color: '#9ca3a0', font: { size: 11 } },
+          grid: { color: 'rgba(255,255,255,0.06)' },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }
 
 function renderBreakdown(appData) {
@@ -82,6 +141,52 @@ function renderBreakdown(appData) {
         <span class="breakdown-co2">${data.co2.toFixed(1)} kg</span>
       </div>
     `).join('');
+
+  renderDoughnutChart(breakdown);
+}
+
+function renderDoughnutChart(breakdown) {
+  const canvas = document.getElementById('chart-category-doughnut');
+  if (!canvas || typeof Chart === 'undefined') return;
+
+  const existing = Chart.getChart(canvas);
+  if (existing) existing.destroy();
+
+  const entries = Object.entries(breakdown)
+    .filter(([, d]) => d.co2 > 0)
+    .sort((a, b) => b[1].co2 - a[1].co2);
+
+  if (entries.length === 0) return;
+
+  new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: entries.map(([cat]) => cat.charAt(0).toUpperCase() + cat.slice(1)),
+      datasets: [{
+        data: entries.map(([, d]) => d.co2),
+        backgroundColor: entries.map(([cat]) => CATEGORY_COLORS_ALPHA[cat] || '#4ade80'),
+        borderColor: entries.map(([cat]) => CATEGORY_COLORS[cat] || '#4ade80'),
+        borderWidth: 1,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#9ca3a0',
+            padding: 16,
+            font: { size: 12 },
+            usePointStyle: true,
+            pointStyleWidth: 8,
+          },
+        },
+      },
+      cutout: '65%',
+    },
+  });
 }
 
 export { initImpact };

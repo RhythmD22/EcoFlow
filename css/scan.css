@@ -274,3 +274,13 @@
     background: rgba(0, 0, 0, 0.05);
   }
 }
+
+@media (min-width: 768px) {
+  .page-scan {
+    max-width: 100%;
+  }
+
+  .scan-camera-btn {
+    max-width: none;
+  }
+}

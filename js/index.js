@@ -12,11 +12,14 @@ function initHome() {
   else if (hour < 17) greeting.textContent = 'Good afternoon';
   else greeting.textContent = 'Good evening';
 
+  _treePrevTotal = appData.totalActions;
   updateStreakDisplay(appData);
   updateTree(appData);
   initChallenge(appData);
   initQuickHabits(appData);
 }
+
+let _treePrevTotal = 0;
 
 function updateTree(appData) {
   const total = appData.totalActions;
@@ -27,21 +30,59 @@ function updateTree(appData) {
     const branch = document.getElementById(id);
     if (!branch) return;
     const show = total >= TREE_THRESHOLDS[i];
-    branch.classList.toggle('show', show);
+    const wasShown = branch.classList.contains('show');
+
+    if (!show && wasShown && total < _treePrevTotal) {
+      branch.classList.remove('show');
+      branch.classList.add('shed');
+      branch.addEventListener('animationend', function handler() {
+        branch.classList.remove('shed');
+        branch.removeEventListener('animationend', handler);
+      });
+    } else if (show && !wasShown && total > _treePrevTotal) {
+      branch.classList.add('show');
+    } else {
+      branch.classList.toggle('show', show);
+    }
+
     if (show) visibleBranches++;
   });
 
   for (const [leafId, threshold] of Object.entries(LEAF_THRESHOLDS)) {
     const leaf = document.getElementById(leafId);
     if (!leaf) continue;
-    leaf.classList.toggle('show', total >= threshold);
+    const show = total >= threshold;
+    const wasShown = leaf.classList.contains('show');
+
+    if (!show && wasShown && total < _treePrevTotal) {
+      leaf.classList.remove('show');
+      leaf.classList.add('shed');
+      leaf.addEventListener('animationend', function handler() {
+        leaf.classList.remove('shed');
+        leaf.removeEventListener('animationend', handler);
+      });
+    } else if (show && !wasShown && total > _treePrevTotal) {
+      leaf.classList.add('show');
+    } else {
+      leaf.classList.toggle('show', show);
+    }
   }
 
   const crown = document.getElementById('crown');
   if (crown) {
+    const crownWasShown = crown.classList.contains('show');
     if (total < TREE_CROWN_PARTIAL) {
-      crown.style.opacity = '0';
-      crown.classList.remove('show');
+      if (crownWasShown && total < _treePrevTotal) {
+        crown.classList.remove('show');
+        crown.classList.add('shed');
+        crown.addEventListener('animationend', function handler() {
+          crown.classList.remove('shed');
+          crown.removeEventListener('animationend', handler);
+        });
+      } else {
+        crown.style.opacity = '0';
+        crown.classList.remove('show');
+      }
     } else if (total < TREE_CROWN_FULL) {
       crown.style.opacity = '0.35';
       crown.classList.remove('show');
@@ -53,6 +94,8 @@ function updateTree(appData) {
       crown.classList.add('show');
     }
   }
+
+  _treePrevTotal = total;
 
   const totalActions = document.getElementById('total-habits');
   const co2Saved = document.getElementById('co2-saved');
@@ -189,12 +232,12 @@ function initQuickHabits(appData) {
         if (appData.streaks.current >= STREAK_WEEK_DAYS && appData.streaks.current % STREAK_WEEK_DAYS === 0) {
           spawnConfetti();
         }
-        updateTree(appData);
-        updateStreakDisplay(appData);
       } else {
         btn.classList.remove('logged');
         btn.setAttribute('aria-pressed', 'false');
       }
+      updateTree(appData);
+      updateStreakDisplay(appData);
     });
   });
 }
