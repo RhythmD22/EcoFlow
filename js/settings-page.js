@@ -25,6 +25,7 @@ function updateBadge(id, isConfigured) {
     badge.textContent = 'Not configured';
     badge.classList.remove('setting-status-badge--active');
   }
+  badge.style.visibility = 'visible';
 }
 
 function toggleLocalInput(id, serverActive) {
