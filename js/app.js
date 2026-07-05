@@ -7,7 +7,7 @@ import { initHome } from './index.js';
 import { initHabits } from './habits-page.js';
 import { initCoach } from './coach-page.js';
 import { initImpact } from './impact-page.js';
-import { initSettings } from './settings-page.js';
+import { initSettings, prefetchApiStatus } from './settings-page.js';
 import { initScan, getScanCleanup } from './scan-page.js';
 
 (() => {
@@ -94,6 +94,7 @@ import { initScan, getScanCleanup } from './scan-page.js';
       }
     });
 
+    prefetchApiStatus();
     navigateTo('home');
 
     if (!localStorage.getItem('ecoflow_data')) {

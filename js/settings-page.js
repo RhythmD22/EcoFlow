@@ -1,18 +1,31 @@
 import { EcoData } from './data.js';
 import { showToast, showConfirm } from './utils.js';
 
-async function refreshApiStatus() {
+let apiStatusCache = null;
+
+async function fetchApiStatus() {
   try {
     const response = await fetch('/api/api-status');
-    if (!response.ok) return;
+    if (!response.ok) return null;
     const status = await response.json();
-    updateBadge('status-gemini', status.gemini);
-    updateBadge('status-openweathermap', status.openweathermap);
-    toggleLocalInput('settings-gemini-local', status.gemini);
-    toggleLocalInput('settings-weather-local', status.openweathermap);
+    apiStatusCache = status;
+    return status;
   } catch (err) {
     console.warn('API status check failed:', err);
+    return null;
   }
+}
+
+function prefetchApiStatus() {
+  fetchApiStatus();
+}
+
+function applyApiStatus(status) {
+  if (!status) return;
+  updateBadge('status-gemini', status.gemini);
+  updateBadge('status-openweathermap', status.openweathermap);
+  toggleLocalInput('settings-gemini-local', status.gemini);
+  toggleLocalInput('settings-weather-local', status.openweathermap);
 }
 
 function updateBadge(id, isConfigured) {
@@ -25,7 +38,6 @@ function updateBadge(id, isConfigured) {
     badge.textContent = 'Not configured';
     badge.classList.remove('setting-status-badge--active');
   }
-  badge.style.visibility = 'visible';
 }
 
 function toggleLocalInput(id, serverActive) {
@@ -35,7 +47,12 @@ function toggleLocalInput(id, serverActive) {
 }
 
 function initSettings() {
-  refreshApiStatus();
+  if (apiStatusCache) {
+    applyApiStatus(apiStatusCache);
+  }
+  fetchApiStatus().then(status => {
+    if (status) applyApiStatus(status);
+  });
 
   const appData = EcoData.load();
 
@@ -121,4 +138,4 @@ function initSettings() {
   }
 }
 
-export { initSettings };
+export { initSettings, prefetchApiStatus };
