@@ -1,22 +1,28 @@
 function getPreferredTheme() {
   const saved = localStorage.getItem('ecoflow_theme');
-  if (saved === 'light' || saved === 'dark') return saved;
-  if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
-  return 'dark';
+  if (saved === 'dark') return 'dark';
+  if (saved === 'light') return 'light';
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+  return 'light';
 }
 
 function applyTheme(theme) {
-  document.documentElement.dataset.theme = theme;
+  if (theme === 'dark') {
+    document.documentElement.dataset.theme = 'dark';
+  } else {
+    delete document.documentElement.dataset.theme;
+    theme = 'light';
+  }
   localStorage.setItem('ecoflow_theme', theme);
 
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    meta.setAttribute('content', theme === 'light' ? '#15803d' : '#1A4030');
+    meta.setAttribute('content', theme === 'dark' ? '#1A4030' : '#f1f7f3');
   }
 
   const btn = document.getElementById('btn-theme');
   if (btn) {
-    btn.setAttribute('aria-label', theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
   }
 }
 
@@ -26,14 +32,14 @@ function initTheme() {
   const btn = document.getElementById('btn-theme');
   if (btn) {
     btn.addEventListener('click', () => {
-      const current = document.documentElement.dataset.theme;
-      applyTheme(current === 'light' ? 'dark' : 'light');
+      const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
     });
   }
 
-  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
     if (!localStorage.getItem('ecoflow_theme')) {
-      applyTheme(e.matches ? 'light' : 'dark');
+      applyTheme(e.matches ? 'dark' : 'light');
     }
   });
 }

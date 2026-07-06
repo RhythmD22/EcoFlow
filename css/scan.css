@@ -257,20 +257,20 @@
     flex-shrink: 0;
   }
 
-  [data-theme="light"] .scan-input {
+  [data-theme="dark"] .scan-input {
     background: rgba(0, 0, 0, 0.04);
   }
 
-  [data-theme="light"] .scan-score.eco-score {
+  [data-theme="dark"] .scan-score.eco-score {
     background: rgba(0, 0, 0, 0.02);
   }
 
-  [data-theme="light"] .scan-recent-item {
+  [data-theme="dark"] .scan-recent-item {
     background: rgba(0, 0, 0, 0.02);
   }
 
-  [data-theme="light"] .scan-recent-item:hover,
-  [data-theme="light"] .scan-recent-item:focus-visible {
+  [data-theme="dark"] .scan-recent-item:hover,
+  [data-theme="dark"] .scan-recent-item:focus-visible {
     background: rgba(0, 0, 0, 0.05);
   }
 }
