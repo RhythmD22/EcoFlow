@@ -21,7 +21,7 @@ const CATEGORY_COLORS_ALPHA = {
   water: 'rgba(56,189,248,0.7)',
 };
 
-async function initImpact() {
+function initImpact() {
   const appData = EcoData.load();
 
   const totalCO2 = document.getElementById('impact-total-co2');
@@ -52,22 +52,23 @@ async function initImpact() {
     }
   }
 
-  if (national) {
-    try {
-      const comparison = await EcoClimate.fetchCountryEmissions();
-      if (comparison && comparison.countryCode && appData.totalCO2 > 0) {
-        const pct = ((appData.totalCO2 / comparison.kgPerYear) * 100).toFixed(2);
-        national.textContent = `The average person in ${comparison.country} emits ${comparison.kgPerYear.toLocaleString()} kg CO₂ per year - you've offset ${pct}% of that.`;
-      } else {
-        national.textContent = '';
-      }
-    } catch (_) {
-      national.textContent = '';
-    }
-  }
+  updateNationalText(national, appData, EcoClimate.getCachedEmissions());
+  EcoClimate.fetchCountryEmissions()
+    .then(comparison => updateNationalText(national, appData, comparison))
+    .catch(() => { if (national) national.textContent = ''; });
 
   renderBreakdown(appData);
   renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh);
+}
+
+function updateNationalText(national, appData, comparison) {
+  if (!national) return;
+  if (comparison && comparison.countryCode && appData.totalCO2 > 0) {
+    const pct = ((appData.totalCO2 / comparison.kgPerYear) * 100).toFixed(2);
+    national.textContent = `The average person in ${comparison.country} emits ${comparison.kgPerYear.toLocaleString()} kg CO₂ per year - you've offset ${pct}% of that.`;
+  } else {
+    national.textContent = '';
+  }
 }
 
 function renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh) {

@@ -14,6 +14,7 @@ FILES=(
   js/theme.js
   js/nav.js
   js/utils.js
+  js/api-status.js
   js/geo.js
   js/weather.js
   js/aqi.js

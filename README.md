@@ -115,6 +115,7 @@ EcoFlow/
 │   ├── data.js                 # localStorage CRUD, habit tracking, streaks, challenges, trend data, export/import
 │   ├── icons.js                # Lucide SVG icon definitions (inline, 16 icons)
 │   ├── utils.js                # Shared utilities: toasts, dialogs, confetti, escapeHTML
+│   ├── api-status.js           # Shared /api/api-status cache: fetch, prefetch, getCachedApiStatus
 │   ├── index.js                # Home page: tree animation with shedding, streaks, challenges, quick-log
 │   ├── habits-page.js          # Habits page: calendar, category filters, heatmap, trend chart, custom habits
 │   ├── coach.js                # Gemini API integration (proxied via /api/coach) + offline fallback

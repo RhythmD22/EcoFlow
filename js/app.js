@@ -3,11 +3,13 @@ import { setNavigator } from './nav.js';
 import { showToast } from './utils.js';
 import { EcoWeather } from './weather.js';
 import { EcoAQI } from './aqi.js';
+import { EcoClimate } from './climate.js';
 import { initHome } from './index.js';
 import { initHabits } from './habits-page.js';
 import { initCoach } from './coach-page.js';
 import { initImpact } from './impact-page.js';
-import { initSettings, prefetchApiStatus } from './settings-page.js';
+import { initSettings } from './settings-page.js';
+import { prefetchApiStatus } from './api-status.js';
 import { initScan, getScanCleanup } from './scan-page.js';
 
 (() => {
@@ -101,8 +103,10 @@ import { initScan, getScanCleanup } from './scan-page.js';
       showToast('Welcome to EcoFlow ✦ Log a habit to begin', 'success');
     }
 
-    EcoWeather.fetchWeather().catch(() => { });
     EcoAQI.fetchAQI().catch(() => { });
+    EcoWeather.fetchWeather()
+      .catch(() => { })
+      .then(() => EcoClimate.fetchCountryEmissions().catch(() => { }));
 
     if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
       navigator.serviceWorker.register('/service-worker.js').catch(() => { });

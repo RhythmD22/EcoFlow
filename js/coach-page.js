@@ -1,20 +1,9 @@
 import { EcoData } from './data.js';
 import { EcoCoach } from './coach.js';
 import { escapeHTML } from './utils.js';
+import { getApiStatusCache, fetchApiStatus } from './api-status.js';
 
 let pendingPrompt = null;
-let serverApiStatus = { gemini: false, openweathermap: false };
-
-async function checkServerApiStatus() {
-  try {
-    const response = await fetch('/api/api-status');
-    if (response.ok) {
-      serverApiStatus = await response.json();
-      return serverApiStatus;
-    }
-  } catch (err) { /* ignore */ }
-  return serverApiStatus;
-}
 
 function setPendingPrompt(prompt) {
   pendingPrompt = prompt;
@@ -33,17 +22,8 @@ function initCoach() {
   const clearBtn = document.getElementById('btn-clear-chat');
   const coachError = document.getElementById('coach-error');
 
-  checkServerApiStatus().then(() => {
-    updateApiStatusText(apiStatus);
-  });
-
-  if (apiStatus) {
-    if (EcoCoach.hasAPIKey() || serverApiStatus.gemini) {
-      apiStatus.textContent = 'AI powered by Google Gemini';
-    } else {
-      apiStatus.textContent = 'Using offline responses. Add a Gemini API key in Settings for personalized AI coaching.';
-    }
-  }
+  updateApiStatusText(apiStatus);
+  fetchApiStatus().then(() => updateApiStatusText(apiStatus));
 
   if (pendingPrompt && input) {
     input.value = pendingPrompt;
@@ -136,7 +116,8 @@ function initCoach() {
     EcoData.addChatMessage(appData, 'coach', result.text, respTime);
 
     if (result.fallback && coachError) {
-      const hasKey = EcoCoach.hasAPIKey() || serverApiStatus.gemini;
+      const status = getApiStatusCache();
+      const hasKey = EcoCoach.hasAPIKey() || (status && status.gemini);
       const errorMessages = {
         no_key: hasKey ? 'AI response unavailable - using offline responses.' : 'No API key set - using offline responses. Add a Gemini API key in Settings.',
         auth: 'API key rejected - using offline responses. Check your API key in Settings.',
@@ -160,8 +141,11 @@ function initCoach() {
 
 function updateApiStatusText(apiStatus) {
   if (!apiStatus) return;
-  if (EcoCoach.hasAPIKey() || serverApiStatus.gemini) {
+  const status = getApiStatusCache();
+  if (EcoCoach.hasAPIKey() || (status && status.gemini)) {
     apiStatus.textContent = 'AI powered by Google Gemini';
+  } else {
+    apiStatus.textContent = 'Using offline responses. Add a Gemini API key in Settings for personalized AI coaching.';
   }
 }
 

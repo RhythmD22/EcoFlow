@@ -64,7 +64,11 @@ const EcoClimate = (() => {
     }
   }
 
-  return { fetchCountryEmissions };
+  function getCachedEmissions() {
+    return cachedData;
+  }
+
+  return { fetchCountryEmissions, getCachedEmissions };
 })();
 
 export { EcoClimate };
