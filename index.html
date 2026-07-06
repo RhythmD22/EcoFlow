@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="EcoFlow - AI-Powered Personal Sustainability Coach">
-  <meta name="theme-color" content="#1A4030">
+  <meta name="theme-color" content="#f1f7f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1510" media="(prefers-color-scheme: dark)">
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -34,16 +35,19 @@
   <link rel="stylesheet" href="css/impact.css">
   <link rel="stylesheet" href="css/settings.css">
   <link rel="stylesheet" href="css/scan.css">
+
   <script src="https://unpkg.com/html5-qrcode" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
+
   <script>
     (function () {
       let savedTheme = localStorage.getItem('ecoflow_theme');
       if (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches) savedTheme = 'light';
       if (savedTheme) {
         document.documentElement.dataset.theme = savedTheme;
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', savedTheme === 'light' ? '#15803d' : '#0d1510');
+        const metas = document.querySelectorAll('meta[name="theme-color"]');
+        metas.forEach(function (m) { m.removeAttribute('media'); });
+        metas.forEach(function (m) { m.setAttribute('content', savedTheme === 'light' ? '#15803d' : '#0d1510'); });
       }
     })();
   </script>
