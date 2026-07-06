@@ -147,9 +147,12 @@ EcoFlow/
 ├── service-worker.js                       # Offline caching and install flow
 ├── vercel.json                             # Vercel deployment config (SPA rewrites)
 ├── build-bundle.sh                         # Shell script to regenerate bundle.js from source modules
-├── package.json                            # npm scripts: build, lint
+├── package.json                            # npm scripts: build, lint, test
 ├── package-lock.json                       # Dependency lock file
 ├── eslint.config.js                        # ESLint flat config
+├── tests/
+│   ├── data.test.js                        # Tests for data layer (habits, streaks, challenges)
+│   └── constants.test.js                   # Tests for tree thresholds and CO₂ constants
 ├── .gitignore
 ├── .env.example                            # Environment variable template
 ├── LICENSE
@@ -275,6 +278,8 @@ The animated background layer (floating gradient orbs + noise texture) creates t
 | Climate Data | [World Bank](https://data.worldbank.org) — national CO₂ per capita for impact comparisons |
 | PWA | Service Worker API, Web App Manifest |
 | Linting | ESLint (`eslint.config.js`) |
+| Testing | Node.js native test runner |
+| Bundling | Shell script concatenation |
 
 No framework. All visual effects (glassmorphism, orb animations, confetti, tree shedding animations) are pure CSS. Chart.js provides interactive charts on the Impact and Habits pages. `bundle.js` is a simple concatenation of all JS modules for the production build.
 
@@ -322,6 +327,7 @@ This starts the Vercel development environment. Set `GEMINI_API_KEY` and/or `OPE
 | `npm install` | Install dev dependencies (ESLint for linting) |
 | `npm run build` | Regenerate `js/bundle.js` from source modules |
 | `npm run lint` | Run ESLint on all JS source files |
+| `npm run test` | Run the test suite |
 | `npx vercel dev` | Start local dev server with all features |
 | `python3 -m http.server 8080` | Quick static preview (no API features) |
 

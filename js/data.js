@@ -364,6 +364,7 @@ const EcoData = (() => {
 
   return {
     load,
+    save,
     refreshData,
     toggleHabit,
     isHabitDone,
@@ -387,6 +388,12 @@ const EcoData = (() => {
     getChatHistory,
     clearChatHistory,
     defaultHabits,
+    _formatDateKey: formatDateKey,
+    _recomputeStreak: recomputeStreak,
+    _recalculate: recalculate,
+    _buildHabitMap: buildHabitMap,
+    _getDefaultData: getDefaultData,
+    _migrate: migrate,
   };
 })();
 
