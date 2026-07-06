@@ -65,7 +65,7 @@
     align-items: center;
     gap: var(--space-xs);
     padding: var(--space-lg);
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(0, 0, 0, 0.02);
     border-radius: var(--radius-md);
     border: 1px solid var(--glass-border);
   }
@@ -135,7 +135,7 @@
   .breakdown-bar-track {
     width: 60px;
     height: 6px;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.06);
     border-radius: var(--radius-full);
     overflow: hidden;
   }
