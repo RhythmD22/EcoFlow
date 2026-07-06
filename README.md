@@ -180,7 +180,7 @@ The app is a single-page application. All views live as `<template>` elements in
 
 EcoFlow uses a green-tinted dark theme with frosted glass surfaces and a full light theme:
 
-### Dark Theme (Default)
+### Dark Theme
 
 | Token | Value | Usage |
 |-------|-------|-------|
@@ -192,13 +192,13 @@ EcoFlow uses a green-tinted dark theme with frosted glass surfaces and a full li
 | `--text-secondary` | `#9ca3a0` | Secondary text |
 | `--text-tertiary` | `#88928c` | Captions, hints |
 
-### Light Theme (`[data-theme="light"]`)
+### Light Theme (Default)
 
 | Token | Value | Contrast | Usage |
 |-------|-------|----------|-------|
 | `--bg-body` | `#f1f7f3` | — | Page background |
 | `--glass-bg` | `rgba(255, 255, 255, 0.65)` | — | Frosted card surfaces |
-| `--brand` | `#15803d` | 5.0:1 | Darker forest green for readability |
+| `--brand` | `#15803d` | 4.6:1 | Darker forest green for readability |
 | `--text-primary` | `#0d1711` | 16.3:1 | Headings, body text |
 | `--text-secondary` | `#56635b` | 5.9:1 | Secondary text |
 | `--text-tertiary` | `#5f6b62` | 5.2:1 | Captions, hints |
@@ -221,13 +221,13 @@ A sun/moon button in the header switches between themes. Persists to `localStora
 
 ### Semantic Colors
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--success` | `#34d399` | Completions, success states |
-| `--warning` | `#fbbf24` | Amber accents |
-| `--danger` | `#f87171` | Delete actions, reset button |
-| `--danger-bg` | `rgba(248, 113, 113, 0.10)` | Danger button background |
-| `--info` | `#38bdf8` | Water/ocean category accents |
+| Token | Dark Mode | Light Mode | Usage |
+|-------|-----------|------------|-------|
+| `--success` | `#34d399` | `#15803d` | Completions, success states |
+| `--warning` | `#fbbf24` | `#b45309` | Amber accents |
+| `--danger` | `#f87171` | `#b91c1c` | Delete actions, reset button |
+| `--danger-bg` | `rgba(248, 113, 113, 0.10)` | `rgba(185, 28, 28, 0.10)` | Danger button background |
+| `--info` | `#38bdf8` | `#0369a1` | Water/ocean category accents |
 
 ### Typography
 
