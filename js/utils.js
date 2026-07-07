@@ -5,6 +5,10 @@ const TOAST_DURATION = 2200;
 const CONFETTI_COUNT = 40;
 const CONFETTI_DURATION = 2500;
 
+function cssVar(name, fallback) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+}
+
 function escapeHTML(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -182,4 +186,4 @@ function debugWarn(...args) {
   if (localStorage.getItem('ecoflow_debug') === '1') console.warn(...args);
 }
 
-export { escapeHTML, toggleHabitAndRefresh, showToast, spawnConfetti, showConfirm, showPrompt, debugWarn };
+export { escapeHTML, toggleHabitAndRefresh, showToast, spawnConfetti, showConfirm, showPrompt, debugWarn, cssVar };

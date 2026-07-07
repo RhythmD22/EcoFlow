@@ -7,6 +7,16 @@
   <meta name="description" content="EcoFlow - AI-Powered Personal Sustainability Coach">
   <meta name="theme-color" content="#f1f7f3">
 
+  <script>
+    (function () {
+      var t = localStorage.getItem('ecoflow_theme');
+      var isDark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      if (isDark) document.documentElement.dataset.theme = 'dark';
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', isDark ? '#0d1510' : '#f1f7f3');
+    })();
+  </script>
+
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="EcoFlow">
@@ -428,7 +438,7 @@
             <span class="eq-label">Trees planted</span>
           </div>
           <div class="equivalent-item eq-cyan">
-            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22d3ee"
+            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
                   d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
@@ -450,8 +460,8 @@
             <span class="eq-value" id="eq-water">0</span>
             <span class="eq-label">Liters saved</span>
           </div>
-          <div class="equivalent-item eq-amber">
-            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--warning)"
+          <div class="equivalent-item eq-energy">
+            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--energy)"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
                   d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />

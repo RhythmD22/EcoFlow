@@ -101,8 +101,8 @@
     color: var(--warning);
     text-align: center;
     padding: var(--space-sm) var(--space-md);
-    background: rgba(180, 83, 9, 0.08);
-    border: 1px solid rgba(180, 83, 9, 0.2);
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-border);
     border-radius: var(--radius-sm);
   }
 

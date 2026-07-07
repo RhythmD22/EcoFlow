@@ -98,9 +98,9 @@
   }
 
   .setting-status-badge--active {
-    background: rgba(52, 211, 153, 0.12);
+    background: var(--success-bg-subtle);
     color: var(--success);
-    border-color: rgba(52, 211, 153, 0.3);
+    border-color: var(--success-border-subtle);
   }
 }
 

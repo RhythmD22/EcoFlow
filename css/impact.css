@@ -86,11 +86,11 @@
   }
 
   .equivalent-item.eq-cyan .eq-value {
-    color: #22d3ee;
+    color: var(--cyan);
   }
 
-  .equivalent-item.eq-amber .eq-value {
-    color: var(--warning);
+  .equivalent-item.eq-energy .eq-value {
+    color: var(--energy);
   }
 
   .eq-label {

@@ -64,7 +64,7 @@ To run locally with all features:
 git clone https://github.com/rhythmd22/EcoFlow.git
 cd EcoFlow
 cp .env.example .env    # add API keys (optional)
-npm run build && npx vercel dev
+npx vercel dev
 ```
 
 For a quick preview without API features, serve statically:
@@ -217,17 +217,22 @@ All text tokens meet WCAG 2.1 AA minimum (4.5:1 for normal text, 3:1 for large t
 
 ### Theme Toggle
 
-A sun/moon button in the header switches between themes. Persists to `localStorage`. Falls back to `prefers-color-scheme` on first visit. Live-listens for OS theme changes. PWA `theme-color` meta tag updates dynamically.
+A sun/moon button in the header switches between themes. Persists to `localStorage`. Falls back to `prefers-color-scheme` on first visit. Live-listens for OS theme changes. An inline `<head>` script sets `data-theme` before the first paint to prevent a flash of wrong theme on page load. PWA `theme-color` meta tag updates dynamically.
 
 ### Semantic Colors
 
 | Token | Dark Mode | Light Mode | Usage |
 |-------|-----------|------------|-------|
 | `--success` | `#34d399` | `#15803d` | Completions, success states |
-| `--warning` | `#fbbf24` | `#b45309` | Amber accents |
-| `--danger` | `#f87171` | `#b91c1c` | Delete actions, reset button |
+| `--warning` | `#fbbf24` | `#b45309` | Error/warning accents |
+| `--danger` | `#ef4444` | `#b91c1c` | Delete actions, reset button |
 | `--danger-bg` | `rgba(248, 113, 113, 0.10)` | `rgba(185, 28, 28, 0.10)` | Danger button background |
 | `--info` | `#38bdf8` | `#0369a1` | Water/ocean category accents |
+| `--energy` | `#facc15` | `#92400e` | kWh / energy equivalents |
+| `--cyan` | `#22d3ee` | `#0e7490` | Miles / transport accents |
+| `--accent-purple` | `#a78bfa` | `#a78bfa` | Shopping category accent |
+
+All semantic colors meet WCAG 2.1 AA in both themes. Helper tokens (`--warning-bg`, `--warning-border`, `--success-bg-subtle`, `--success-border-subtle`, `--brand-bg-subtle`, `--grid-color`) provide theme-adaptive semi-transparent backgrounds and borders.
 
 ### Typography
 
@@ -313,7 +318,7 @@ To enable real AI-powered coaching, weather-based suggestions, and air quality d
 
 ```bash
 cp .env.example .env      # add API keys (optional)
-npm run build && npx vercel dev
+npx vercel dev
 ```
 
 This starts the Vercel development environment. Set `GEMINI_API_KEY` and/or `OPENWEATHER_API_KEY` in `.env` (both are optional — the AI Coach uses a full offline fallback without them). Without `vercel dev`, you can still track habits, log challenges, and scan barcodes — only the AI coach and weather suggestions need API keys.

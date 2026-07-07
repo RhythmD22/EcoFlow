@@ -261,8 +261,8 @@
     display: inline-flex;
     align-self: flex-start;
     padding: var(--space-xs) var(--space-md);
-    background: rgba(74, 222, 128, 0.12);
-    border: 1px solid rgba(74, 222, 128, 0.2);
+    background: var(--brand-glow);
+    border: 1px solid var(--brand-glow);
     border-radius: var(--radius-full);
     font-size: var(--text-xs);
     font-weight: 600;
@@ -314,15 +314,9 @@
   }
 
   .quick-habit.logged {
-    background: rgba(21, 128, 61, 0.08);
-    border-color: rgba(21, 128, 61, 0.3);
-    box-shadow: 0 0 0 1px rgba(21, 128, 61, 0.2), 0 0 12px rgba(21, 128, 61, 0.15);
-  }
-
-  [data-theme="dark"] .quick-habit.logged {
-    background: rgba(74, 222, 128, 0.10);
-    border-color: rgba(74, 222, 128, 0.35);
-    box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.25), 0 0 12px var(--brand-glow);
+    background: var(--brand-bg-subtle);
+    border-color: var(--brand-glow);
+    box-shadow: 0 0 0 1px var(--brand-glow), 0 0 12px var(--brand-glow);
   }
 
   .quick-habit-icon {

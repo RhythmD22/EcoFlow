@@ -1,25 +1,31 @@
 import { EcoData } from './data.js';
 import { EcoClimate } from './climate.js';
 import { Icons } from './icons.js';
+import { cssVar } from './utils.js';
 import { CO2_PER_TREE_KG, CO2_PER_CAR_MILE_KG, CO2_PER_LITER_WATER_KG, CO2_PER_KWH_KG } from './constants.js';
 
-const CATEGORY_COLORS = {
-  transport: '#4ade80',
-  food: '#22d3ee',
-  energy: '#fbbf24',
-  shopping: '#a78bfa',
-  waste: '#f87171',
-  water: '#38bdf8',
-};
+function getCategoryColors() {
+  return {
+    transport: cssVar('--brand', '#15803d'),
+    food: cssVar('--cyan', '#0e7490'),
+    energy: cssVar('--energy', '#92400e'),
+    shopping: cssVar('--accent-purple', '#a78bfa'),
+    waste: cssVar('--danger', '#b91c1c'),
+    water: cssVar('--info', '#0369a1'),
+  };
+}
 
-const CATEGORY_COLORS_ALPHA = {
-  transport: 'rgba(74,222,128,0.7)',
-  food: 'rgba(34,211,238,0.7)',
-  energy: 'rgba(251,191,36,0.7)',
-  shopping: 'rgba(167,139,250,0.7)',
-  waste: 'rgba(248,113,113,0.7)',
-  water: 'rgba(56,189,248,0.7)',
-};
+function getCategoryColorsAlpha() {
+  const colors = getCategoryColors();
+  const alpha = {};
+  for (const [cat, hex] of Object.entries(colors)) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    alpha[cat] = `rgba(${r},${g},${b},0.7)`;
+  }
+  return alpha;
+}
 
 function initImpact() {
   const appData = EcoData.load();
@@ -78,13 +84,20 @@ function renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh) {
   const existing = Chart.getChart(canvas);
   if (existing) existing.destroy();
 
+  const brand = cssVar('--brand', '#15803d');
+  const cyan = cssVar('--cyan', '#0e7490');
+  const info = cssVar('--info', '#0369a1');
+  const energy = cssVar('--energy', '#92400e');
+  const textSecondary = cssVar('--text-secondary', '#56635b');
+  const gridColor = cssVar('--grid-color', 'rgba(0,0,0,0.06)');
+
   new Chart(canvas, {
     type: 'bar',
     data: {
       labels: ['Trees Planted', 'Miles Not Driven', 'Liters Saved', 'kWh Saved'],
       datasets: [{
         data: [treesVal, Math.round(carMiles), Math.round(waterLiters), energyKWh],
-        backgroundColor: ['#4ade80', '#22d3ee', '#38bdf8', '#fbbf24'],
+        backgroundColor: [brand, cyan, info, energy],
         borderRadius: 6,
         borderSkipped: false,
       }],
@@ -98,12 +111,12 @@ function renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh) {
       },
       scales: {
         x: {
-          ticks: { color: '#9ca3a0', font: { size: 12 } },
+          ticks: { color: textSecondary, font: { size: 12 } },
           grid: { display: false },
         },
         y: {
-          ticks: { color: '#9ca3a0', font: { size: 11 } },
-          grid: { color: 'rgba(255,255,255,0.06)' },
+          ticks: { color: textSecondary, font: { size: 11 } },
+          grid: { color: gridColor },
           beginAtZero: true,
         },
       },
@@ -159,14 +172,18 @@ function renderDoughnutChart(breakdown) {
 
   if (entries.length === 0) return;
 
+  const catColors = getCategoryColors();
+  const catColorsAlpha = getCategoryColorsAlpha();
+  const textSecondary = cssVar('--text-secondary', '#9ca3a0');
+
   new Chart(canvas, {
     type: 'doughnut',
     data: {
       labels: entries.map(([cat]) => cat.charAt(0).toUpperCase() + cat.slice(1)),
       datasets: [{
         data: entries.map(([, d]) => d.co2),
-        backgroundColor: entries.map(([cat]) => CATEGORY_COLORS_ALPHA[cat] || '#4ade80'),
-        borderColor: entries.map(([cat]) => CATEGORY_COLORS[cat] || '#4ade80'),
+        backgroundColor: entries.map(([cat]) => catColorsAlpha[cat] || catColors.transport),
+        borderColor: entries.map(([cat]) => catColors[cat] || catColors.transport),
         borderWidth: 1,
       }],
     },
@@ -177,7 +194,7 @@ function renderDoughnutChart(breakdown) {
         legend: {
           position: 'bottom',
           labels: {
-            color: '#9ca3a0',
+            color: textSecondary,
             padding: 16,
             font: { size: 12 },
             usePointStyle: true,

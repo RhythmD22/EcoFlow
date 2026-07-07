@@ -1,5 +1,5 @@
 import { EcoData } from './data.js';
-import { escapeHTML, showToast, toggleHabitAndRefresh, showPrompt } from './utils.js';
+import { escapeHTML, showToast, toggleHabitAndRefresh, showPrompt, cssVar } from './utils.js';
 import { Icons } from './icons.js';
 
 function updateDatePill(selectedDate, datePill) {
@@ -157,6 +157,10 @@ function renderTrendChart(appData) {
 
   const trend = EcoData.getTrendData(appData, 30);
 
+  const brand = cssVar('--brand', '#15803d');
+  const textSecondary = cssVar('--text-secondary', '#56635b');
+  const gridColor = cssVar('--grid-color', 'rgba(0,0,0,0.06)');
+
   new Chart(canvas, {
     type: 'line',
     data: {
@@ -164,14 +168,14 @@ function renderTrendChart(appData) {
       datasets: [{
         label: 'Habits completed',
         data: trend.map(d => d.count),
-        borderColor: '#4ade80',
-        backgroundColor: 'rgba(74, 222, 128, 0.08)',
+        borderColor: brand,
+        backgroundColor: brand.replace(')', ',0.08)').replace('rgb', 'rgba'),
         borderWidth: 2,
         fill: true,
         tension: 0.3,
         pointRadius: 2,
         pointHoverRadius: 5,
-        pointBackgroundColor: '#4ade80',
+        pointBackgroundColor: brand,
       }],
     },
     options: {
@@ -183,7 +187,7 @@ function renderTrendChart(appData) {
       scales: {
         x: {
           ticks: {
-            color: '#9ca3a0',
+            color: textSecondary,
             font: { size: 10 },
             maxTicksLimit: 6,
             maxRotation: 0,
@@ -192,11 +196,11 @@ function renderTrendChart(appData) {
         },
         y: {
           ticks: {
-            color: '#9ca3a0',
+            color: textSecondary,
             font: { size: 11 },
             stepSize: 1,
           },
-          grid: { color: 'rgba(255,255,255,0.06)' },
+          grid: { color: gridColor },
           beginAtZero: true,
         },
       },
