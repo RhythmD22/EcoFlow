@@ -61,7 +61,7 @@ function initImpact() {
   updateNationalText(national, appData, EcoClimate.getCachedEmissions());
   EcoClimate.fetchCountryEmissions()
     .then(comparison => updateNationalText(national, appData, comparison))
-    .catch(() => { if (national) national.textContent = ''; });
+    .catch(() => { if (national) national.textContent = 'Country comparison currently unavailable'; });
 
   renderBreakdown(appData);
   renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh);
@@ -79,7 +79,11 @@ function updateNationalText(national, appData, comparison) {
 
 function renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh) {
   const canvas = document.getElementById('chart-equivalents');
-  if (!canvas || typeof Chart === 'undefined') return;
+  if (!canvas || typeof Chart === 'undefined') {
+    const table = document.getElementById('chart-equivalents-table');
+    if (table) table.innerHTML = '<tr><td>Chart data unavailable</td></tr>';
+    return;
+  }
 
   const existing = Chart.getChart(canvas);
   if (existing) existing.destroy();
@@ -122,6 +126,15 @@ function renderEquivalentsChart(treesVal, carMiles, waterLiters, energyKWh) {
       },
     },
   });
+
+  const table = document.getElementById('chart-equivalents-table');
+  if (table) {
+    table.innerHTML = `<tr><th scope="col">Equivalent</th><th scope="col">Value</th></tr>
+      <tr><td>Trees planted</td><td>${treesVal.toFixed(1)}</td></tr>
+      <tr><td>Miles not driven</td><td>${Math.round(carMiles)}</td></tr>
+      <tr><td>Liters saved</td><td>${Math.round(waterLiters)}</td></tr>
+      <tr><td>kWh saved</td><td>${energyKWh.toFixed(1)}</td></tr>`;
+  }
 }
 
 function renderBreakdown(appData) {
@@ -140,28 +153,32 @@ function renderBreakdown(appData) {
     water: Icons.shower,
   };
 
-  list.innerHTML = Object.entries(breakdown)
+  list.innerHTML = `<ul class="breakdown-list-inner">${Object.entries(breakdown)
     .sort((a, b) => b[1].co2 - a[1].co2)
     .map(([cat, data]) => `
-      <div class="breakdown-item glass">
-        <span class="breakdown-icon">${icons[cat] || Icons.tree}</span>
+      <li class="breakdown-item glass">
+        <span class="breakdown-icon" aria-hidden="true">${icons[cat] || Icons.tree}</span>
         <div class="breakdown-info">
           <div class="breakdown-name">${cat.charAt(0).toUpperCase() + cat.slice(1)}</div>
           <div class="breakdown-count">${data.count} action${data.count !== 1 ? 's' : ''}</div>
         </div>
         <div class="breakdown-bar-track">
-          <div class="breakdown-bar-fill" style="width: ${(data.co2 / maxCO2) * 100}%"></div>
+          <div class="breakdown-bar-fill" style="width: ${(data.co2 / maxCO2) * 100}%" role="progressbar" aria-valuenow="${data.co2.toFixed(1)}" aria-valuemin="0" aria-valuemax="${maxCO2.toFixed(1)}" aria-label="${cat.charAt(0).toUpperCase() + cat.slice(1)}: ${data.co2.toFixed(1)} kg CO₂"></div>
         </div>
         <span class="breakdown-co2">${data.co2.toFixed(1)} kg</span>
-      </div>
-    `).join('');
+      </li>
+    `).join('')}</ul>`;
 
   renderDoughnutChart(breakdown);
 }
 
 function renderDoughnutChart(breakdown) {
   const canvas = document.getElementById('chart-category-doughnut');
-  if (!canvas || typeof Chart === 'undefined') return;
+  if (!canvas || typeof Chart === 'undefined') {
+    const table = document.getElementById('chart-doughnut-table');
+    if (table) table.innerHTML = '<tr><td>Chart data unavailable</td></tr>';
+    return;
+  }
 
   const existing = Chart.getChart(canvas);
   if (existing) existing.destroy();
@@ -205,6 +222,14 @@ function renderDoughnutChart(breakdown) {
       cutout: '65%',
     },
   });
+
+  const table = document.getElementById('chart-doughnut-table');
+  if (table) {
+    table.innerHTML = `<tr><th scope="col">Category</th><th scope="col">CO₂ Saved (kg)</th><th scope="col">Actions</th></tr>
+      ${entries.map(([cat, d]) =>
+      `<tr><td>${cat.charAt(0).toUpperCase() + cat.slice(1)}</td><td>${d.co2.toFixed(1)}</td><td>${d.count}</td></tr>`
+    ).join('')}`;
+  }
 }
 
 export { initImpact };

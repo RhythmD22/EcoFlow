@@ -148,16 +148,19 @@ function initChallenge(appData) {
 
     if (appData.challengeCompleted) {
       newBtn.classList.add('done');
-      newBtn.setAttribute('aria-disabled', 'true');
-      newBtn.innerHTML = `<span>Completed!</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${Icons.checkmark}</svg>`;
+      newBtn.setAttribute('disabled', '');
+      newBtn.setAttribute('aria-label', 'Challenge completed');
+      newBtn.innerHTML = `<span>Completed!</span><svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${Icons.checkmark}</svg>`;
     } else {
+      newBtn.setAttribute('aria-label', 'Mark challenge as complete');
       newBtn.addEventListener('click', () => {
         const success = EcoData.completeChallenge(appData);
         if (success) {
           EcoData.refreshData(appData);
           newBtn.classList.add('done');
-          newBtn.setAttribute('aria-disabled', 'true');
-          newBtn.innerHTML = `<span>Completed!</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${Icons.checkmark}</svg>`;
+          newBtn.setAttribute('disabled', '');
+          newBtn.setAttribute('aria-label', 'Challenge completed');
+          newBtn.innerHTML = `<span>Completed!</span><svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${Icons.checkmark}</svg>`;
           showToast(`+${challenge.co2Bonus.toFixed(2)} kg CO₂ saved!`, 'success');
           spawnConfetti();
           updateTree(appData);
@@ -207,8 +210,8 @@ function initQuickHabits(appData) {
   const topHabits = [...usedHabits.slice(0, 4), ...allHabits].slice(0, 4);
 
   grid.innerHTML = topHabits.map(h => `
-    <button class="quick-habit glass glass-card" data-habit="${h.id}">
-      <span class="quick-habit-icon">${h.icon}</span>
+    <button class="quick-habit glass glass-card" data-habit="${h.id}" aria-label="Log ${escapeHTML(h.name)}">
+      <span class="quick-habit-icon" aria-hidden="true">${h.icon}</span>
       <span class="quick-habit-label">${escapeHTML(h.name)}</span>
     </button>
   `).join('');

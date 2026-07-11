@@ -58,6 +58,8 @@ function initScan() {
     }
     viewfinder.hidden = true;
     cameraBtn.innerHTML = CAMERA_BUTTON_HTML;
+    cameraBtn.removeAttribute('aria-pressed');
+    cameraBtn.removeAttribute('aria-controls');
   };
 
   function startCamera() {
@@ -66,7 +68,9 @@ function initScan() {
       return;
     }
     viewfinder.hidden = false;
-    cameraBtn.textContent = 'Stop Camera';
+    cameraBtn.innerHTML = 'Stop Camera';
+    cameraBtn.setAttribute('aria-pressed', 'true');
+    cameraBtn.setAttribute('aria-controls', 'scan-viewfinder');
 
     html5QrCode = new Html5Qrcode('scan-viewfinder');
     html5QrCode.start(
@@ -96,6 +100,8 @@ function initScan() {
     }
     viewfinder.hidden = true;
     cameraBtn.innerHTML = CAMERA_BUTTON_HTML;
+    cameraBtn.removeAttribute('aria-pressed');
+    cameraBtn.removeAttribute('aria-controls');
   }
 
   async function performScan() {
@@ -128,6 +134,7 @@ function initScan() {
   function renderProduct(info) {
     const img = document.getElementById('scan-img');
     img.src = info.image || '';
+    img.alt = info.name || 'Product image';
     img.style.display = info.image ? '' : 'none';
 
     document.getElementById('scan-name').textContent = info.name;
@@ -142,11 +149,13 @@ function initScan() {
       gradeEl.style.color = EcoScan.getEcoScoreColor(info.ecoscoreGrade);
       valueEl.textContent = EcoScan.getEcoScoreDescription(info.ecoscoreGrade);
       scoreBox.style.borderColor = EcoScan.getEcoScoreColor(info.ecoscoreGrade);
+      scoreBox.setAttribute('aria-label', `Eco-Score grade ${info.ecoscoreGrade}: ${EcoScan.getEcoScoreDescription(info.ecoscoreGrade)}`);
     } else {
       gradeEl.textContent = '?';
       gradeEl.style.color = 'var(--text-tertiary)';
       valueEl.textContent = 'No Eco-Score available';
       scoreBox.style.borderColor = 'transparent';
+      scoreBox.removeAttribute('aria-label');
     }
 
     document.getElementById('detail-packaging').textContent = info.packaging;

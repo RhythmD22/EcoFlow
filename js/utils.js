@@ -66,8 +66,9 @@ function spawnConfetti() {
   setTimeout(() => container.remove(), CONFETTI_DURATION);
 }
 
-function _createDialog({ title, message, extraContent = null, resolveValue }) {
+function _createDialog({ title, message, extraContent = null, resolveValue, id = null }) {
   return new Promise(resolve => {
+    const dialogId = id || ('dlg-' + Date.now());
     const overlay = document.createElement('div');
     overlay.className = 'dialog-overlay';
 
@@ -75,11 +76,11 @@ function _createDialog({ title, message, extraContent = null, resolveValue }) {
     dialog.className = 'dialog';
     dialog.setAttribute('role', 'dialog');
     dialog.setAttribute('aria-modal', 'true');
-    dialog.setAttribute('aria-labelledby', 'dlg-title');
+    dialog.setAttribute('aria-labelledby', dialogId + '-title');
 
     const h2 = document.createElement('h2');
     h2.className = 'dialog-title';
-    h2.id = 'dlg-title';
+    h2.id = dialogId + '-title';
     h2.textContent = title;
 
     const p = document.createElement('p');
@@ -91,12 +92,12 @@ function _createDialog({ title, message, extraContent = null, resolveValue }) {
 
     const cancelBtn = document.createElement('button');
     cancelBtn.className = 'btn-cancel';
-    cancelBtn.id = 'dlg-cancel';
+    cancelBtn.id = dialogId + '-cancel';
     cancelBtn.textContent = 'Cancel';
 
     const okBtn = document.createElement('button');
     okBtn.className = 'btn btn-primary';
-    okBtn.id = 'dlg-ok';
+    okBtn.id = dialogId + '-ok';
     okBtn.textContent = 'OK';
 
     actions.appendChild(cancelBtn);
@@ -112,9 +113,18 @@ function _createDialog({ title, message, extraContent = null, resolveValue }) {
     overlay.appendChild(dialog);
     document.body.appendChild(overlay);
 
+    const previousFocus = document.activeElement;
+    const firstInput = dialog.querySelector('input');
+    if (firstInput) {
+      setTimeout(() => firstInput.focus(), 50);
+    } else {
+      okBtn.focus();
+    }
+
     const close = (result) => {
       document.removeEventListener('keydown', esc);
       overlay.remove();
+      setTimeout(() => { previousFocus.focus(); }, 50);
       resolve(result);
     };
 
@@ -148,7 +158,7 @@ function _createDialog({ title, message, extraContent = null, resolveValue }) {
 
     function esc(e) {
       if (e.key === 'Escape') { close(null); return; }
-      trapTab(e);
+      if (e.key === 'Tab') trapTab(e);
     }
   });
 }
@@ -158,10 +168,11 @@ function showConfirm(title, message) {
 }
 
 function showPrompt(title, message, defaultValue = '') {
+  const dialogId = 'dlg-prompt-' + Date.now();
   const input = document.createElement('input');
   input.type = 'text';
   input.className = 'dialog-input';
-  input.id = 'dlg-input';
+  input.id = dialogId + '-input';
   input.value = defaultValue;
   input.setAttribute('aria-label', title);
   input.setAttribute('autocomplete', 'off');
@@ -169,7 +180,7 @@ function showPrompt(title, message, defaultValue = '') {
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      const okBtn = document.getElementById('dlg-ok');
+      const okBtn = document.getElementById(dialogId + '-ok');
       if (okBtn) okBtn.click();
     }
   });
@@ -179,6 +190,7 @@ function showPrompt(title, message, defaultValue = '') {
     message,
     extraContent: input,
     resolveValue: () => input.value,
+    id: dialogId,
   });
 }
 

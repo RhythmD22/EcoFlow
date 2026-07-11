@@ -54,6 +54,7 @@ function initSettings() {
     fileInput.type = 'file';
     fileInput.accept = '.json';
     fileInput.hidden = true;
+    fileInput.setAttribute('aria-label', 'Choose a JSON file to import');
     document.body.appendChild(fileInput);
 
     fileInput.addEventListener('change', () => {

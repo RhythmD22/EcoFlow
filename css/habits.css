@@ -106,6 +106,7 @@
 
   .calendar-day {
     aspect-ratio: 1;
+    min-height: 44px;
     border-radius: var(--radius-md);
     display: flex;
     flex-direction: column;
@@ -295,8 +296,8 @@
     align-items: center;
     justify-content: center;
     color: var(--text-tertiary);
-    opacity: 0;
-    transition: color 0.2s ease;
+    opacity: 0.35;
+    transition: opacity 0.2s ease, color 0.2s ease;
   }
 
   .habit-item:hover .habit-delete,
@@ -344,7 +345,7 @@
   }
 
   .heatmap-cell.d3 {
-    background: rgba(21, 128, 61, 0.65);
+    background: rgba(21, 128, 61, 0.88);
     color: var(--text-on-brand);
     font-weight: 600;
   }

@@ -25,6 +25,7 @@ import { initScan, getScanCleanup } from './scan-page.js';
   };
 
   let currentRoute = 'home';
+  let previousRoute = 'home';
 
   function navigateTo(route) {
     if (currentRoute === 'scan' && route !== 'scan') {
@@ -34,6 +35,10 @@ import { initScan, getScanCleanup } from './scan-page.js';
 
     if (route === currentRoute && document.querySelector(`[data-page="${route}"]`)) return;
     if (!routeMap[route]) return;
+
+    if (currentRoute !== 'settings') {
+      previousRoute = currentRoute;
+    }
 
     currentRoute = route;
     const spec = routeMap[route];
@@ -67,6 +72,17 @@ import { initScan, getScanCleanup } from './scan-page.js';
 
     root.setAttribute('tabindex', '-1');
     root.focus({ preventScroll: true });
+
+    let announcer = document.getElementById('nav-announcer');
+    if (!announcer) {
+      announcer = document.createElement('div');
+      announcer.id = 'nav-announcer';
+      announcer.className = 'sr-only';
+      announcer.setAttribute('aria-live', 'assertive');
+      announcer.setAttribute('aria-atomic', 'true');
+      document.body.appendChild(announcer);
+    }
+    announcer.textContent = spec.heading;
   }
 
   function init() {
@@ -83,7 +99,7 @@ import { initScan, getScanCleanup } from './scan-page.js';
     const settingsBtn = document.getElementById('btn-settings');
     if (settingsBtn) {
       settingsBtn.addEventListener('click', () => {
-        if (currentRoute === 'settings') navigateTo('home');
+        if (currentRoute === 'settings') navigateTo(previousRoute);
         else navigateTo('settings');
       });
     }

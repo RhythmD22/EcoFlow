@@ -82,7 +82,7 @@
     --brand-active: #106b32;
     --brand-glow: rgba(21, 128, 61, 0.18);
     --brand-glow-strong: rgba(21, 128, 61, 0.30);
-    --brand-soft: #059669;
+    --brand-soft: #04704C;
     --brand-muted: #166534;
 
     /* Semantic */
@@ -178,10 +178,15 @@
     padding: 0;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
-    scroll-behavior: smooth;
     overscroll-behavior: none;
   }
 
@@ -224,6 +229,11 @@
     text-decoration: none;
   }
 
+  .setting-help a {
+    display: inline-block;
+    min-height: 44px;
+  }
+
   img,
   svg {
     display: block;
@@ -234,8 +244,11 @@
   }
 
   input {
-    outline: none;
     caret-color: var(--brand);
+  }
+
+  input:focus:not(:focus-visible) {
+    outline: none;
   }
 
   .sr-only {
@@ -363,6 +376,9 @@
     font-weight: 600;
     font-size: var(--text-sm);
     border-radius: var(--radius-full);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
     transform: translateY(-120%);
     transition: transform 0.2s var(--ease-out-expo);
@@ -496,7 +512,7 @@
     animation: page-enter 0.35s var(--ease-out-expo);
   }
 
-  #app-root:focus-visible {
+  #app-root:focus {
     outline: none;
   }
 
@@ -1020,7 +1036,7 @@
     padding: 12px 20px;
     border-radius: 0;
     font-size: var(--text-sm);
-    min-height: auto;
+    min-height: 44px;
     position: relative;
     width: 100%;
   }

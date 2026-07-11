@@ -76,7 +76,7 @@ const EcoScan = (() => {
   }
 
   function getEcoScoreColor(grade) {
-    const map = { A: '#1e7e34', B: '#4caf50', C: '#cddc39', D: '#ff9800', E: '#e53935' };
+    const map = { A: '#1e7e34', B: '#4caf50', C: '#9e9d24', D: '#e65100', E: '#e53935' };
     return map[grade] || 'var(--text-tertiary)';
   }
 

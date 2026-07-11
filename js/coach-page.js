@@ -38,11 +38,11 @@ function initCoach() {
   if (history.length > 0) {
     history.forEach(msg => {
       messagesContainer.insertAdjacentHTML('beforeend', `
-        <div class="message ${msg.role}">
-          <div class="message-bubble">${escapeHTML(msg.text)}</div>
-          <span class="message-time">${msg.time}</span>
-        </div>
-      `);
+      <div class="message ${msg.role}">
+        <div class="message-bubble"><span class="sr-only">${msg.role === 'user' ? 'You said' : 'Coach said'}: </span>${escapeHTML(msg.text)}</div>
+        <span class="message-time">${msg.time}</span>
+      </div>
+    `);
     });
     chat.scrollTop = chat.scrollHeight;
     clearBtn.hidden = false;
@@ -88,12 +88,15 @@ function initCoach() {
     if (!text) return;
 
     if (input) input.value = '';
-    if (coachError) coachError.hidden = true;
+    if (coachError) {
+      coachError.hidden = true;
+      if (input) input.removeAttribute('aria-describedby');
+    }
 
     const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
     messagesContainer.insertAdjacentHTML('beforeend', `
       <div class="message user">
-        <div class="message-bubble">${escapeHTML(text)}</div>
+        <div class="message-bubble"><span class="sr-only">You said: </span>${escapeHTML(text)}</div>
         <span class="message-time">${time}</span>
       </div>
     `);
@@ -109,7 +112,7 @@ function initCoach() {
     const respTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
     messagesContainer.insertAdjacentHTML('beforeend', `
       <div class="message coach">
-        <div class="message-bubble">${escapeHTML(result.text)}</div>
+        <div class="message-bubble"><span class="sr-only">Coach said: </span>${escapeHTML(result.text)}</div>
         <span class="message-time">${respTime}</span>
       </div>
     `);
@@ -127,6 +130,7 @@ function initCoach() {
       };
       coachError.textContent = errorMessages[result.error] || errorMessages.api_error;
       coachError.hidden = false;
+      if (input) input.setAttribute('aria-describedby', 'coach-error');
     }
 
     chat.scrollTop = chat.scrollHeight;

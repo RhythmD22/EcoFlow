@@ -52,7 +52,7 @@
 | Local Storage | All data persisted in `localStorage` — no account, no server, no sign-up |
 | Export/Import/Reset | Export full data as JSON, import from a backup file, or reset everything with one click |
 | Responsive PWA | Install on mobile for a native app-like experience with offline support, full-screen standalone mode, and `safe-area-inset` handling |
-| Accessibility | `role="dialog"`, `role="checkbox"`, `aria-checked`, `aria-pressed`, skip-to-main-content link, `:focus-visible` glow rings, `prefers-reduced-motion`, heading hierarchy, WCAG 2.1 AA color contrast |
+| Accessibility | WCAG 2.1 AA: `role="dialog"` + `aria-modal` with focus trapping and restoration, `role="checkbox"` with `aria-checked` that stays in sync with toggling, `aria-pressed` on all toggle controls, skip-to-main-content link, `:focus-visible` glow rings on all interactive elements, `prefers-reduced-motion` kills all animations/transitions, route-change announcements via `aria-live="assertive"`, all Canvas charts have `role="img"` + `aria-label` + sr-only data tables, `role="tablist"`/`role="tab"`/`role="tabpanel"` with `aria-controls` and full Arrow/Home/End keyboard navigation, calendar with `role="dialog"`, focus trap, per-day `aria-label` with habit counts and month/year, `aria-live="polite"` on tree stats and coach chat, `role="log"` on chat, `aria-describedby` on inputs linked to errors, all text colors verified at WCAG AA 4.5:1+ in both themes, all UI graphics verified at 3:1+ |
 
 ---
 
@@ -199,6 +199,7 @@ EcoFlow uses a green-tinted dark theme with frosted glass surfaces and a full li
 | `--bg-body` | `#f1f7f3` | — | Page background |
 | `--glass-bg` | `rgba(255, 255, 255, 0.65)` | — | Frosted card surfaces |
 | `--brand` | `#15803d` | 4.6:1 | Darker forest green for readability |
+| `--brand-soft` | `#04704C` | 5.2:1 | Suggestion chips, secondary brand accents |
 | `--text-primary` | `#0d1711` | 16.3:1 | Headings, body text |
 | `--text-secondary` | `#56635b` | 5.9:1 | Secondary text |
 | `--text-tertiary` | `#5f6b62` | 5.2:1 | Captions, hints |

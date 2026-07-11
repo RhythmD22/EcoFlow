@@ -66,7 +66,7 @@
     <header class="app-header glass">
       <h1 class="app-title" id="page-title">EcoFlow</h1>
       <div class="header-actions">
-        <button class="icon-btn theme-btn" aria-label="Switch to dark theme" id="btn-theme">
+        <button class="icon-btn theme-btn" aria-label="Switch to dark theme" aria-pressed="false" id="btn-theme">
           <svg class="icon-sun" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5" />
@@ -153,7 +153,7 @@
         <p class="greeting-subtitle">Track small actions that add up.</p>
       </section>
 
-      <section class="tree-section" aria-label="Your Carbon Tree">
+      <section class="tree-section" aria-label="Your Carbon Tree" aria-live="polite">
         <div class="tree-container" id="tree-container">
           <svg aria-hidden="true" focusable="false" class="tree-svg" viewBox="0 0 300 260" id="tree-svg">
             <rect class="tree-ground" x="60" y="230" width="180" height="4" rx="2" fill="var(--wood-light)"
@@ -280,21 +280,27 @@
 
   <template id="template-habits">
     <div class="page page-habits" data-page="habits">
-      <h2 class="sr-only">Habits</h2>
 
       <section class="habit-trend glass glass-card">
         <h3 class="section-label">30-Day Trend</h3>
         <div class="chart-container chart-line">
-          <canvas id="chart-habit-trend"></canvas>
+          <canvas id="chart-habit-trend" role="img" aria-label="30-day habit completion trend chart"></canvas>
         </div>
+        <table class="sr-only" id="chart-habit-trend-table">
+          <tr>
+            <td>Loading chart data...</td>
+          </tr>
+        </table>
       </section>
 
       <section class="habits-date-strip">
-        <button class="date-pill glass" id="today-date" aria-label="Select date"></button>
+        <button class="date-pill glass" id="today-date" aria-label="Select date"
+          aria-controls="calendar-dropdown">Select date</button>
         <div class="habits-today-count glass" id="today-count">0 / 12</div>
       </section>
 
-      <div class="calendar-dropdown glass glass-card" id="calendar-dropdown" hidden>
+      <div class="calendar-dropdown glass glass-card" id="calendar-dropdown" hidden role="dialog"
+        aria-label="Date picker">
         <div class="calendar-header">
           <button class="calendar-nav" id="cal-prev" aria-label="Previous month">
             <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -317,17 +323,24 @@
         <button class="btn btn-secondary btn-full" id="cal-today">Today</button>
       </div>
 
-      <div class="category-tabs" id="category-tabs">
-        <button class="cat-tab active" data-cat="all">All</button>
-        <button class="cat-tab" data-cat="transport">Transport</button>
-        <button class="cat-tab" data-cat="food">Food</button>
-        <button class="cat-tab" data-cat="energy">Energy</button>
-        <button class="cat-tab" data-cat="shopping">Shopping</button>
-        <button class="cat-tab" data-cat="waste">Waste</button>
-        <button class="cat-tab" data-cat="water">Water</button>
+      <div class="category-tabs" id="category-tabs" role="tablist" aria-label="Habit categories">
+        <button class="cat-tab active" data-cat="all" role="tab" aria-selected="true" id="cat-tab-all"
+          aria-controls="habits-list">All</button>
+        <button class="cat-tab" data-cat="transport" role="tab" aria-selected="false" id="cat-tab-transport"
+          aria-controls="habits-list">Transport</button>
+        <button class="cat-tab" data-cat="food" role="tab" aria-selected="false" id="cat-tab-food"
+          aria-controls="habits-list">Food</button>
+        <button class="cat-tab" data-cat="energy" role="tab" aria-selected="false" id="cat-tab-energy"
+          aria-controls="habits-list">Energy</button>
+        <button class="cat-tab" data-cat="shopping" role="tab" aria-selected="false" id="cat-tab-shopping"
+          aria-controls="habits-list">Shopping</button>
+        <button class="cat-tab" data-cat="waste" role="tab" aria-selected="false" id="cat-tab-waste"
+          aria-controls="habits-list">Waste</button>
+        <button class="cat-tab" data-cat="water" role="tab" aria-selected="false" id="cat-tab-water"
+          aria-controls="habits-list">Water</button>
       </div>
 
-      <div class="habits-list" id="habits-list"></div>
+      <div class="habits-list" id="habits-list" role="tabpanel"></div>
 
       <button class="btn btn-secondary add-habit-btn glass glass-card" id="btn-add-habit">
         <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -356,7 +369,6 @@
 
   <template id="template-coach">
     <div class="page page-coach" data-page="coach">
-      <h2 class="sr-only">AI Coach</h2>
       <div class="coach-chat" id="coach-chat" role="log" aria-label="Coach conversation" aria-live="polite">
         <div class="coach-chat-header">
           <button class="btn-clear-chat" id="btn-clear-chat" hidden>Clear chat</button>
@@ -385,10 +397,11 @@
         </div>
         <div class="coach-messages" id="coach-messages"></div>
         <div class="coach-error" id="coach-error" role="alert" hidden></div>
-        <div class="coach-typing" id="coach-typing" hidden>
+        <div class="coach-typing" id="coach-typing" role="status" aria-live="polite" hidden>
           <span class="typing-dot"></span>
           <span class="typing-dot"></span>
           <span class="typing-dot"></span>
+          <span class="sr-only">Coach is typing...</span>
         </div>
       </div>
       <div class="coach-input-area">
@@ -411,7 +424,6 @@
 
   <template id="template-impact">
     <div class="page page-impact" data-page="impact">
-      <h2 class="sr-only">Impact</h2>
       <section class="impact-hero">
         <div class="impact-big-number" id="impact-total-co2">0</div>
         <div class="impact-big-label">kg CO₂ Saved</div>
@@ -422,12 +434,17 @@
       <section class="impact-equivalents glass glass-card">
         <h3 class="section-label">Your Impact Equals</h3>
         <div class="chart-container chart-bar">
-          <canvas id="chart-equivalents"></canvas>
+          <canvas id="chart-equivalents" role="img" aria-label="Carbon impact equivalents chart"></canvas>
         </div>
+        <table class="sr-only" id="chart-equivalents-table">
+          <tr>
+            <td>Loading chart data...</td>
+          </tr>
+        </table>
         <div class="equivalents-grid">
           <div class="equivalent-item">
-            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand)"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <span class="eq-icon"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="var(--brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z" />
                 <path d="M7 16v6" />
                 <path d="M13 19v3" />
@@ -438,8 +455,8 @@
             <span class="eq-label">Trees planted</span>
           </div>
           <div class="equivalent-item eq-cyan">
-            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <span class="eq-icon"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
                   d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
                 <circle cx="7" cy="17" r="2" />
@@ -450,8 +467,8 @@
             <span class="eq-label">Miles not driven</span>
           </div>
           <div class="equivalent-item eq-blue">
-            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--info)"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <span class="eq-icon"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="var(--info)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
                   d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
                 <path
@@ -461,8 +478,8 @@
             <span class="eq-label">Liters saved</span>
           </div>
           <div class="equivalent-item eq-energy">
-            <span class="eq-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--energy)"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <span class="eq-icon"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="var(--energy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
                   d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
               </svg></span>
@@ -475,8 +492,13 @@
       <section class="category-breakdown glass glass-card" id="category-breakdown">
         <h3 class="section-label">By Category</h3>
         <div class="chart-container chart-doughnut">
-          <canvas id="chart-category-doughnut"></canvas>
+          <canvas id="chart-category-doughnut" role="img" aria-label="CO₂ savings by category doughnut chart"></canvas>
         </div>
+        <table class="sr-only" id="chart-doughnut-table">
+          <tr>
+            <td>Loading chart data...</td>
+          </tr>
+        </table>
         <div class="breakdown-list" id="breakdown-list"></div>
       </section>
     </div>
@@ -484,7 +506,6 @@
 
   <template id="template-settings">
     <div class="page page-settings" data-page="settings">
-      <h2 class="sr-only">Settings</h2>
       <button class="settings-back" data-route="home" aria-label="Back to home">
         <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -502,11 +523,12 @@
           <div id="settings-gemini-local">
             <div class="setting-input-row">
               <input type="password" class="setting-input" id="settings-api-key" placeholder="Enter your Gemini API key"
-                autocomplete="off">
+                autocomplete="off" aria-describedby="settings-api-help">
               <button class="btn btn-small btn-primary" id="btn-save-settings-key">Save</button>
             </div>
-            <p class="setting-help">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank"
-                rel="noopener">Google AI Studio</a>. Your key is stored only on this device.</p>
+            <p class="setting-help" id="settings-api-help">Get a free key at <a
+                href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>. Your key
+              is stored only on this device.</p>
           </div>
           <div class="setting-status-row">
             <span class="setting-status-badge" id="status-openweathermap">Not
@@ -516,18 +538,20 @@
           <div id="settings-weather-local">
             <div class="setting-input-row">
               <input type="password" class="setting-input" id="settings-weather-key"
-                placeholder="Enter your OpenWeatherMap API key" autocomplete="off">
+                placeholder="Enter your OpenWeatherMap API key" autocomplete="off"
+                aria-describedby="settings-weather-help">
               <button class="btn btn-small btn-primary" id="btn-save-weather-key">Save</button>
             </div>
-            <p class="setting-help">Get a free key at <a href="https://openweathermap.org/api" target="_blank"
-                rel="noopener">OpenWeatherMap</a>. Used for weather-based habit suggestions.</p>
+            <p class="setting-help" id="settings-weather-help">Get a free key at <a
+                href="https://openweathermap.org/api" target="_blank" rel="noopener">OpenWeatherMap</a>. Used for
+              weather-based habit suggestions.</p>
           </div>
         </div>
         <div class="setting-group">
           <h3 class="setting-group-title">Data</h3>
           <button class="btn btn-secondary btn-full btn-icon" id="btn-export-data">
-            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3v12" />
               <path d="m17 8-5-5-5 5" />
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -535,8 +559,8 @@
             Export Data as JSON
           </button>
           <button class="btn btn-secondary btn-full btn-icon" id="btn-import-data">
-            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 15V3" />
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <path d="m7 10 5 5 5-5" />
@@ -544,8 +568,8 @@
             Import Data from JSON
           </button>
           <button class="btn btn-danger btn-full btn-icon" id="btn-reset-data">
-            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
               <path d="M3 3v5h5" />
             </svg>
@@ -563,7 +587,6 @@
 
   <template id="template-scan">
     <div class="page page-scan" data-page="scan">
-      <h2 class="sr-only">Product Scanner</h2>
 
       <div class="scan-input-area glass glass-card">
         <label for="scan-barcode" class="scan-label">Enter a barcode to check a product's environmental impact</label>
@@ -583,7 +606,7 @@
         <div class="scan-viewfinder glass" id="scan-viewfinder" hidden></div>
       </div>
 
-      <div class="scan-loading" id="scan-loading" hidden>
+      <div class="scan-loading" id="scan-loading" role="status" aria-live="polite" hidden>
         <div class="scan-spinner"></div>
         <span>Looking up product...</span>
       </div>
@@ -600,7 +623,7 @@
         </div>
 
         <div class="scan-scores">
-          <div class="scan-score eco-score" id="eco-score">
+          <div class="scan-score eco-score" id="eco-score" role="group">
             <span class="score-label">Eco-Score</span>
             <span class="score-grade" id="eco-grade"></span>
             <span class="score-value" id="eco-value"></span>

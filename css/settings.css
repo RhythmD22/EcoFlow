@@ -11,6 +11,7 @@
     padding: var(--space-sm) 0;
     margin-bottom: var(--space-md);
     border-radius: var(--radius-sm);
+    min-height: 44px;
     transition: color 0.2s ease;
   }
 
@@ -99,7 +100,7 @@
 
   .setting-status-badge--active {
     background: var(--success-bg-subtle);
-    color: var(--success);
+    color: var(--text-primary);
     border-color: var(--success-border-subtle);
   }
 }

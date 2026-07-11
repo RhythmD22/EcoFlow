@@ -227,7 +227,6 @@
     border: none;
     font-size: var(--input-font-size);
     color: var(--text-primary);
-    outline: none;
     min-width: 0;
   }
 

@@ -261,12 +261,12 @@
     display: inline-flex;
     align-self: flex-start;
     padding: var(--space-xs) var(--space-md);
-    background: var(--brand-glow);
-    border: 1px solid var(--brand-glow);
+    background: var(--brand-glow-strong);
+    border: 1px solid var(--brand-glow-strong);
     border-radius: var(--radius-full);
     font-size: var(--text-xs);
     font-weight: 600;
-    color: var(--brand);
+    color: var(--text-primary);
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
@@ -311,6 +311,8 @@
     gap: var(--space-sm);
     padding: var(--space-xl) var(--space-md);
     cursor: pointer;
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .quick-habit.logged {
