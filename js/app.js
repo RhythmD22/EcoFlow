@@ -1,9 +1,6 @@
 import { initTheme } from './theme.js';
 import { setNavigator } from './nav.js';
 import { showToast } from './utils.js';
-import { EcoWeather } from './weather.js';
-import { EcoAQI } from './aqi.js';
-import { EcoClimate } from './climate.js';
 import { initHome } from './index.js';
 import { initHabits } from './habits-page.js';
 import { initCoach } from './coach-page.js';
@@ -118,11 +115,6 @@ import { initScan, getScanCleanup } from './scan-page.js';
     if (!localStorage.getItem('ecoflow_data')) {
       showToast('Welcome to EcoFlow ✦ Log a habit to begin', 'success');
     }
-
-    EcoAQI.fetchAQI().catch(() => { });
-    EcoWeather.fetchWeather()
-      .catch(() => { })
-      .then(() => EcoClimate.fetchCountryEmissions().catch(() => { }));
 
     if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
       navigator.serviceWorker.register('/service-worker.js').catch(() => { });
